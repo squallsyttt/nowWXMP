@@ -1,0 +1,46 @@
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"name\": \"nowWXMP\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"description\": \"此时此刻微信小程序 produced by griffith\",\n  \"templateInfo\": {\n    \"name\": \"react-NutUI\",\n    \"typescript\": false,\n    \"css\": \"Sass\",\n    \"framework\": \"React\"\n  },\n  \"scripts\": {\n    \"build:weapp\": \"taro build --type weapp\",\n    \"build:swan\": \"taro build --type swan\",\n    \"build:alipay\": \"taro build --type alipay\",\n    \"build:tt\": \"taro build --type tt\",\n    \"build:h5\": \"taro build --type h5\",\n    \"build:rn\": \"taro build --type rn\",\n    \"build:qq\": \"taro build --type qq\",\n    \"build:jd\": \"taro build --type jd\",\n    \"build:quickapp\": \"taro build --type quickapp\",\n    \"dev:weapp\": \"npm run build:weapp -- --watch\",\n    \"dev:swan\": \"npm run build:swan -- --watch\",\n    \"dev:alipay\": \"npm run build:alipay -- --watch\",\n    \"dev:tt\": \"npm run build:tt -- --watch\",\n    \"dev:h5\": \"npm run build:h5 -- --watch\",\n    \"dev:rn\": \"npm run build:rn -- --watch\",\n    \"dev:qq\": \"npm run build:qq -- --watch\",\n    \"dev:jd\": \"npm run build:jd -- --watch\",\n    \"dev:quickapp\": \"npm run build:quickapp -- --watch\"\n  },\n  \"browserslist\": [\n    \"last 3 versions\",\n    \"Android >= 4.1\",\n    \"ios >= 8\"\n  ],\n  \"author\": \"\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"@babel/runtime\": \"^7.7.7\",\n    \"@tarojs/components\": \"3.6.24\",\n    \"@tarojs/helper\": \"3.6.24\",\n    \"@tarojs/plugin-platform-weapp\": \"3.6.24\",\n    \"@tarojs/plugin-platform-alipay\": \"3.6.24\",\n    \"@tarojs/plugin-platform-tt\": \"3.6.24\",\n    \"@tarojs/plugin-platform-swan\": \"3.6.24\",\n    \"@tarojs/plugin-platform-jd\": \"3.6.24\",\n    \"@tarojs/plugin-platform-qq\": \"3.6.24\",\n    \"@tarojs/plugin-platform-h5\": \"3.6.24\",\n    \"@tarojs/runtime\": \"3.6.24\",\n    \"@tarojs/shared\": \"3.6.24\",\n    \"@tarojs/taro\": \"3.6.24\",\n    \"@tarojs/react\": \"3.6.24\",\n    \"@tarojs/plugin-html\": \"3.6.24\",\n    \"@tarojs/plugin-framework-react\": \"3.6.24\",\n    \"react\": \"^18.0.0\",\n    \"react-dom\": \"^18.0.0\",\n    \"react-refresh\": \"^0.11.0\",\n    \"@nutui/nutui-react-taro\": \"^2.3.10\"\n  },\n  \"devDependencies\": {\n    \"@babel/core\": \"^7.8.0\",\n    \"@tarojs/cli\": \"3.6.24\",\n    \"@types/react\": \"^18.0.0\",\n    \"@types/react-dom\": \"^18.0.0\",\n    \"@types/react-router-dom\": \"^5.1.7\",\n    \"@types/react-syntax-highlighter\": \"^13.5.2\",\n    \"@types/react-test-renderer\": \"^18.0.0\",\n    \"@types/react-transition-group\": \"^4.4.4\",\n    \"@types/webpack-env\": \"^1.13.6\",\n    \"@typescript-eslint/parser\": \"^5.20.0\",\n    \"@typescript-eslint/eslint-plugin\": \"^5.20.0\",\n    \"postcss\": \"^8.4.18\",\n    \"@tarojs/webpack5-runner\": \"3.6.24\",\n    \"@tarojs/taro-loader\": \"3.6.24\",\n    \"webpack\": \"^5.78.0\",\n    \"@pmmmwh/react-refresh-webpack-plugin\": \"^0.5.5\",\n    \"babel-plugin-import\": \"^1.13.3\",\n    \"babel-preset-taro\": \"3.6.24\",\n    \"eslint\": \"^8.12.0\",\n    \"eslint-config-taro\": \"3.6.24\",\n    \"eslint-plugin-import\": \"^2.12.0\",\n    \"eslint-plugin-react\": \"^7.8.2\",\n    \"eslint-plugin-react-hooks\": \"^4.2.0\",\n    \"stylelint\": \"^14.4.0\",\n    \"style-loader\": \"1.3.0\",\n    \"typescript\": \"^4.1.0\",\n    \"ts-node\": \"^10.9.1\",\n    \"@types/node\": \"^18.15.11\"\n  }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package.json b/package.json
+--- a/package.json	(revision 540cff44739d599bd3d513216d15ba51efc661f1)
++++ b/package.json	(date 1709810212082)
+@@ -38,25 +38,26 @@
+   "license": "MIT",
+   "dependencies": {
+     "@babel/runtime": "^7.7.7",
++    "@nutui/icons-react": "^1.0.2",
++    "@nutui/nutui-react-taro": "^2.3.10",
+     "@tarojs/components": "3.6.24",
+     "@tarojs/helper": "3.6.24",
+-    "@tarojs/plugin-platform-weapp": "3.6.24",
++    "@tarojs/plugin-framework-react": "3.6.24",
++    "@tarojs/plugin-html": "3.6.24",
+     "@tarojs/plugin-platform-alipay": "3.6.24",
+-    "@tarojs/plugin-platform-tt": "3.6.24",
+-    "@tarojs/plugin-platform-swan": "3.6.24",
++    "@tarojs/plugin-platform-h5": "3.6.24",
+     "@tarojs/plugin-platform-jd": "3.6.24",
+     "@tarojs/plugin-platform-qq": "3.6.24",
+-    "@tarojs/plugin-platform-h5": "3.6.24",
++    "@tarojs/plugin-platform-swan": "3.6.24",
++    "@tarojs/plugin-platform-tt": "3.6.24",
++    "@tarojs/plugin-platform-weapp": "3.6.24",
++    "@tarojs/react": "3.6.24",
+     "@tarojs/runtime": "3.6.24",
+     "@tarojs/shared": "3.6.24",
+     "@tarojs/taro": "3.6.24",
+-    "@tarojs/react": "3.6.24",
+-    "@tarojs/plugin-html": "3.6.24",
+-    "@tarojs/plugin-framework-react": "3.6.24",
+     "react": "^18.0.0",
+     "react-dom": "^18.0.0",
+-    "react-refresh": "^0.11.0",
+-    "@nutui/nutui-react-taro": "^2.3.10"
++    "react-refresh": "^0.11.0"
+   },
+   "devDependencies": {
+     "@babel/core": "^7.8.0",
