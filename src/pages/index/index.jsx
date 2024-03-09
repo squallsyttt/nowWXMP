@@ -5,6 +5,7 @@ import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
 import VoiceItem from "../../components/voice";
+import SleepItem from "../../components/sleep";
 
 function Index() {
     const [tabValue,setTabValue] = useState(0);
@@ -148,21 +149,12 @@ function Index() {
                             {activeTab === 1 &&(<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
                                     {Object.keys(sleepList).map((key) =>(
-                                        <VoiceItem
+                                        <SleepItem
                                             title={sleepList[key].sleep_name}
                                             img={sleepList[key].sleep_background_img}
                                             like={sleepList[key].sleep_listen_num}
-                                        ></VoiceItem>
+                                        ></SleepItem>
                                     ))}
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
                                 </View>
                             </View>)}
                             {activeTab === 2 &&(<View className={"tabs-item-bottom"}>
