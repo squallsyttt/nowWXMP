@@ -4,6 +4,7 @@ import {Button, Cell, ConfigProvider, Image, Popup, SearchBar, Tabs} from "@nutu
 import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
+import VoiceItem from "../../components/voice";
 
 function Index() {
     const [tabValue,setTabValue] = useState(0);
@@ -12,7 +13,9 @@ function Index() {
     const [voiceName,setVoiceName] = useState("");
     const [voiceTypeList,setVoiceTypeList] = useState([]);
     const [voiceList,setVoiceList] = useState([]);
+    const [sleepList,setSleepList] = useState([]);
     const [activeTab,setActiveTab] = useState(0);
+    const [countList,setCountList] = useState([]);
 
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
@@ -35,6 +38,14 @@ function Index() {
         return request("/now/nowvoice/voiceTypeList");
     }
 
+    const fetchCountList = () =>{
+        return request("/now/nowvoice/countList");
+    }
+
+    const fetchSleepData = () =>{
+        return request("/now/nowsleep/index");
+    }
+
     useEffect(() => {
         fetchIndexData().then((data) => {
             setVoiceList(data.list)
@@ -42,12 +53,26 @@ function Index() {
         fetchVoiceType().then((data) => {
             setVoiceTypeList(data.list)
         })
+        fetchCountList().then((data) => {
+            setCountList(data.list)
+        })
+        fetchSleepData().then((data) => {
+            setSleepList(data.list)
+        })
     }, []);
 
     useEffect(() => {
         console.log('voiceTypeList',{voiceTypeList})
         console.log('voiceList',{voiceList})
-    }, [voiceList,voiceTypeList]);
+        console.log('countList',{countList})
+    }, [voiceList,voiceTypeList,countList]);
+
+    //页面上的筛选项变化后 请求借口去更新页面数据
+    useEffect(() => {
+        fetchIndexData().then((data)=>{
+            setVoiceList(data.list)
+        })
+    }, [filterData]);
 
     return (
         <>
@@ -62,6 +87,7 @@ function Index() {
                     nutuiSearchbarColor:'#BBBBBB',
                     nutuiSearchbarContentBorderRadius:'10rpx',
                     nutuiTabsTitlesPadding:'0 0 0 0',
+                    nutuiTabsTitlesItemColor:'#666666',
                 }}
             >
                 <View className={"outer-box"}>
@@ -82,9 +108,9 @@ function Index() {
 
                             <View className={"tabs-box"}>
                                 <View className={`tabs-item ${activeTab === 0 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(0)}>声音{activeTab === 0 && <span className="badge">267</span>}</View>
+                                      onClick={() => handleTabClick(0)}>声音{activeTab === 0 && <span className="badge">{countList.voiceCount}</span>}</View>
                                 <View className={`tabs-item ${activeTab === 1 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(1)}>助眠{activeTab === 1 && <span className="badge">267</span>}</View>
+                                      onClick={() => handleTabClick(1)}>助眠{activeTab === 1 && <span className="badge">{countList.sleepCount}</span>}</View>
                                 <View className={`tabs-item ${activeTab === 2 ? 'active' : ''}`}
                                       onClick={() => handleTabClick(2)}>呼吸</View>
                             </View>
@@ -97,29 +123,56 @@ function Index() {
                                       activeColor={"#FFFFFF"}
                                       onChange={(value) => {
                                           console.log("Tabs Onchange value",value)
-                                          setTabValue(value)}
+                                          setTabValue(value)
+                                          setFilterData((prevFilterData) =>({
+                                              ...prevFilterData,
+                                              'type_id':voiceTypeList[value].type_id,
+                                          }));
+                                      }
                                       }>
-                                    <Tabs.TabPane title="声音">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="助眠">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="呼吸1">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="呼吸2">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="呼吸3">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="呼吸4">
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane title="呼吸5">
-                                    </Tabs.TabPane>
+                                    {Object.keys(voiceTypeList).map((key) =>(
+                                        <Tabs.TabPane title={voiceTypeList[key].type_name}>
+                                        </Tabs.TabPane>
+                                    ))}
                                 </Tabs>
+                                <View className={"bottom-single-page"}>
+                                    {Object.keys(voiceList).map((key) =>(
+                                        <VoiceItem
+                                            title={voiceList[key].voice_name}
+                                            img={voiceList[key].background_img}
+                                            like={voiceList[key].voice_listen_num}
+                                        ></VoiceItem>
+                                    ))}
+                                </View>
                             </View>)}
                             {activeTab === 1 &&(<View className={"tabs-item-bottom"}>
-                                222
+                                <View className={"bottom-single-page"}>
+                                    {Object.keys(sleepList).map((key) =>(
+                                        <VoiceItem
+                                            title={sleepList[key].sleep_name}
+                                            img={sleepList[key].sleep_background_img}
+                                            like={sleepList[key].sleep_listen_num}
+                                        ></VoiceItem>
+                                    ))}
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                </View>
                             </View>)}
                             {activeTab === 2 &&(<View className={"tabs-item-bottom"}>
-                                333
+                                <View className={"bottom-single-page"}>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                    <VoiceItem></VoiceItem>
+                                </View>
                             </View>)}
 
 
