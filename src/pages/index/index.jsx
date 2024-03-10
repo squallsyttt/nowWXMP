@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View } from '@tarojs/components'
+import {ScrollView, View} from '@tarojs/components'
 import {Button, Cell, ConfigProvider, Image, Popup, SearchBar, Tabs} from "@nutui/nutui-react-taro"
 import './index.scss'
 import {request} from "../../utils/api";
@@ -29,6 +29,18 @@ function Index() {
 
     const handleTabClick = (index) => {
         setActiveTab(index);
+    }
+
+    const handleScrollUp = () => {
+        console.log("scroll up");
+    }
+
+    const handleScrollLower = () => {
+        console.log("scroll lower");
+        setFilterData((prevFilterData) =>({
+            ...prevFilterData,
+            'page':prevFilterData.page + 1,
+        }));
     }
 
     const fetchIndexData = ()=>{
@@ -136,15 +148,28 @@ function Index() {
                                         </Tabs.TabPane>
                                     ))}
                                 </Tabs>
-                                <View className={"bottom-single-page"}>
-                                    {Object.keys(voiceList).map((key) =>(
-                                        <VoiceItem
-                                            title={voiceList[key].voice_name}
-                                            img={voiceList[key].background_img}
-                                            like={voiceList[key].voice_listen_num}
-                                        ></VoiceItem>
-                                    ))}
-                                </View>
+                                <ScrollView
+                                    className={"voice-scroll"}
+                                    scrollY
+                                    scrollWithAnimation
+                                    scrollTop={0}
+                                    // style={{ height: '100%' }}
+                                    lowerThreshold={20}
+                                    upperThreshold={20}
+                                    // onScrollToUpper={handleScrollUp}
+                                    // onScrollToLower={handleScrollLower}
+                                >
+                                    <View className={"bottom-single-page-voice"}>
+                                        {Object.keys(voiceList).map((key) =>(
+                                            <VoiceItem
+                                                title={voiceList[key].voice_name}
+                                                img={voiceList[key].background_img}
+                                                like={voiceList[key].voice_listen_num}
+                                            ></VoiceItem>
+                                        ))}
+                                    </View>
+                                </ScrollView>
+
                             </View>)}
                             {activeTab === 1 &&(<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>

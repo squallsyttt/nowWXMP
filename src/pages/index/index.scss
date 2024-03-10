@@ -174,9 +174,23 @@
       border: 0px;
     }
 
+    .voice-scroll{
+      width:708rpx;//这一步有点高手
+      height: 90vh;
+      background-color: yellow;
+
+      .bottom-single-page-voice{
+        width: 708rpx;
+        //height: auto;
+        border: 1rpx solid red;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+
     .bottom-single-page{
       width: 708rpx;
-      height: auto;
+      //height: auto;
       border: 1rpx solid red;
       display: flex;
       flex-wrap: wrap;

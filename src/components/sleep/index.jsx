@@ -7,14 +7,14 @@ function SleepItem(props) {
     const img_host = "http://now.local.com/";
 
     return (
-        <View className={"voice-item-box"}>
-            <View className={"voice-item-top"}>
+        <View className={"sleep-item-box"}>
+            <View className={"sleep-item-top"}>
                 <View className={"top-like"}>
 
                 </View>
                 <img className="item-img" mode="aspectFill" src={img_host+img} alt="item-img"/>
             </View>
-            <View className={"voice-item-bottom"}>
+            <View className={"sleep-item-bottom"}>
                 <View className={'bottom-title'}>{title}</View>
                 <View className={'bottom-info'}>
                     {like+"分钟"}
