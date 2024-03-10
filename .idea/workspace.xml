@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/sleep/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sleep/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/sleep/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sleep/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/voice/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/voice/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/voice/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/voice/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.scss" afterDir="false" />

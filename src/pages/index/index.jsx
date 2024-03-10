@@ -6,8 +6,10 @@ import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
+import voice from "../../components/voice";
 
 function Index() {
+    const host = "http://now.local.com/";
     const [tabValue,setTabValue] = useState(0);
     const [voiceTabValue,setVoiceTabValue] = useState(0);
     const [indexPage,setIndexPage] = useState(1);
@@ -22,25 +24,47 @@ function Index() {
     const [showBottomRound,setShowBottomRound] = useState(true)
 
     const [filterData,setFilterData] =useState({
-      'type_id': '',
+      'type_id': 1,
       'page': 1,
       'voice_name':'',
     });
+
+    const [sleepFilterData,setSleepFilterData] = useState({
+        'page': 1,
+    })
 
     const handleTabClick = (index) => {
         setActiveTab(index);
     }
 
-    const handleScrollUp = () => {
+    const handleScrollUpVoice = () => {
         console.log("scroll up");
     }
 
-    const handleScrollLower = () => {
-        console.log("scroll lower");
+    const handleScrollUpSleep = () => {
+        console.log("scroll up sleep");
+    }
+
+    const handleScrollLowerVoice = () => {
         setFilterData((prevFilterData) =>({
             ...prevFilterData,
             'page':prevFilterData.page + 1,
         }));
+    }
+
+    const handleScrollLowerSleep = () => {
+        setSleepFilterData((prevSleepFilterData) =>({
+            ...prevSleepFilterData,
+            'page':prevSleepFilterData.page + 1,
+        }));
+    }
+
+    const handleVoiceItemClick = (item) => {
+        console.log("voiceItem",item)
+    }
+
+    const handleSleepItemClick = (item) => {
+        console.log("sleepItem",item)
     }
 
     const fetchIndexData = ()=>{
@@ -48,7 +72,7 @@ function Index() {
     }
 
     const fetchVoiceType = () =>{
-        return request("/now/nowvoice/voiceTypeList");
+        return request("/now/nowvoice/voiceTypeList",sleepFilterData);
     }
 
     const fetchCountList = () =>{
@@ -56,7 +80,7 @@ function Index() {
     }
 
     const fetchSleepData = () =>{
-        return request("/now/nowsleep/index");
+        return request("/now/nowsleep/index",sleepFilterData);
     }
 
     useEffect(() => {
@@ -75,17 +99,46 @@ function Index() {
     }, []);
 
     useEffect(() => {
-        console.log('voiceTypeList',{voiceTypeList})
+        // console.log('voiceTypeList',{voiceTypeList})
         console.log('voiceList',{voiceList})
-        console.log('countList',{countList})
+        // console.log('countList',{countList})
     }, [voiceList,voiceTypeList,countList]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
         fetchIndexData().then((data)=>{
-            setVoiceList(data.list)
+            // console.log("voiceData on filterData Changed",data)
+            // console.log('...voiceList',...voiceList)
+            // console.log('...data.list',...data.list)
+            // console.log('data.list.length',data.list.length)
+            if(data.list.length > 0){
+                if(filterData.page > 1){
+                    setVoiceList([...voiceList,...data.list])
+                }else{
+                    setVoiceList(data.list)
+                }
+            }else{
+                console.log("无数据了 不渲染");
+            }
+
         })
+
+        console.log('filterData',filterData)
     }, [filterData]);
+
+    useEffect(() => {
+        fetchSleepData().then((data)=>{
+            if(data.list.length > 0){
+                if(sleepFilterData.page > 1){
+                    setSleepList([...sleepList,...data.list])
+                }else{
+                    setSleepList(data.list)
+                }
+            }else{
+                console.log("无数据，不渲染sleep")
+            }
+        })
+    }, [sleepFilterData]);
 
     return (
         <>
@@ -140,13 +193,16 @@ function Index() {
                                           setFilterData((prevFilterData) =>({
                                               ...prevFilterData,
                                               'type_id':voiceTypeList[value].type_id,
+                                              'page':1,
                                           }));
                                       }
                                       }>
-                                    {Object.keys(voiceTypeList).map((key) =>(
-                                        <Tabs.TabPane title={voiceTypeList[key].type_name}>
-                                        </Tabs.TabPane>
-                                    ))}
+                                    {voiceTypeList.map((item) =>{
+                                        return(
+                                            <Tabs.TabPane title={item.type_name}>
+                                            </Tabs.TabPane>
+                                        )
+                                    })}
                                 </Tabs>
                                 <ScrollView
                                     className={"voice-scroll"}
@@ -156,39 +212,58 @@ function Index() {
                                     // style={{ height: '100%' }}
                                     lowerThreshold={20}
                                     upperThreshold={20}
-                                    // onScrollToUpper={handleScrollUp}
-                                    // onScrollToLower={handleScrollLower}
+                                    onScrollToUpper={handleScrollUpVoice}
+                                    onScrollToLower={handleScrollLowerVoice}
                                 >
                                     <View className={"bottom-single-page-voice"}>
-                                        {Object.keys(voiceList).map((key) =>(
-                                            <VoiceItem
-                                                title={voiceList[key].voice_name}
-                                                img={voiceList[key].background_img}
-                                                like={voiceList[key].voice_listen_num}
-                                            ></VoiceItem>
-                                        ))}
+                                        {
+                                            voiceList.map((item) => {
+                                                return (
+                                                    <VoiceItem
+                                                        onClick={() => handleVoiceItemClick(item)}
+                                                        title={item.voice_name}
+                                                        img={item.background_img}
+                                                        like={item.voice_listen_num}
+                                                    />
+                                                )
+                                            })
+                                        }
                                     </View>
                                 </ScrollView>
 
                             </View>)}
                             {activeTab === 1 &&(<View className={"tabs-item-bottom"}>
-                                <View className={"bottom-single-page"}>
-                                    {Object.keys(sleepList).map((key) =>(
-                                        <SleepItem
-                                            title={sleepList[key].sleep_name}
-                                            img={sleepList[key].sleep_background_img}
-                                            like={sleepList[key].sleep_listen_num}
-                                        ></SleepItem>
-                                    ))}
-                                </View>
+                                <ScrollView
+                                    className={"sleep-scroll"}
+                                    scrollY
+                                    scrollWithAnimation
+                                    scrollTop={0}
+                                    // style={{ height: '100%' }}
+                                    lowerThreshold={20}
+                                    upperThreshold={20}
+                                    onScrollToUpper={handleScrollUpSleep}
+                                    onScrollToLower={handleScrollLowerSleep}
+                                >
+                                    <View className={"bottom-single-page-sleep"}>
+                                        {
+                                            sleepList.map((item) => {
+                                                return(
+                                                    <SleepItem
+                                                        onClick={() => handleSleepItemClick(item)}
+                                                        title={item.sleep_name}
+                                                        img={item.sleep_background_img}
+                                                        like={item.sleep_listen_num}
+                                                    />
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </ScrollView>
+
                             </View>)}
                             {activeTab === 2 &&(<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
-                                    <VoiceItem></VoiceItem>
+                                   111
                                 </View>
                             </View>)}
 

@@ -4,16 +4,16 @@ import {Image} from "@nutui/nutui-react-taro";
 import listenIcon from '../../assets/listen.png';
 
 function VoiceItem(props) {
-    const {title="",like="",img="",type="voice"} = props;
+    const {title="",like="",img="",type="voice",onClick} = props;
 
     const img_host = "http://now.local.com/";
 
     return (
-        <View className={"voice-item-box"}>
+        <View className={"voice-item-box"} onClick={onClick}>
             <View className={"voice-item-top"}>
-                <View className={"top-like"}>
+                {/*<View className={"top-like"}>*/}
 
-                </View>
+                {/*</View>*/}
                 <img className="item-img" mode="aspectFill" src={img_host+img} alt="item-img"/>
             </View>
             <View className={"voice-item-bottom"}>

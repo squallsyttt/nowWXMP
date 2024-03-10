@@ -2,16 +2,16 @@ import {View} from "@tarojs/components";
 import "./index.scss";
 
 function SleepItem(props) {
-    const {title="",like="",img="",type="voice"} = props;
+    const {title="",like="",img="",type="voice",onClick} = props;
 
     const img_host = "http://now.local.com/";
 
     return (
-        <View className={"sleep-item-box"}>
+        <View className={"sleep-item-box"} onClick={onClick}>
             <View className={"sleep-item-top"}>
-                <View className={"top-like"}>
+                {/*<View className={"top-like"}>*/}
 
-                </View>
+                {/*</View>*/}
                 <img className="item-img" mode="aspectFill" src={img_host+img} alt="item-img"/>
             </View>
             <View className={"sleep-item-bottom"}>
