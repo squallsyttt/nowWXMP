@@ -20,6 +20,11 @@ function Index() {
     const [activeTab,setActiveTab] = useState(0);
     const [countList,setCountList] = useState([]);
 
+    const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
+    const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
+
+
+
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
 
@@ -61,10 +66,12 @@ function Index() {
 
     const handleVoiceItemClick = (item) => {
         console.log("voiceItem",item)
+        setBackImg(host+item.background_img)
     }
 
     const handleSleepItemClick = (item) => {
         console.log("sleepItem",item)
+        setBackImg(host+item.sleep_background_img)
     }
 
     const fetchIndexData = ()=>{
@@ -157,16 +164,33 @@ function Index() {
                 }}
             >
                 <View className={"outer-box"}>
-                    <View class={"outer-footer-call"} onClick={()=>{setShowBottomRound(true)}}>
+                    <img src={backImg} className={"background-image"}/>
+                    {showBottomRound && (
+                        <View className={"header-box"}>
 
+                            <View className={"header-top"}>Hi，此时此刻</View>
+                            <View className={'header-mid'}>有时候，什么也不做是非常重要的</View>
+                            <view className={'header-bottom'}>- 此时此刻</view>
+                        </View>
+                    )}
+
+                    <View class={"outer-footer-call"} onClick={() => {
+                        setShowBottomRound(true)
+                    }}>
+                        <img src={drawIcon} className={"call-draw-img"}/>
                     </View>
-                    <Popup visible={showBottomRound} style={{height:'95%',border:"0px solid black"}} position={"bottom"} round onClose={()=>{setShowBottomRound(false)}}>
+                    <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowBottomRound(false)
+                    }}>
                         <View className={"index-popup-inner-box"}>
-                            <View className={"pull-icon"} onClick={()=>{setShowBottomRound(false)}} >
+                            <View className={"pull-icon"} onClick={() => {
+                                setShowBottomRound(false)
+                            }}>
                                 <Image width={"40rpx"} height={"30rpx"} src={drawIcon}/>
                             </View>
                             <View className={"search-box"}>
-                                <SearchBar placeholder="搜索声音" />
+                                <SearchBar placeholder="搜索声音"/>
                             </View>
                             {/*<View className={"tabs-up-box"}>*/}
                             {/*    222用于放count数*/}
@@ -174,31 +198,33 @@ function Index() {
 
                             <View className={"tabs-box"}>
                                 <View className={`tabs-item ${activeTab === 0 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(0)}>声音{activeTab === 0 && <span className="badge">{countList.voiceCount}</span>}</View>
+                                      onClick={() => handleTabClick(0)}>声音{activeTab === 0 &&
+                                    <span className="badge">{countList.voiceCount}</span>}</View>
                                 <View className={`tabs-item ${activeTab === 1 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(1)}>助眠{activeTab === 1 && <span className="badge">{countList.sleepCount}</span>}</View>
+                                      onClick={() => handleTabClick(1)}>助眠{activeTab === 1 &&
+                                    <span className="badge">{countList.sleepCount}</span>}</View>
                                 <View className={`tabs-item ${activeTab === 2 ? 'active' : ''}`}
                                       onClick={() => handleTabClick(2)}>呼吸</View>
                             </View>
 
-                            {activeTab === 0 &&(<View className={"tabs-item-bottom"}>
+                            {activeTab === 0 && (<View className={"tabs-item-bottom"}>
                                 <Tabs value={tabValue}
                                       align={"left"}
-                                      tabStyle={{width: '664rpx',background:'#FFFFFF'}}
+                                      tabStyle={{width: '664rpx', background: '#FFFFFF'}}
                                       activeType="button"
                                       activeColor={"#FFFFFF"}
                                       onChange={(value) => {
-                                          console.log("Tabs Onchange value",value)
+                                          console.log("Tabs Onchange value", value)
                                           setTabValue(value)
-                                          setFilterData((prevFilterData) =>({
+                                          setFilterData((prevFilterData) => ({
                                               ...prevFilterData,
-                                              'type_id':voiceTypeList[value].type_id,
-                                              'page':1,
+                                              'type_id': voiceTypeList[value].type_id,
+                                              'page': 1,
                                           }));
                                       }
                                       }>
-                                    {voiceTypeList.map((item) =>{
-                                        return(
+                                    {voiceTypeList.map((item) => {
+                                        return (
                                             <Tabs.TabPane title={item.type_name}>
                                             </Tabs.TabPane>
                                         )
@@ -232,7 +258,7 @@ function Index() {
                                 </ScrollView>
 
                             </View>)}
-                            {activeTab === 1 &&(<View className={"tabs-item-bottom"}>
+                            {activeTab === 1 && (<View className={"tabs-item-bottom"}>
                                 <ScrollView
                                     className={"sleep-scroll"}
                                     scrollY
@@ -247,7 +273,7 @@ function Index() {
                                     <View className={"bottom-single-page-sleep"}>
                                         {
                                             sleepList.map((item) => {
-                                                return(
+                                                return (
                                                     <SleepItem
                                                         onClick={() => handleSleepItemClick(item)}
                                                         title={item.sleep_name}
@@ -261,9 +287,9 @@ function Index() {
                                 </ScrollView>
 
                             </View>)}
-                            {activeTab === 2 &&(<View className={"tabs-item-bottom"}>
+                            {activeTab === 2 && (<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
-                                   111
+                                    111
                                 </View>
                             </View>)}
 
@@ -271,7 +297,6 @@ function Index() {
                             {/*<View className={"tabs-item-box"}>*/}
 
                             {/*</View>*/}
-
 
 
                         </View>
