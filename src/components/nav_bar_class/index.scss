@@ -1,4 +1,7 @@
 .nav_custom_bar{
+  left: 0;
+  top: 0;
+  position: absolute;
   border: 1px solid black;
   width: 100%;
   //background-image: url('../../assets/bg_up.png');
@@ -7,12 +10,11 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
-  position: relative;
   flex-shrink: 0;
   .nav_custom_bar_back{
     display: flex;
     align-items: center;
-    border: 1px solid black;
+    //border: 1px solid black;
     position: absolute;
     bottom: 10px;
     left: 22px;
@@ -30,7 +32,7 @@
     //font-family: Microsoft YaHei, Microsoft YaHei-Regular;
     font-weight: 400;
     text-align: left;
-    color: #f7f7f7;
+    color: #333333;
     margin-bottom: 10px;
   }
 }
