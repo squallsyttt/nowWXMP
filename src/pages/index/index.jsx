@@ -8,6 +8,7 @@ import listenIcon from '../../assets/listen.png';
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
 import voice from "../../components/voice";
+import Taro from '@tarojs/taro';
 
 function Index() {
     const host = "http://now.local.com/";
@@ -38,6 +39,10 @@ function Index() {
     const [sleepFilterData,setSleepFilterData] = useState({
         'page': 1,
     })
+
+    const jumpContact = () => {
+        Taro.navigateTo({ url: '/pages/contact/index'});
+    }
 
     const handleTabClick = (index) => {
         setActiveTab(index);
@@ -189,7 +194,7 @@ function Index() {
                                 <View className={"text-up"}>{friendList[0].content}</View>
                                 <View className={"text-down"}>-{friendList[0].author}</View>
                             </View>
-                            <View className={"content-icon"}>
+                            <View className={"content-icon"} onClick={() => jumpContact()}>
                                 <View className={"icon-up"}><img className={"content-icon-img"} src={listenIcon}/></View>
                                 <View className={"icon-down"}>同行互助</View>
                             </View>

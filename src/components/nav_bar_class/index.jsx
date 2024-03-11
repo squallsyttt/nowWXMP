@@ -1,10 +1,8 @@
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import {
-    Icon
-} from "@nutui/nutui-react-taro";
 import { Component } from 'react'
 import './index.scss'
+import leftIcon from "../../assets/left.png";
 
 class NavCustomBar extends Component {
 
@@ -45,7 +43,9 @@ class NavCustomBar extends Component {
         let { needBackIcon=true, mainTitle='' } = this.props
         return (
             <View className='nav_custom_bar' style={{height:` ${this.state.navBarHeight}px`}}>
-                <Icon className={`nav_custom_bar_back ${needBackIcon?'':'hidden'}`} name='rect-left' size='22' color='#fff' onClick={()=>{this.goBackPage()}}></Icon>
+                <View className={`nav_custom_bar_back ${needBackIcon?'':'hidden'}`} onClick={()=>{this.goBackPage()}}>
+                    <img src={leftIcon} className={"bak-img"}/>
+                </View>
                 <Text className='nav_custom_bar_title'>{mainTitle}</Text>
                 <View></View>
             </View>

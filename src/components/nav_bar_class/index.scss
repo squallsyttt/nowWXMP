@@ -1,6 +1,7 @@
 .nav_custom_bar{
+  border: 1px solid black;
   width: 100%;
-  background-image: url('../../assets/bg_up.png');
+  //background-image: url('../../assets/bg_up.png');
   background-size: 100% 100%;
   display: flex;
   flex-direction: row;
@@ -9,20 +10,27 @@
   position: relative;
   flex-shrink: 0;
   .nav_custom_bar_back{
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
     position: absolute;
     bottom: 10px;
     left: 22px;
     &.hidden{
       display: none;
     }
+
+    .bak-img{
+      width: 40rpx;
+      height: 40rpx;
+    }
   }
   .nav_custom_bar_title{
     font-size: 18px;
-    font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+    //font-family: Microsoft YaHei, Microsoft YaHei-Regular;
     font-weight: 400;
     text-align: left;
     color: #f7f7f7;
     margin-bottom: 10px;
   }
 }
-  
