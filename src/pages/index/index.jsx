@@ -4,6 +4,7 @@ import {Button, Cell, ConfigProvider, Image, Popup, SearchBar, Tabs} from "@nutu
 import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
+import listenIcon from '../../assets/listen.png';
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
 import voice from "../../components/voice";
@@ -23,7 +24,7 @@ function Index() {
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
     const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
 
-
+    const [friendList,setFriendList] = useState([]);
 
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
@@ -74,6 +75,10 @@ function Index() {
         setBackImg(host+item.sleep_background_img)
     }
 
+    const fetchFriendData = () => {
+        return request("/now/nowvoice/getFriendList")
+    }
+
     const fetchIndexData = ()=>{
       return request("/now/nowvoice/index",filterData);
     }
@@ -103,13 +108,17 @@ function Index() {
         fetchSleepData().then((data) => {
             setSleepList(data.list)
         })
+        fetchFriendData().then((data) => {
+            setFriendList(data.list)
+        })
     }, []);
 
     useEffect(() => {
         // console.log('voiceTypeList',{voiceTypeList})
-        console.log('voiceList',{voiceList})
+        // console.log('voiceList',{voiceList})
         // console.log('countList',{countList})
-    }, [voiceList,voiceTypeList,countList]);
+        // console.log('friendList',friendList);
+    }, [voiceList,voiceTypeList,countList,friendList]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
@@ -171,6 +180,19 @@ function Index() {
                             <View className={"header-top"}>Hi，此时此刻</View>
                             <View className={'header-mid'}>有时候，什么也不做是非常重要的</View>
                             <view className={'header-bottom'}>- 此时此刻</view>
+                        </View>
+                    )}
+
+                    {friendList.length > 0 && (
+                        <View className={"content-box"}>
+                            <View className={"content-text"}>
+                                <View className={"text-up"}>{friendList[0].content}</View>
+                                <View className={"text-down"}>-{friendList[0].author}</View>
+                            </View>
+                            <View className={"content-icon"}>
+                                <View className={"icon-up"}><img className={"content-icon-img"} src={listenIcon}/></View>
+                                <View className={"icon-down"}>同行互助</View>
+                            </View>
                         </View>
                     )}
 
