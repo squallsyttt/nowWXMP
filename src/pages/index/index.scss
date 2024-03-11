@@ -212,7 +212,7 @@
     margin: 42rpx 0 0 0;
     width: 80rpx;
     height: 30rpx;
-    border: 2rpx solid black;
+    //border: 2rpx solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -234,7 +234,7 @@
     justify-content:center;
     width: 664rpx;
     height: 58rpx;
-    border: 1px solid red;
+    //border: 1px solid red;
     margin: 32rpx 0 0 0;
   }
 
@@ -246,12 +246,12 @@
     height: 48rpx;
     width: 664rpx;
     margin: 22rpx 0 0 0;
-    border: 1px solid blue;
+    //border: 1px solid blue;
 
     .tabs-item{
       width: 68rpx;
       height: 48rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       margin: 0 110rpx 0 0;
       font-weight: 400;
       font-size: 34rpx;
@@ -309,8 +309,8 @@
     justify-content: center;
     width: 664rpx;
     //height: auto;
-    border: 1px solid blue;
-    margin: 34rpx 0 0 0;
+    //border: 1px solid blue;
+    margin: 20rpx 0 0 0;
 
     .nut-tabs-titles-item {
       min-width:unset;
@@ -331,7 +331,7 @@
       .bottom-single-page-voice{
         width: 708rpx;
         //height: auto;
-        border: 1rpx solid red;
+        //border: 1rpx solid red;
         display: flex;
         flex-wrap: wrap;
       }
@@ -345,7 +345,7 @@
       .bottom-single-page-sleep{
         width: 708rpx;
         //height: auto;
-        border: 1rpx solid red;
+        //border: 1rpx solid red;
         display: flex;
         flex-wrap: wrap;
       }
@@ -354,7 +354,7 @@
     .bottom-single-page{
       width: 708rpx;
       //height: auto;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
       display: flex;
       flex-wrap: wrap;
     }

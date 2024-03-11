@@ -13,7 +13,7 @@
     width: 320rpx;
     height: 320rpx;
     border-radius: 40rpx;
-    border: 1rpx solid black;
+    //border: 1rpx solid black;
 
     .top-like{
       position: absolute;
@@ -21,7 +21,7 @@
       width: 36rpx;
       height: 36rpx;
       border-radius: 18rpx;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
       z-index:9999;
     }
 
@@ -38,7 +38,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border: 1rpx solid black;
+    //border: 1rpx solid black;
 
     .bottom-title{
       width: 140rpx;
@@ -48,14 +48,14 @@
       color: #222222;
       line-height: 42rpx;
       overflow: hidden;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
     }
 
     .bottom-info{
       margin-left: auto;
       width: 160rpx;
       height: 58rpx;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
       display: flex;
       justify-content: flex-end;
       align-items: center;
