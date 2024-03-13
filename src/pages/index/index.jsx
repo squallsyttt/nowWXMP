@@ -81,23 +81,23 @@ function Index() {
     }
 
     const fetchFriendData = () => {
-        return request("/now/nowvoice/getFriendList")
+        return request("nowvoice/getFriendList")
     }
 
     const fetchIndexData = ()=>{
-      return request("/now/nowvoice/index",filterData);
+      return request("nowvoice/index",filterData);
     }
 
     const fetchVoiceType = () =>{
-        return request("/now/nowvoice/voiceTypeList",sleepFilterData);
+        return request("nowvoice/voiceTypeList",sleepFilterData);
     }
 
     const fetchCountList = () =>{
-        return request("/now/nowvoice/countList");
+        return request("nowvoice/countList");
     }
 
     const fetchSleepData = () =>{
-        return request("/now/nowsleep/index",sleepFilterData);
+        return request("nowsleep/index",sleepFilterData);
     }
 
     useEffect(() => {
@@ -316,7 +316,26 @@ function Index() {
                             </View>)}
                             {activeTab === 2 && (<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
-                                    111
+                                    <View className={"select-breath-duration"}>11</View>
+                                    <View className={"mid-breath-action-box"}>
+                                        <View className={"action-item"}>
+                                            <View className={"item-up"}>11</View>
+                                            <View className={"item-down"}>11</View>
+                                        </View>
+                                        <View className={"action-item"}>
+                                            <View className={"item-up"}>22</View>
+                                            <View className={"item-down"}>22</View>
+                                        </View>
+                                        <View className={"action-item-last"}>
+                                            <View className={"item-up-last"}>33</View>
+                                            <View className={"item-down-last"}>33</View>
+                                        </View>
+                                    </View>
+                                    <View className={"breath-bottom-box"}>
+                                        <Button type="primary" fill="outline" color="#65C565" size="large">
+                                            开始
+                                        </Button>
+                                    </View>
                                 </View>
                             </View>)}
 
