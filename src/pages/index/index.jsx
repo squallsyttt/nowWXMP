@@ -240,6 +240,18 @@ function Index() {
                         </View>
                     )}
 
+                    <View class={"voice-action-box"}>
+                        <View className={"box-side-left"}>
+                            <img className={"voice-side-img"} src={starIcon}/>
+                        </View>
+                        <View className={"box-center"}>
+                            <img className={"voice-center-img"} src={startIcon}/>
+                        </View>
+                        <View className={"box-side-right"}>
+                            <img className={"voice-side-img"} src={timeIcon}/>
+                        </View>
+                    </View>
+
                     <View class={"outer-footer-call"} onClick={() => {
                         setShowBottomRound(true)
                     }}>

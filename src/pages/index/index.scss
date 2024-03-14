@@ -185,8 +185,49 @@
     z-index:1;
   }
 
+  .voice-action-box{
+    margin:auto 0 64rpx 0;
+    width: 750rpx;
+    height: 140rpx;
+    border: 1px solid black;
+    z-index:1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .box-center{
+      width: 140rpx;
+      height: 140rpx;
+      border: 1px solid black;
+    }
+
+    .box-side-left{
+      width: 44rpx;
+      height: 44rpx;
+      border: 1px solid black;
+      margin-left: 62rpx;
+    }
+    .box-side-right{
+      width: 44rpx;
+      height: 44rpx;
+      border: 1px solid black;
+      margin-right: 62rpx;
+    }
+
+    .voice-side-img{
+      width:44rpx;
+      height:44rpx;
+    }
+
+    .voice-center-img{
+      width: 140rpx;
+      height: 140rpx;
+    }
+  }
+
   .outer-footer-call{
-    margin: auto 0 102rpx 0;
+    //margin: auto 0 102rpx 0;
+    margin-bottom: 102rpx;
     width: 92rpx;
     height: 50rpx;
     //border: 1px solid black;
