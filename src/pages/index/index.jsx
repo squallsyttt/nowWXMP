@@ -25,6 +25,7 @@ function Index() {
 
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
     const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
+    const [backTitle,setBackTitle] = useState("")
 
     const [friendList,setFriendList] = useState([]);
 
@@ -74,11 +75,13 @@ function Index() {
     const handleVoiceItemClick = (item) => {
         console.log("voiceItem",item)
         setBackImg(host+item.background_img)
+        setBackTitle(item.voice_name)
     }
 
     const handleSleepItemClick = (item) => {
         console.log("sleepItem",item)
         setBackImg(host+item.sleep_background_img)
+        setBackTitle(item.sleep_name)
     }
 
     const fetchFriendData = () => {
@@ -218,6 +221,12 @@ function Index() {
                                 <View className={"icon-up"}><img className={"content-icon-img"} src={listenIcon}/></View>
                                 <View className={"icon-down"}>同行互助</View>
                             </View>
+                        </View>
+                    )}
+
+                    {backTitle.length>0 && (
+                        <View className={"background-title-box"}>
+                            {backTitle}
                         </View>
                     )}
 
