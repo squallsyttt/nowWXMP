@@ -15,6 +15,7 @@ import breathIcon44 from '../../assets/44.png';
 import breathIcon478 from '../../assets/478.png';
 import helpIcon from '../../assets/help.png';
 import voiceTimeCheckIcon from '../../assets/voicetimecheck.png';
+import sleepSetIcon from '../../assets/set.png';
 
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
@@ -38,13 +39,25 @@ function Index() {
     const [backTitle,setBackTitle] = useState("")
     const [friendList,setFriendList] = useState([]);
 
+    //1声音模式 2睡眠模式 3呼吸模式
+    const [appMode,setAppMode] = useState(1);
+
     //默认是一直循环的
     const [voiceTime,setVoiceTime] = useState(999)
 
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
 
+    //声音的设置popUp
     const [showVoiceSet,setShowVoiceSet] = useState(false)
+    //助眠的设置popUp
+    const [showSleepSet,setShowSleepSet] = useState(false)
+
+    //助眠设置的背景音乐Item
+    const [sleepBreathBackgroundItem,setSleepBreathBackgroundItem] = useState({
+        'breath_background_name':'不使用',
+        'breath_background_voice':'',
+    })
 
     const [filterData,setFilterData] =useState({
       'type_id': 1,
@@ -88,12 +101,14 @@ function Index() {
 
     const handleVoiceItemClick = (item) => {
         console.log("voiceItem",item)
+        setAppMode(1)
         setBackImg(host+item.background_img)
         setBackTitle(item.voice_name)
     }
 
     const handleSleepItemClick = (item) => {
         console.log("sleepItem",item)
+        setAppMode(2);
         setBackImg(host+item.sleep_background_img)
         setBackTitle(item.sleep_name)
     }
@@ -248,19 +263,39 @@ function Index() {
                         </View>
                     )}
 
-                    <View class={"voice-action-box"}>
-                        <View className={"box-side-left"}>
-                            <img className={"voice-side-img"} src={starIcon}/>
+                    {/*声音模式展示这种交互*/}
+                    {appMode ===1 && (
+                        <View class={"voice-action-box"}>
+                            <View className={"box-side-left"}>
+                                <img className={"voice-side-img"} src={unstarIcon}/>
+                            </View>
+                            <View className={"box-center"}>
+                                <img className={"voice-center-img"} src={startIcon}/>
+                            </View>
+                            <View className={"box-side-right"}  onClick={() => {
+                                setShowVoiceSet(true)
+                            }}>
+                                <img className={"voice-side-img"} src={timeIcon}/>
+                            </View>
                         </View>
-                        <View className={"box-center"}>
-                            <img className={"voice-center-img"} src={startIcon}/>
+                    )}
+
+                    {appMode ===2 && (
+                        <View class={"sleep-action-box"}>
+                            <View className={"box-side-left"}>
+                                <img className={"sleep-side-img"} src={unstarIcon}/>
+                            </View>
+                            <View className={"box-center"}>
+                                <img className={"sleep-center-img"} src={startIcon}/>
+                            </View>
+                            <View className={"box-side-right"}  onClick={() => {
+                                setShowSleepSet(true)
+                            }}>
+                                <img className={"sleep-side-img"} src={sleepSetIcon}/>
+                            </View>
                         </View>
-                        <View className={"box-side-right"}  onClick={() => {
-                            setShowVoiceSet(true)
-                        }}>
-                            <img className={"voice-side-img"} src={timeIcon}/>
-                        </View>
-                    </View>
+                    )}
+
 
                     <View class={"outer-footer-call"} onClick={() => {
                         setShowBottomRound(true)
@@ -300,6 +335,29 @@ function Index() {
                             <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(999)}>
                                 <View className={"item-left"}>不停止</View>
                                 {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                        </View>
+                    </Popup>
+
+                    <Popup title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowSleepSet(false)
+                    }}>
+                        <View className={"sleep-set-box"}>
+                            <View className={"box-item"}>
+                                <View className={"item-left"}>人声</View>
+                            </View>
+                            <View className={"box-item"}></View>
+                            <View className={"box-item"}>
+                                <View className={"item-left"}>背景声音</View>
+                            </View>
+                            <View className={"box-item"}></View>
+                            <View className={"box-item"}>
+                                <View className={"item-left"}>背景音乐</View>
+                                <View className={"item-right"}>
+                                    <View className={"right-left"}>{sleepBreathBackgroundItem.breath_background_name}</View>
+                                    <img src={rightIcon} className={"right-right"}/>
+                                </View>
                             </View>
                         </View>
                     </Popup>

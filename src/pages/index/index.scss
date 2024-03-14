@@ -225,6 +225,46 @@
     }
   }
 
+  .sleep-action-box{
+    margin:auto 0 64rpx 0;
+    width: 750rpx;
+    height: 140rpx;
+    border: 1px solid black;
+    z-index:1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .box-center{
+      width: 140rpx;
+      height: 140rpx;
+      border: 1px solid black;
+    }
+
+    .box-side-left{
+      width: 44rpx;
+      height: 44rpx;
+      border: 1px solid black;
+      margin-left: 62rpx;
+    }
+    .box-side-right{
+      width: 44rpx;
+      height: 44rpx;
+      border: 1px solid black;
+      margin-right: 62rpx;
+    }
+
+    .sleep-side-img{
+      width:44rpx;
+      height:44rpx;
+    }
+
+    .sleep-center-img{
+      width: 140rpx;
+      height: 140rpx;
+    }
+  }
+
   .outer-footer-call{
     //margin: auto 0 102rpx 0;
     margin-bottom: 102rpx;
@@ -600,6 +640,74 @@
       .right-img{
         width: 36rpx;
         height: 36rpx;
+      }
+    }
+  }
+}
+
+.sleep-set-box{
+  width: 750rpx;
+  height: 380rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid black;
+
+  .box-item{
+    width: 662rpx;
+    height: 50rpx;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .item-left{
+      width: 200rpx;
+      height: 50rpx;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      font-weight: 400;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 50rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .item-right{
+      margin-left: auto;
+      width: 240rpx;
+      height: 50rpx;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .right-left{
+        width: 190rpx;
+        height: 50rpx;
+        border: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        font-weight: 400;
+        font-size: 30rpx;
+        color: #666666;
+        line-height: 50rpx;
+        text-align: center;
+        font-style: normal;
+        text-transform: none;
+      }
+      .right-right{
+        width: 40rpx;
+        height: 40rpx;
+        border: 1px solid black;
       }
     }
   }
