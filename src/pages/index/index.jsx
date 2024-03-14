@@ -5,6 +5,7 @@ import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
 import listenIcon from '../../assets/listen.png';
+import rightIcon from '../../assets/right.png';
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
 import voice from "../../components/voice";
@@ -316,19 +317,28 @@ function Index() {
                             </View>)}
                             {activeTab === 2 && (<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
-                                    <View className={"select-breath-duration"}>11</View>
+                                    <View className={"select-breath-duration"}>滑动选择 duration</View>
                                     <View className={"mid-breath-action-box"}>
                                         <View className={"action-item"}>
-                                            <View className={"item-up"}>11</View>
-                                            <View className={"item-down"}>11</View>
+                                            <View className={"item-up"}>
+                                                <View className={"up-left"}>11</View>
+                                                <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
+                                            </View>
+                                            <View className={"item-down"}>呼吸模式</View>
                                         </View>
                                         <View className={"action-item"}>
-                                            <View className={"item-up"}>22</View>
-                                            <View className={"item-down"}>22</View>
+                                            <View className={"item-up"}>
+                                                <View className={"up-left"}>22</View>
+                                                <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
+                                            </View>
+                                            <View className={"item-down"}>呼吸引导</View>
                                         </View>
                                         <View className={"action-item-last"}>
-                                            <View className={"item-up-last"}>33</View>
-                                            <View className={"item-down-last"}>33</View>
+                                            <View className={"item-up-last"}>
+                                                <View className={"up-left"}>33</View>
+                                                <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
+                                            </View>
+                                            <View className={"item-down-last"}>背景音乐</View>
                                         </View>
                                     </View>
                                     <View className={"breath-bottom-box"}>

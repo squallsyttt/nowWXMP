@@ -351,6 +351,10 @@
       }
     }
 
+    .breath-right{
+      width: 26rpx;
+      height: 26rpx;
+    }
     .bottom-single-page{
       width: 708rpx;
       //height: auto;
@@ -392,11 +396,42 @@
             width: 166rpx;
             height: 40rpx;
             border: 1px solid black;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .up-left{
+              width: 140rpx;
+              height: 40rpx;
+              border: 1px solid black;
+
+              font-weight: 400;
+              font-size: 28rpx;
+              color: #222222;
+              line-height: 40rpx;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+            }
+            .up-right{
+              margin-left: auto;
+              width: 26rpx;
+              height: 26rpx;
+              border: 1px solid black;
+            }
           }
           .item-down{
             width: 166rpx;
             height: 40rpx;
             border: 1px solid black;
+
+            font-weight: 400;
+            font-size: 28rpx;
+            color: #929292;
+            line-height: 40rpx;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
           }
         }
 
@@ -409,11 +444,41 @@
             width: 166rpx;
             height: 40rpx;
             border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .up-left{
+              width: 140rpx;
+              height: 40rpx;
+              border: 1px solid black;
+
+              font-weight: 400;
+              font-size: 28rpx;
+              color: #222222;
+              line-height: 40rpx;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+            }
+            .up-right{
+              margin-left: auto;
+              width: 26rpx;
+              height: 26rpx;
+              border: 1px solid black;
+            }
           }
           .item-down-last{
             width: 166rpx;
             height: 40rpx;
             border: 1px solid black;
+
+            font-weight: 400;
+            font-size: 28rpx;
+            color: #929292;
+            line-height: 40rpx;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
           }
         }
       }
