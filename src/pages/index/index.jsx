@@ -249,11 +249,9 @@ function Index() {
 
                             <View className={"tabs-box"}>
                                 <View className={`tabs-item ${activeTab === 0 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(0)}>声音{activeTab === 0 &&
-                                    <span className="badge">{countList.voiceCount}</span>}</View>
+                                      onClick={() => handleTabClick(0)}>声音</View>
                                 <View className={`tabs-item ${activeTab === 1 ? 'active' : ''}`}
-                                      onClick={() => handleTabClick(1)}>助眠{activeTab === 1 &&
-                                    <span className="badge">{countList.sleepCount}</span>}</View>
+                                      onClick={() => handleTabClick(1)}>助眠</View>
                                 <View className={`tabs-item ${activeTab === 2 ? 'active' : ''}`}
                                       onClick={() => handleTabClick(2)}>呼吸</View>
                             </View>
