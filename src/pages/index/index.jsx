@@ -14,7 +14,7 @@ import timeIcon from '../../assets/time.png';
 import breathIcon44 from '../../assets/44.png';
 import breathIcon478 from '../../assets/478.png';
 import helpIcon from '../../assets/help.png';
-
+import voiceTimeCheckIcon from '../../assets/voicetimecheck.png';
 
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
@@ -36,11 +36,15 @@ function Index() {
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
     const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
     const [backTitle,setBackTitle] = useState("")
-
     const [friendList,setFriendList] = useState([]);
+
+    //默认是一直循环的
+    const [voiceTime,setVoiceTime] = useState(999)
 
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
+
+    const [showVoiceSet,setShowVoiceSet] = useState(false)
 
     const [filterData,setFilterData] =useState({
       'type_id': 1,
@@ -128,6 +132,10 @@ function Index() {
             'voice_name': "",
             'page':1,
         }));
+    }
+
+    const handleVoiceTimeSet = (value)=>{
+        setVoiceTime(value)
     }
 
     useEffect(() => {
@@ -247,7 +255,9 @@ function Index() {
                         <View className={"box-center"}>
                             <img className={"voice-center-img"} src={startIcon}/>
                         </View>
-                        <View className={"box-side-right"}>
+                        <View className={"box-side-right"}  onClick={() => {
+                            setShowVoiceSet(true)
+                        }}>
                             <img className={"voice-side-img"} src={timeIcon}/>
                         </View>
                     </View>
@@ -257,6 +267,43 @@ function Index() {
                     }}>
                         <img src={drawIcon} className={"call-draw-img"}/>
                     </View>
+
+                    <Popup title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowVoiceSet(false)
+                    }}>
+                        <View className={"voice-set-box"}>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(5)}>
+                                <View className={"item-left"}>5分钟</View>
+                                {voiceTime === 5 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(10)}>
+                                <View className={"item-left"}>10分钟</View>
+                                {voiceTime === 10 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(15)}>
+                                <View className={"item-left"}>15分钟</View>
+                                {voiceTime === 15 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(30)}>
+                                <View className={"item-left"}>30分钟</View>
+                                {voiceTime === 30 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(45)}>
+                                <View className={"item-left"}>45分钟</View>
+                                {voiceTime === 45 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(60)}>
+                                <View className={"item-left"}>60分钟</View>
+                                {voiceTime === 60 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"voice-time-item"} onClick={()=>handleVoiceTimeSet(999)}>
+                                <View className={"item-left"}>不停止</View>
+                                {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                        </View>
+                    </Popup>
+
                     <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
                         setShowBottomRound(false)

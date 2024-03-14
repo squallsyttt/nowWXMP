@@ -381,7 +381,7 @@
     .voice-scroll{
       margin: 6rpx 0 0 0;
       width:708rpx;//这一步有点高手
-      height: 90vh;
+      height: 99vh;
       //background-color: yellow;
 
       .bottom-single-page-voice{
@@ -561,4 +561,46 @@
   text-align: left;
   font-style: normal;
   text-transform: none;
+}
+
+.voice-set-box{
+  width: 750rpx;
+  height: 858rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .voice-time-item{
+    width: 740rpx;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .item-left{
+      margin-left: 42rpx;
+      width: 196rpx;
+      height: 42rpx;
+
+      font-weight: 600;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .item-right{
+      margin-right: 42rpx;
+      width: 36rpx;
+      height: 36rpx;
+
+      .right-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+  }
 }
