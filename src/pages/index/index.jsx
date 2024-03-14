@@ -101,6 +101,22 @@ function Index() {
         return request("nowsleep/index",sleepFilterData);
     }
 
+    const handleVoiceSearch= (value) =>{
+        setFilterData((prevFilterData) => ({
+            ...prevFilterData,
+            'page': 1,
+            'voice_name': value,
+        }));
+    }
+
+    const handleVoiceClear = ()=>{
+        setFilterData((prevFilterData) => ({
+            ...prevFilterData,
+            'voice_name': "",
+            'page':1,
+        }));
+    }
+
     useEffect(() => {
         fetchIndexData().then((data) => {
             setVoiceList(data.list)
@@ -121,7 +137,7 @@ function Index() {
 
     useEffect(() => {
         // console.log('voiceTypeList',{voiceTypeList})
-        // console.log('voiceList',{voiceList})
+        console.log('voiceList',{voiceList})
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
     }, [voiceList,voiceTypeList,countList,friendList]);
@@ -140,6 +156,9 @@ function Index() {
                     setVoiceList(data.list)
                 }
             }else{
+                if(filterData.voice_name){
+                    setVoiceList(data.list)
+                }
                 console.log("无数据了 不渲染");
             }
 
@@ -218,7 +237,11 @@ function Index() {
                                 <Image width={"40rpx"} height={"30rpx"} src={drawIcon}/>
                             </View>
                             <View className={"search-box"}>
-                                <SearchBar placeholder="搜索声音"/>
+                                <SearchBar placeholder="搜索声音"
+                                           onSearch={(value) => handleVoiceSearch(value)}
+                                           onClear={() => handleVoiceClear()}
+                                />
+
                             </View>
                             {/*<View className={"tabs-up-box"}>*/}
                             {/*    222用于放count数*/}
@@ -270,8 +293,7 @@ function Index() {
                                     onScrollToLower={handleScrollLowerVoice}
                                 >
                                     <View className={"bottom-single-page-voice"}>
-                                        {
-                                            voiceList.map((item) => {
+                                        {voiceList.length >0 && voiceList.map((item) => {
                                                 return (
                                                     <VoiceItem
                                                         onClick={() => handleVoiceItemClick(item)}
@@ -282,6 +304,7 @@ function Index() {
                                                 )
                                             })
                                         }
+                                        {voiceList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
                                     </View>
                                 </ScrollView>
 
