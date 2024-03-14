@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {ScrollView, View} from '@tarojs/components'
-import {Button, Cell, ConfigProvider, Image, Popup, SearchBar, Tabs} from "@nutui/nutui-react-taro"
+import {Button, Cell, ConfigProvider, Image, Popup, Range, SearchBar, Tabs} from "@nutui/nutui-react-taro"
 import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
@@ -113,6 +113,14 @@ function Index() {
         setBackTitle(item.sleep_name)
     }
 
+    const handleSleepVoiceVolume = (value) => {
+        console.log("sleepVoiceVolume",value)
+    }
+
+    const handleSleepBackgroundVoiceVolume = (value) => {
+        console.log("sleepBackgroundVoiceVolume",value)
+    }
+
     const fetchFriendData = () => {
         return request("nowvoice/getFriendList")
     }
@@ -192,7 +200,12 @@ function Index() {
                     setVoiceList(data.list)
                 }
             }else{
+                //如果有搜索 给渲染空
                 if(filterData.voice_name){
+                    setVoiceList(data.list)
+                }
+                //如果就在第一页 可能是切换tab 也要渲染空 不影响翻页渲染就行
+                if(filterData.page === 1){
                     setVoiceList(data.list)
                 }
                 console.log("无数据了 不渲染");
@@ -231,6 +244,7 @@ function Index() {
                     nutuiSearchbarContentBorderRadius:'10rpx',
                     nutuiTabsTitlesPadding:'0 0 0 0',
                     nutuiTabsTitlesItemColor:'#666666',
+                    nutuiRangeActiveColor:'#65C565',
                 }}
             >
                 <View className={"outer-box"}>
@@ -347,11 +361,25 @@ function Index() {
                             <View className={"box-item"}>
                                 <View className={"item-left"}>人声</View>
                             </View>
-                            <View className={"box-item"}></View>
+                            <View className={"box-item"}>
+                                <Range
+                                    defaultValue={30}
+                                    maxDescription={null}
+                                    minDescription={null}
+                                    onEnd={(val) => handleSleepVoiceVolume(val)}
+                                />
+                            </View>
                             <View className={"box-item"}>
                                 <View className={"item-left"}>背景声音</View>
                             </View>
-                            <View className={"box-item"}></View>
+                            <View className={"box-item"}>
+                                <Range
+                                    defaultValue={0}
+                                    maxDescription={null}
+                                    minDescription={null}
+                                    onEnd={(val) => handleSleepBackgroundVoiceVolume(val)}
+                                />
+                            </View>
                             <View className={"box-item"}>
                                 <View className={"item-left"}>背景音乐</View>
                                 <View className={"item-right"}>
