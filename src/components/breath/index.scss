@@ -1,0 +1,56 @@
+.breath-background-item-box{
+  margin:0 0 54rpx 0;
+  width: 194rpx;
+  height: 348rpx;
+  border: 2rpx solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .background-item-top{
+    position: relative;
+    width: 194rpx;
+    height: 296rpx;
+    border-radius: 40rpx;
+    border: 1rpx solid black;
+
+    .top-like{
+      position: absolute;
+      top: 20rpx;
+      right: 20rpx;
+      width: 36rpx;
+      height: 36rpx;
+      border-radius: 18rpx;
+      border: 1rpx solid red;
+      z-index:9999;
+    }
+
+    .item-img{
+      width: 194rpx;
+      height: 296rpx;
+      border-radius: 40rpx;
+    }
+  }
+
+  .backgournd-item-bottom{
+    width: 194rpx;
+    height: 52rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //border: 1rpx solid black;
+
+    .bottom-title{
+      width: 140rpx;
+      height: 42rpx;
+      font-weight: 400;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      overflow: hidden;
+      border: 1rpx solid red;
+    }
+
+  }
+}

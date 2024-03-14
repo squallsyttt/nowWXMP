@@ -21,6 +21,7 @@ import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
 import voice from "../../components/voice";
 import Taro from '@tarojs/taro';
+import BreathBackgroundVoiceItem from "../../components/breath";
 
 function Index() {
     const host = "http://now.local.com/";
@@ -34,13 +35,15 @@ function Index() {
     const [activeTab,setActiveTab] = useState(0);
     const [countList,setCountList] = useState([]);
 
+    const [sleepBackgroundList,setSleepBackgroundList] = useState([]);
+
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
     const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
     const [backTitle,setBackTitle] = useState("")
     const [friendList,setFriendList] = useState([]);
 
     //1声音模式 2睡眠模式 3呼吸模式
-    const [appMode,setAppMode] = useState(1);
+    const [appMode,setAppMode] = useState(2);
 
     //默认是一直循环的
     const [voiceTime,setVoiceTime] = useState(999)
@@ -52,6 +55,8 @@ function Index() {
     const [showVoiceSet,setShowVoiceSet] = useState(false)
     //助眠的设置popUp
     const [showSleepSet,setShowSleepSet] = useState(false)
+    //助眠背景音乐选择
+    const [showSleepBackgroundVoice,setShowSleepBackgroundVoice] = useState(false)
 
     //助眠设置的背景音乐Item
     const [sleepBreathBackgroundItem,setSleepBreathBackgroundItem] = useState({
@@ -69,6 +74,9 @@ function Index() {
         'page': 1,
     })
 
+    const [sleepBackgroundFilterData,setSleepBackgroundFilterData] = useState({
+        'page': 1,
+    })
     const jumpContact = () => {
         Taro.navigateTo({ url: '/pages/contact/index'});
     }
@@ -113,12 +121,30 @@ function Index() {
         setBackTitle(item.sleep_name)
     }
 
+    const handleSleepBackgroundItemClick = (item) => {
+        console.log("sleepBackgroundItem",item)
+    }
+
     const handleSleepVoiceVolume = (value) => {
         console.log("sleepVoiceVolume",value)
+        // TODO
     }
 
     const handleSleepBackgroundVoiceVolume = (value) => {
         console.log("sleepBackgroundVoiceVolume",value)
+        // TODO
+    }
+
+    const handleScrollUpSleepBackgroundVoice = () => {
+        console.log(999)
+    }
+
+    const handleScrollLowerSleepBackgroundVoice = () => {
+        console.log(666)
+        setSleepBackgroundFilterData((prevSleepBackgroundFilterData) =>({
+            ...prevSleepBackgroundFilterData,
+            'page':prevSleepBackgroundFilterData.page + 1,
+        }));
     }
 
     const fetchFriendData = () => {
@@ -139,6 +165,10 @@ function Index() {
 
     const fetchSleepData = () =>{
         return request("nowsleep/index",sleepFilterData);
+    }
+
+    const fetchSleepBackgroundData = () =>{
+        return request("nowBreath/getBackgroundList",sleepBackgroundFilterData)
     }
 
     const handleVoiceSearch= (value) =>{
@@ -177,14 +207,18 @@ function Index() {
         fetchFriendData().then((data) => {
             setFriendList(data.list)
         })
+        fetchSleepBackgroundData().then((data) => {
+            setSleepBackgroundList(data.list)
+        })
     }, []);
 
     useEffect(() => {
         // console.log('voiceTypeList',{voiceTypeList})
-        console.log('voiceList',{voiceList})
+        // console.log('voiceList',{voiceList})
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
-    }, [voiceList,voiceTypeList,countList,friendList]);
+        console.log("sleepBackgroundList",sleepBackgroundList)
+    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
@@ -229,6 +263,20 @@ function Index() {
             }
         })
     }, [sleepFilterData]);
+
+    useEffect(() => {
+        fetchSleepBackgroundData().then((data) =>{
+            if(data.list.length > 0){
+                if(sleepBackgroundFilterData.page > 1){
+                    setSleepBackgroundList([...sleepBackgroundList,...data.list])
+                }else{
+                    setSleepBackgroundList(data.list)
+                }
+            }else{
+                console.log("无数据，不渲染sleep")
+            }
+        })
+    },[sleepBackgroundFilterData])
 
     return (
         <>
@@ -353,6 +401,7 @@ function Index() {
                         </View>
                     </Popup>
 
+
                     <Popup title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepSet(false)
@@ -380,14 +429,47 @@ function Index() {
                                     onEnd={(val) => handleSleepBackgroundVoiceVolume(val)}
                                 />
                             </View>
-                            <View className={"box-item"}>
+                            <View className={"box-item"} onClick={() => setShowSleepBackgroundVoice(true)}>
                                 <View className={"item-left"}>背景音乐</View>
-                                <View className={"item-right"}>
+                                <View className={"item-right"} >
                                     <View className={"right-left"}>{sleepBreathBackgroundItem.breath_background_name}</View>
                                     <img src={rightIcon} className={"right-right"}/>
                                 </View>
                             </View>
                         </View>
+                    </Popup>
+
+                    <Popup closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐</View>} visible={showSleepBackgroundVoice} style={{height: '85%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowSleepBackgroundVoice(false)
+                    }}>
+                        <view className={"sleep-background-outer-box"}>
+                        <ScrollView
+                            className={"sleep-background-scroll"}
+                            scrollY
+                            scrollWithAnimation
+                            scrollTop={0}
+                            // style={{ height: '100%' }}
+                            lowerThreshold={20}
+                            upperThreshold={20}
+                            onScrollToUpper={handleScrollUpSleepBackgroundVoice}
+                            onScrollToLower={handleScrollLowerSleepBackgroundVoice}
+                        >
+                            <View className={"sleep-background-voice-single"}>
+                                {sleepBackgroundList.length >0 && sleepBackgroundList.map((item) => {
+                                    return (
+                                        <BreathBackgroundVoiceItem
+                                            onClick={() => handleSleepBackgroundItemClick(item)}
+                                            title={item.breath_background_name}
+                                            img={item.breath_background_img}
+                                        />
+                                    )
+                                })
+                                }
+                                {sleepBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
+                            </View>
+                        </ScrollView>
+                        </view>
                     </Popup>
 
                     <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}

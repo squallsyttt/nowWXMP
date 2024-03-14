@@ -652,12 +652,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid black;
+  //border: 1px solid black;
 
   .box-item{
     width: 662rpx;
     height: 50rpx;
-    border: 1px solid black;
+    //border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -665,7 +665,7 @@
     .item-left{
       width: 200rpx;
       height: 50rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -683,14 +683,14 @@
       margin-left: auto;
       width: 240rpx;
       height: 50rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       display: flex;
       align-items: center;
       justify-content: space-between;
       .right-left{
         width: 190rpx;
         height: 50rpx;
-        border: 1px solid black;
+        //border: 1px solid black;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -707,8 +707,34 @@
       .right-right{
         width: 40rpx;
         height: 40rpx;
-        border: 1px solid black;
+        //border: 1px solid black;
       }
+    }
+  }
+}
+
+.sleep-background-outer-box{
+  display: flex;
+  width: 100%;
+  height: auto;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
+
+  .sleep-background-scroll{
+    margin: 0 0 0 0;
+    width:708rpx;//这一步有点高手
+    height: 99vh;
+    //background-color: yellow;
+
+    .sleep-background-voice-single{
+      width: 708rpx;
+      //height: auto;
+      border: 1rpx solid red;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
     }
   }
 }
