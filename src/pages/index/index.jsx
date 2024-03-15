@@ -36,6 +36,7 @@ function Index() {
     const [countList,setCountList] = useState([]);
 
     const [sleepBackgroundList,setSleepBackgroundList] = useState([]);
+    const [breathBackgroundList,setBreathBackgroundList] = useState([]);
 
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
     const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
@@ -66,8 +67,18 @@ function Index() {
     //助眠背景音乐选择
     const [showSleepBackgroundVoice,setShowSleepBackgroundVoice] = useState(false)
 
+    //呼吸背景音乐选择
+    const [showBreathBackgroundVoice,setShowBreathBackgroundVoice] = useState(false)
+
     //助眠设置的背景音乐Item
     const [sleepBreathBackgroundItem,setSleepBreathBackgroundItem] = useState({
+        'breath_background_name':'不使用',
+        'breath_background_voice':'',
+        'breath_background_id':0,
+    })
+
+    // 呼吸设置的背景音乐Item
+    const [breathBackgroundItem,setBreathBackgroundItem] = useState({
         'breath_background_name':'不使用',
         'breath_background_voice':'',
         'breath_background_id':0,
@@ -95,9 +106,15 @@ function Index() {
         'page': 1,
     })
 
+    // 助眠筛选背景音乐
     const [sleepBackgroundFilterData,setSleepBackgroundFilterData] = useState({
         'page': 1,
     })
+    // 呼吸筛选背景音乐
+    const [breathBackgroundFilterData,setBreathBackgroundFilterData] = useState({
+        'page':1
+    })
+
     const jumpContact = () => {
         Taro.navigateTo({ url: '/pages/contact/index'});
     }
@@ -159,8 +176,25 @@ function Index() {
                 'breath_background_id':item.id,
             })
         }
+    }
 
+    const handleBreathBackgroundItemClick = (item) => {
+        console.log("breathBackgroundItem",item)
 
+        //如果重复点击就取消 如果不相同就渲染
+        if(item.id === breathBackgroundItem.breath_background_id){
+            setBreathBackgroundItem({
+                'breath_background_name':'不使用',
+                'breath_background_voice':'',
+                'breath_background_id':0,
+            })
+        }else{
+            setBreathBackgroundItem({
+                'breath_background_name':item.breath_background_name,
+                'breath_background_voice':item.breath_background_voice,
+                'breath_background_id':item.id,
+            })
+        }
     }
 
     const handleSleepVoiceVolume = (value) => {
@@ -177,11 +211,21 @@ function Index() {
         console.log(999)
     }
 
-    const handleScrollLowerSleepBackgroundVoice = () => {
+    const handleScrollUpBreathBackgroundVoice = () => {
         console.log(666)
+    }
+
+    const handleScrollLowerSleepBackgroundVoice = () => {
         setSleepBackgroundFilterData((prevSleepBackgroundFilterData) =>({
             ...prevSleepBackgroundFilterData,
             'page':prevSleepBackgroundFilterData.page + 1,
+        }));
+    }
+
+    const handleScrollLowerBreathBackgroundVoice = () => {
+        setBreathBackgroundFilterData((prevBreathBackgroundFilterData) =>({
+            ...prevBreathBackgroundFilterData,
+            'page':prevBreathBackgroundFilterData.page + 1,
         }));
     }
 
@@ -207,6 +251,10 @@ function Index() {
 
     const fetchSleepBackgroundData = () =>{
         return request("nowBreath/getBackgroundList",sleepBackgroundFilterData)
+    }
+
+    const fetchBreathBackgroundData = () =>{
+        return request("nowBreath/getBackgroundList",breathBackgroundFilterData)
     }
 
     const handleVoiceSearch= (value) =>{
@@ -285,6 +333,9 @@ function Index() {
         })
         fetchSleepBackgroundData().then((data) => {
             setSleepBackgroundList(data.list)
+        })
+        fetchBreathBackgroundData().then((data) => {
+            setBreathBackgroundList(data.list)
         })
     }, []);
 
@@ -550,6 +601,43 @@ function Index() {
                         </View>
                     </Popup>
 
+
+                    {/*呼吸背景音乐*/}
+                    <Popup zIndex={2001} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐2</View>} visible={showBreathBackgroundVoice} style={{height: '88%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowBreathBackgroundVoice(false)
+                    }}>
+                        <View className={"sleep-background-outer-box"}>
+                            <View className={"sleep-background-notice-box"}>提示：点击播放声音，再次点击停止播放</View>
+                            <ScrollView
+                                className={"sleep-background-scroll"}
+                                scrollY
+                                scrollWithAnimation
+                                scrollTop={0}
+                                // style={{ height: '100%' }}
+                                lowerThreshold={20}
+                                upperThreshold={20}
+                                onScrollToUpper={handleScrollUpSleepBackgroundVoice}
+                                onScrollToLower={handleScrollLowerSleepBackgroundVoice}
+                            >
+                                <View className={"sleep-background-voice-single"}>
+                                    {breathBackgroundList.length >0 && breathBackgroundList.map((item) => {
+                                        return (
+                                            <BreathBackgroundVoiceItem
+                                                onClick={() => handleBreathBackgroundItemClick(item)}
+                                                title={item.breath_background_name}
+                                                img={item.breath_background_img}
+                                                listen={breathBackgroundItem.breath_background_id === item.id?1:0}
+                                            />
+                                        )
+                                    })
+                                    }
+                                    {breathBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
+                                </View>
+                            </ScrollView>
+                        </View>
+                    </Popup>
+
                     {/*//呼吸模式PopUp*/}
                     <Popup zIndex={2001} title={<View style={{color:'#666666'}}>呼吸模式</View>} visible={showBreathTypeSet} style={{height: '28%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
@@ -726,9 +814,9 @@ function Index() {
                                             </View>
                                             <View className={"item-down"}>呼吸引导</View>
                                         </View>
-                                        <View className={"action-item"}>
+                                        <View className={"action-item"} onClick={() =>setShowBreathBackgroundVoice(true)}>
                                             <View className={"item-up"}>
-                                                <View className={"up-left"}>背景音乐</View>
+                                                <View className={"up-left"}>{breathBackgroundItem.breath_background_name}</View>
                                                 <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
                                             </View>
                                             <View className={"item-down"}>背景音乐</View>
