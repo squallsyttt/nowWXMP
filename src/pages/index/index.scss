@@ -469,19 +469,17 @@
 
       .mid-breath-action-box{
         margin: 94rpx 0 0 0;
-        width: 750rpx;
+        width: 708rpx;
         height: 92rpx;
-        border: 1rpx solid black;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
 
         .action-item{
-          width: 166rpx;
+          width: 206rpx;
           height: 92rpx;
-          margin: 0 90rpx 0 0;
-          border: 1px solid black;
+          //margin: 0 90rpx 0 0;
 
           display: flex;
           flex-direction: column;
@@ -489,23 +487,21 @@
           justify-content: center;
 
           .item-up{
-            width: 166rpx;
+            width: 206rpx;
             height: 40rpx;
-            border: 1px solid black;
 
             display: flex;
             align-items: center;
             justify-content: center;
             .up-left{
-              width: 140rpx;
+              width: 180rpx;
               height: 40rpx;
-              border: 1px solid black;
 
               font-weight: 400;
               font-size: 28rpx;
               color: #222222;
               line-height: 40rpx;
-              text-align: left;
+              text-align: center;
               font-style: normal;
               text-transform: none;
             }
@@ -513,19 +509,17 @@
               margin-left: auto;
               width: 26rpx;
               height: 26rpx;
-              border: 1px solid black;
             }
           }
           .item-down{
-            width: 166rpx;
+            width: 206rpx;
             height: 40rpx;
-            border: 1px solid black;
 
             font-weight: 400;
             font-size: 28rpx;
             color: #929292;
             line-height: 40rpx;
-            text-align: left;
+            text-align: center;
             font-style: normal;
             text-transform: none;
           }
@@ -645,6 +639,7 @@
   }
 }
 
+
 .sleep-set-box{
   width: 750rpx;
   height: 380rpx;
@@ -749,6 +744,117 @@
       flex-wrap: wrap;
       justify-content: space-between;
 
+    }
+  }
+}
+.breath-voice-set-box{
+  width: 750rpx;
+  height: 258rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .breath-voice-item{
+    width: 740rpx;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .item-left{
+      margin-left: 42rpx;
+      width: 196rpx;
+      height: 42rpx;
+
+      font-weight: 600;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .item-right{
+      margin-right: 42rpx;
+      width: 36rpx;
+      height: 36rpx;
+
+      .right-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+  }
+}
+.breath-type-set-box{
+  width: 750rpx;
+  height: 308rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .breath-type-item{
+    margin-bottom: 50rpx;
+    width: 740rpx;
+    height: 104rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .item-icon{
+      margin-left: 46rpx;
+      width: 72rpx;
+      height: 72rpx;
+    }
+
+    .item-left{
+      margin-left: 30rpx;
+      width: 240rpx;
+      height: 104rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .left-up{
+        width: 240rpx;
+        height: 42rpx;
+
+        font-weight: 600;
+        font-size: 30rpx;
+        color: #222222;
+        line-height: 42rpx;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+      .left-down{
+        margin-top:12rpx;
+        width: 240rpx;
+        height: 34rpx;
+
+        font-weight: 400;
+        font-size: 24rpx;
+        color: #929292;
+        line-height: 34rpx;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+    }
+
+    .item-right{
+      margin-left: auto;
+      margin-right: 42rpx;
+      width: 36rpx;
+      height: 36rpx;
+
+      .right-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
     }
   }
 }

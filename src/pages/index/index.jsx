@@ -55,6 +55,14 @@ function Index() {
     const [showVoiceSet,setShowVoiceSet] = useState(false)
     //助眠的设置popUp
     const [showSleepSet,setShowSleepSet] = useState(false)
+
+    // 呼吸时间滑动选择的PopUp 不设置遮罩 切换到breath就打开 切走就关闭
+    const [showBreathTimeSet,setShowBreathTimeSet] = useState(true)
+    // 呼吸那个44 478的设置
+    const [showBreathTypeSet,setShowBreathTypeSet] = useState(false)
+    // 女声 男声 音效的设置
+    const [showBreathVoiceSet,setShowBreathVoiceSet] = useState(false)
+
     //助眠背景音乐选择
     const [showSleepBackgroundVoice,setShowSleepBackgroundVoice] = useState(false)
 
@@ -63,6 +71,18 @@ function Index() {
         'breath_background_name':'不使用',
         'breath_background_voice':'',
         'breath_background_id':0,
+    })
+
+    //4-7-8呼吸+478|| 4x4箱式呼吸+44
+    const [breathTypeItem,setBreathTypeItem] = useState({
+        'type_name':'4-7-8呼吸',
+        'type':'478',
+    })
+
+    //男1 女2 音效3
+    const [breathVoiceItem,setBreathVoiceItem] = useState({
+        'voice_name':'女声',
+        'voice':2,
     })
 
     const [filterData,setFilterData] =useState({
@@ -492,6 +512,54 @@ function Index() {
                         </View>
                     </Popup>
 
+                    {/*//呼吸模式PopUp*/}
+                    <Popup zIndex={2001} title={<View style={{color:'#666666'}}>呼吸模式</View>} visible={showBreathTypeSet} style={{height: '28%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowBreathTypeSet(false)
+                    }}>
+                        <View className={"breath-type-set-box"}>
+                            <View className={"breath-type-item"} onClick={() => handleVoiceTimeSet(5)}>
+                                <img className={"item-icon"} src={breathIcon478}/>
+                                <View className={"item-left"}>
+                                    <View className={"left-up"}>4-7-8呼吸</View>
+                                    <View className={"left-down"}>神经系统的天然镇静剂</View>
+                                </View>
+                                {voiceTime === 5 && (<View className={"item-right"}><img className={"right-img"}
+                                                                                         src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"breath-type-item"} onClick={() => handleVoiceTimeSet(999)}>
+                                <img className={"item-icon"} src={breathIcon44}/>
+                                <View className={"item-left"}>
+                                    <View className={"left-up"}>4x4箱式呼吸</View>
+                                    <View className={"left-down"}>一种深度放松技术</View>
+                                </View>
+                                {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                        </View>
+                    </Popup>
+
+                    {/*//呼吸引导PopUp*/}
+                    <Popup zIndex={2001} title={<View style={{color:'#666666'}}>呼吸引导</View>} visible={showBreathVoiceSet} style={{height: '20%', border: "0px solid black"}}
+                           position={"bottom"} round onClose={() => {
+                        setShowBreathVoiceSet(false)
+                    }}>
+                        <View className={"breath-voice-set-box"}>
+                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(5)}>
+                                <View className={"item-left"}>男声</View>
+                                {voiceTime === 5 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(10)}>
+                                <View className={"item-left"}>女声</View>
+                                {voiceTime === 10 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(999)}>
+                                <View className={"item-left"}>音效</View>
+                                {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                            </View>
+                        </View>
+                    </Popup>
+
+                    {/*//主页面Popup*/}
                     <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
                         setShowBottomRound(false)
@@ -606,26 +674,26 @@ function Index() {
                                 <View className={"bottom-single-page"}>
                                     <View className={"select-breath-duration"}>滑动选择 duration</View>
                                     <View className={"mid-breath-action-box"}>
-                                        <View className={"action-item"}>
+                                        <View className={"action-item"} onClick={() => setShowBreathTypeSet(true)}>
                                             <View className={"item-up"}>
-                                                <View className={"up-left"}>11</View>
+                                                <View className={"up-left"}>{breathTypeItem.type_name}</View>
                                                 <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
                                             </View>
                                             <View className={"item-down"}>呼吸模式</View>
                                         </View>
-                                        <View className={"action-item"}>
+                                        <View className={"action-item"} onClick={() => setShowBreathVoiceSet(true)}>
                                             <View className={"item-up"}>
-                                                <View className={"up-left"}>22</View>
+                                                <View className={"up-left"}>{breathVoiceItem.voice_name}</View>
                                                 <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
                                             </View>
                                             <View className={"item-down"}>呼吸引导</View>
                                         </View>
-                                        <View className={"action-item-last"}>
-                                            <View className={"item-up-last"}>
+                                        <View className={"action-item"}>
+                                            <View className={"item-up"}>
                                                 <View className={"up-left"}>33</View>
                                                 <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
                                             </View>
-                                            <View className={"item-down-last"}>背景音乐</View>
+                                            <View className={"item-down"}>背景音乐</View>
                                         </View>
                                     </View>
                                     <View className={"breath-bottom-box"}>
