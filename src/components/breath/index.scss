@@ -2,7 +2,7 @@
   margin:0 0 54rpx 0;
   width: 194rpx;
   height: 348rpx;
-  border: 2rpx solid black;
+  //border: 2rpx solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,17 +13,21 @@
     width: 194rpx;
     height: 296rpx;
     border-radius: 40rpx;
-    border: 1rpx solid black;
+    //border: 1rpx solid black;
 
-    .top-like{
+    .top-listen{
       position: absolute;
       top: 20rpx;
       right: 20rpx;
       width: 36rpx;
       height: 36rpx;
       border-radius: 18rpx;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
       z-index:9999;
+      .listen-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
     }
 
     .item-img{
@@ -33,11 +37,12 @@
     }
   }
 
-  .backgournd-item-bottom{
+  .background-item-bottom{
     width: 194rpx;
     height: 52rpx;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
     //border: 1rpx solid black;
 
@@ -49,7 +54,8 @@
       color: #222222;
       line-height: 42rpx;
       overflow: hidden;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
+      text-align: center;
     }
 
   }

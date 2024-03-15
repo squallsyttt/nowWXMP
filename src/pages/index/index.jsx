@@ -62,6 +62,7 @@ function Index() {
     const [sleepBreathBackgroundItem,setSleepBreathBackgroundItem] = useState({
         'breath_background_name':'不使用',
         'breath_background_voice':'',
+        'breath_background_id':0,
     })
 
     const [filterData,setFilterData] =useState({
@@ -123,6 +124,23 @@ function Index() {
 
     const handleSleepBackgroundItemClick = (item) => {
         console.log("sleepBackgroundItem",item)
+
+        //如果重复点击就取消 如果不相同就渲染
+        if(item.id === sleepBreathBackgroundItem.breath_background_id){
+           setSleepBreathBackgroundItem({
+               'breath_background_name':'不使用',
+               'breath_background_voice':'',
+               'breath_background_id':0,
+           })
+        }else{
+            setSleepBreathBackgroundItem({
+                'breath_background_name':item.breath_background_name,
+                'breath_background_voice':item.breath_background_voice,
+                'breath_background_id':item.id,
+            })
+        }
+
+
     }
 
     const handleSleepVoiceVolume = (value) => {
@@ -443,7 +461,8 @@ function Index() {
                            position={"bottom"} round onClose={() => {
                         setShowSleepBackgroundVoice(false)
                     }}>
-                        <view className={"sleep-background-outer-box"}>
+                        <View className={"sleep-background-outer-box"}>
+                            <View className={"sleep-background-notice-box"}>提示：点击播放声音，再次点击停止播放</View>
                         <ScrollView
                             className={"sleep-background-scroll"}
                             scrollY
@@ -462,6 +481,7 @@ function Index() {
                                             onClick={() => handleSleepBackgroundItemClick(item)}
                                             title={item.breath_background_name}
                                             img={item.breath_background_img}
+                                            listen={sleepBreathBackgroundItem.breath_background_id === item.id?1:0}
                                         />
                                     )
                                 })
@@ -469,7 +489,7 @@ function Index() {
                                 {sleepBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
                             </View>
                         </ScrollView>
-                        </view>
+                        </View>
                     </Popup>
 
                     <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}

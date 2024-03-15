@@ -189,7 +189,7 @@
     margin:auto 0 64rpx 0;
     width: 750rpx;
     height: 140rpx;
-    border: 1px solid black;
+    //border: 1px solid black;
     z-index:1;
     display: flex;
     align-items: center;
@@ -198,19 +198,19 @@
     .box-center{
       width: 140rpx;
       height: 140rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
     }
 
     .box-side-left{
       width: 44rpx;
       height: 44rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       margin-left: 62rpx;
     }
     .box-side-right{
       width: 44rpx;
       height: 44rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       margin-right: 62rpx;
     }
 
@@ -229,7 +229,7 @@
     margin:auto 0 64rpx 0;
     width: 750rpx;
     height: 140rpx;
-    border: 1px solid black;
+    //border: 1px solid black;
     z-index:1;
     display: flex;
     align-items: center;
@@ -238,19 +238,19 @@
     .box-center{
       width: 140rpx;
       height: 140rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
     }
 
     .box-side-left{
       width: 44rpx;
       height: 44rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       margin-left: 62rpx;
     }
     .box-side-right{
       width: 44rpx;
       height: 44rpx;
-      border: 1px solid black;
+      //border: 1px solid black;
       margin-right: 62rpx;
     }
 
@@ -715,22 +715,36 @@
 
 .sleep-background-outer-box{
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: auto;
-  border: 1px solid black;
+  //border: 1px solid black;
   align-items: center;
   justify-content: center;
 
+  .sleep-background-notice-box{
+    margin: 0 0 26rpx 0;
+    width: 662rpx;
+    height: 34rpx;
+    font-weight: 300;
+    font-size: 24rpx;
+    color: #929292;
+    line-height: 34rpx;
+    text-align: left;
+    font-style: normal;
+    text-transform: none;
+  }
+
   .sleep-background-scroll{
     margin: 0 0 0 0;
-    width:708rpx;//这一步有点高手
-    height: 99vh;
+    width:662rpx;
+    height: 90vh;
     //background-color: yellow;
 
     .sleep-background-voice-single{
-      width: 708rpx;
+      width: 662rpx;
       //height: auto;
-      border: 1rpx solid red;
+      //border: 1rpx solid red;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
