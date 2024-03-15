@@ -76,7 +76,7 @@ function Index() {
     //4-7-8呼吸+478|| 4x4箱式呼吸+44
     const [breathTypeItem,setBreathTypeItem] = useState({
         'type_name':'4-7-8呼吸',
-        'type':'478',
+        'type':478,
     })
 
     //男1 女2 音效3
@@ -227,6 +227,44 @@ function Index() {
 
     const handleVoiceTimeSet = (value)=>{
         setVoiceTime(value)
+    }
+
+    const handleBreathTypeSet = (value)=>{
+        console.log("handleBreathType")
+        if(value === 478){
+            setBreathTypeItem({
+                'type_name':'4-7-8呼吸',
+                'type':478,
+            });
+        }
+        if(value === 44){
+            setBreathTypeItem({
+                'type_name':'4x4箱式呼吸',
+                'type':44,
+            })
+        }
+    }
+
+    const handleBreathVoiceSet = (value)=>{
+        console.log("handleBreathVoice")
+        if(value === 1 ){
+            setBreathVoiceItem({
+                'voice_name':'男声',
+                'voice':1
+            })
+        }
+        if(value === 2 ){
+            setBreathVoiceItem({
+                'voice_name':'女声',
+                'voice':2
+            })
+        }
+        if(value === 3 ){
+            setBreathVoiceItem({
+                'voice_name':'音效',
+                'voice':3
+            })
+        }
     }
 
     useEffect(() => {
@@ -518,22 +556,22 @@ function Index() {
                         setShowBreathTypeSet(false)
                     }}>
                         <View className={"breath-type-set-box"}>
-                            <View className={"breath-type-item"} onClick={() => handleVoiceTimeSet(5)}>
+                            <View className={"breath-type-item"} onClick={() => handleBreathTypeSet(478)}>
                                 <img className={"item-icon"} src={breathIcon478}/>
                                 <View className={"item-left"}>
                                     <View className={"left-up"}>4-7-8呼吸</View>
                                     <View className={"left-down"}>神经系统的天然镇静剂</View>
                                 </View>
-                                {voiceTime === 5 && (<View className={"item-right"}><img className={"right-img"}
+                                {breathTypeItem.type === 478 && (<View className={"item-right"}><img className={"right-img"}
                                                                                          src={voiceTimeCheckIcon}/></View>)}
                             </View>
-                            <View className={"breath-type-item"} onClick={() => handleVoiceTimeSet(999)}>
+                            <View className={"breath-type-item"} onClick={() => handleBreathTypeSet(44)}>
                                 <img className={"item-icon"} src={breathIcon44}/>
                                 <View className={"item-left"}>
                                     <View className={"left-up"}>4x4箱式呼吸</View>
                                     <View className={"left-down"}>一种深度放松技术</View>
                                 </View>
-                                {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                                {breathTypeItem.type === 44 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
                             </View>
                         </View>
                     </Popup>
@@ -544,17 +582,17 @@ function Index() {
                         setShowBreathVoiceSet(false)
                     }}>
                         <View className={"breath-voice-set-box"}>
-                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(5)}>
+                            <View className={"breath-voice-item"} onClick={()=>handleBreathVoiceSet(1)}>
                                 <View className={"item-left"}>男声</View>
-                                {voiceTime === 5 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                                {breathVoiceItem.voice === 1 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
                             </View>
-                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(10)}>
+                            <View className={"breath-voice-item"} onClick={()=>handleBreathVoiceSet(2)}>
                                 <View className={"item-left"}>女声</View>
-                                {voiceTime === 10 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                                {breathVoiceItem.voice === 2 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
                             </View>
-                            <View className={"breath-voice-item"} onClick={()=>handleVoiceTimeSet(999)}>
+                            <View className={"breath-voice-item"} onClick={()=>handleBreathVoiceSet(3)}>
                                 <View className={"item-left"}>音效</View>
-                                {voiceTime === 999 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
+                                {breathVoiceItem.voice === 3 && (<View className={"item-right"}><img className={"right-img"} src={voiceTimeCheckIcon}/></View>)}
                             </View>
                         </View>
                     </Popup>
@@ -690,7 +728,7 @@ function Index() {
                                         </View>
                                         <View className={"action-item"}>
                                             <View className={"item-up"}>
-                                                <View className={"up-left"}>33</View>
+                                                <View className={"up-left"}>背景音乐</View>
                                                 <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
                                             </View>
                                             <View className={"item-down"}>背景音乐</View>
