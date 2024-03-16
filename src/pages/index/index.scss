@@ -323,6 +323,85 @@
     margin: 38rpx 0 0 0;
   }
 
+  .under-search-box{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .search-voice-scroll{
+      margin: 6rpx 0 0 0;
+      width:708rpx;//这一步有点高手
+      height: 99vh;
+      //background-color: yellow;
+
+      .search-bottom-single-page-voice{
+        width: 708rpx;
+        //height: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+
+    .empty-notice-search{
+      margin: 388rpx 0 0 0;
+      //width: ;
+      font-weight: 400;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .search-history-box{
+      width: 664rpx;
+      height: 100%;
+      margin: 20rpx 0 0 0;
+
+      display: flex;
+      flex-direction: column;
+
+
+      .history-top-box{
+        width: 664rpx;
+        height: 48rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .history-title{
+          width: 160rpx;
+          height: 48rpx;
+          font-weight: 500;
+          font-size: 34rpx;
+          color: #222222;
+          line-height: 48rpx;
+          text-align: left;
+          font-style: normal;
+          text-transform: none;
+        }
+
+        .history-clear{
+          width: 20rpx;
+          height: 20rpx;
+          .history-clear-img{
+            width: 20rpx;
+            height: 20rpx;
+          }
+        }
+      }
+
+      .history-list{
+        margin: 20rpx 0 0 0;
+        width: 664rpx;
+        height: 100%;
+      }
+    }
+  }
+
   .tabs-up-box{
     display: flex;
     flex-direction: column;
@@ -858,3 +937,8 @@
     }
   }
 }
+
+.nut-tag{
+  margin: 0 16rpx 16rpx 0;
+}
+

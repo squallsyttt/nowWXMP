@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {ScrollView, View} from '@tarojs/components'
-import {Button, Cell, ConfigProvider, Image, Popup, Range, SearchBar, Tabs} from "@nutui/nutui-react-taro"
+import {Button, Cell, ConfigProvider, Image, Popup, Range, SearchBar, Tabs, Picker, Tag} from "@nutui/nutui-react-taro"
 import './index.scss'
 import {request} from "../../utils/api";
 import drawIcon from '../../assets/draw.png';
@@ -16,6 +16,7 @@ import breathIcon478 from '../../assets/478.png';
 import helpIcon from '../../assets/help.png';
 import voiceTimeCheckIcon from '../../assets/voicetimecheck.png';
 import sleepSetIcon from '../../assets/set.png';
+import closeIcon from '../../assets/close.png';
 
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
@@ -24,6 +25,30 @@ import Taro from '@tarojs/taro';
 import BreathBackgroundVoiceItem from "../../components/breath";
 
 function Index() {
+    // 音频组件相关start
+    const innerAudioContextRef = useRef(Taro.createInnerAudioContext());
+    const sleepBackgroundAudioContextRef = useRef(Taro.createInnerAudioContext());
+
+    const handleInnerAudioPlay = (value) => {
+
+        console.log("handleInnerAudioPlay",value)
+    }
+    // 音频组件相关end
+
+    // 是否展示搜索页
+    const [searchMode,setSearchMode] = useState(0);
+
+    // 这边后续改成 从本地缓存读取
+    const [historyList,setHistoryList] = useState([]);
+
+    const handleClickHistory = (item) =>{
+        console.log("handleClickHistory",item)
+        setSearchFilterData({
+            'page':1,
+            'voice_name':item
+        })
+    }
+
     const host = "http://now.local.com/";
     const [tabValue,setTabValue] = useState(0);
     const [voiceTabValue,setVoiceTabValue] = useState(0);
@@ -34,6 +59,7 @@ function Index() {
     const [sleepList,setSleepList] = useState([]);
     const [activeTab,setActiveTab] = useState(0);
     const [countList,setCountList] = useState([]);
+    const [searchVoiceList,setSearchVoiceList] = useState([]);
 
     const [sleepBackgroundList,setSleepBackgroundList] = useState([]);
     const [breathBackgroundList,setBreathBackgroundList] = useState([]);
@@ -57,8 +83,8 @@ function Index() {
     //助眠的设置popUp
     const [showSleepSet,setShowSleepSet] = useState(false)
 
-    // 呼吸时间滑动选择的PopUp 不设置遮罩 切换到breath就打开 切走就关闭
-    const [showBreathTimeSet,setShowBreathTimeSet] = useState(true)
+    // 呼吸时间滑动选择的PopUp
+    const [showBreathTimeSet,setShowBreathTimeSet] = useState(false)
     // 呼吸那个44 478的设置
     const [showBreathTypeSet,setShowBreathTypeSet] = useState(false)
     // 女声 男声 音效的设置
@@ -102,6 +128,12 @@ function Index() {
       'voice_name':'',
     });
 
+    // 专门用于搜索的筛选条件
+    const [searchFilterData,setSearchFilterData] = useState({
+        'page':1,
+        'voice_name':'',
+    })
+
     const [sleepFilterData,setSleepFilterData] = useState({
         'page': 1,
     })
@@ -131,12 +163,24 @@ function Index() {
         console.log("scroll up sleep");
     }
 
+    const handleScrollUpSearchVoice = () => {
+        console.log("scroll up searchVoice")
+    }
+
     const handleScrollLowerVoice = () => {
         setFilterData((prevFilterData) =>({
             ...prevFilterData,
             'page':prevFilterData.page + 1,
         }));
     }
+
+    const handleScrollLowerSearchVoice = () => {
+        setSearchFilterData((prevSearchFilterData) => ({
+            ...prevSearchFilterData,
+            'page':prevSearchFilterData.page + 1,
+        }));
+    }
+
 
     const handleScrollLowerSleep = () => {
         setSleepFilterData((prevSleepFilterData) =>({
@@ -150,6 +194,7 @@ function Index() {
         setAppMode(1)
         setBackImg(host+item.background_img)
         setBackTitle(item.voice_name)
+        setBackAudio(host+item.voice)
     }
 
     const handleSleepItemClick = (item) => {
@@ -157,6 +202,7 @@ function Index() {
         setAppMode(2);
         setBackImg(host+item.sleep_background_img)
         setBackTitle(item.sleep_name)
+        setBackAudio(host+item.sleep_voice)
     }
 
     const handleSleepBackgroundItemClick = (item) => {
@@ -237,6 +283,10 @@ function Index() {
       return request("nowvoice/index",filterData);
     }
 
+    const fetchSearchVoiceData = ()=>{
+        return request("nowvoice/index",searchFilterData)
+    }
+
     const fetchVoiceType = () =>{
         return request("nowvoice/voiceTypeList",sleepFilterData);
     }
@@ -258,19 +308,30 @@ function Index() {
     }
 
     const handleVoiceSearch= (value) =>{
-        setFilterData((prevFilterData) => ({
-            ...prevFilterData,
-            'page': 1,
-            'voice_name': value,
-        }));
+        addHistoryData(value)
+        if(value.length < 1){
+            Taro.showToast({
+                title: '搜索不能为空',
+                icon: 'none',
+                duration: 2000
+            });
+        }
+        setSearchFilterData({
+            'page':1,
+            'voice_name':value,
+        });
     }
 
     const handleVoiceClear = ()=>{
-        setFilterData((prevFilterData) => ({
-            ...prevFilterData,
-            'voice_name': "",
+        setSearchFilterData({
+            'voice_name':"",
             'page':1,
-        }));
+        })
+    }
+
+    const handleShowSearchPage = ()=>{
+        console.log("showSearchPage!!")
+        setSearchMode(1);
     }
 
     const handleVoiceTimeSet = (value)=>{
@@ -315,6 +376,98 @@ function Index() {
         }
     }
 
+
+    // 呼吸时间选择start
+    const [visible, setVisible] = useState(false)
+    const [baseDesc, setBaseDesc] = useState('')
+    const listData1 = [
+        [
+            { value: 5, text: '5',},
+            { value: 10, text: '10',},
+            { value: 15, text: '15',},
+            { value: 40, text: '30',},
+            { value: 45, text: '45',},
+            { value: 60, text: '60',},
+        ],
+    ]
+    const changePicker = (list, option, columnIndex) => {
+        console.log(columnIndex, option)
+    }
+    const confirmPicker = (options, values) => {
+        let description = ''
+        options.forEach((option) => {
+            description += option.text
+        })
+        setBaseDesc(description)
+    }
+    // 呼吸时间选择end
+
+    const fetchHistoryData = () => {
+        Taro.getStorage({
+            key: 'history',
+            success: function (res) {
+                // 获取存储的数组
+                const historyList = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
+                setHistoryList(historyList);
+                console.log("fetchHistoryData init historyList",historyList)
+            },
+            fail: function(res){
+                console.log("fetchHis Fail",res)
+                initHistoryData()
+            }
+        });
+    }
+
+    const initHistoryData = () => {
+        Taro.setStorage({
+            key: 'history',
+            data: [],
+            success: function () {
+                console.log('addHistoryData success',historyArray)
+            }
+        });
+    }
+
+    const addHistoryData = (value) => {
+        Taro.getStorage({
+            key: 'history',
+            success: function (res) {
+                // 获取存储的数组
+                const historyArray = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
+
+
+                if(!historyArray.includes(value)){
+                    // 添加新数据到数组中
+                    historyArray.push(value); // 这里假设要添加的数据为 'newItem'，你可以替换为你想要添加的实际数据
+
+                    // 存储更新后的数组
+                    Taro.setStorage({
+                        key: 'history',
+                        data: historyArray,
+                        success: function () {
+                            setHistoryList(historyArray)
+                            console.log('addHistoryData success',historyArray)
+                        }
+                    });
+                }else{
+                    console.log("重复的历史记录不再添加")
+                }
+            }
+        });
+    }
+
+    const delHistoryData = () => {
+        console.log("重置本地的 historyData")
+        Taro.setStorage({
+            key: 'history',
+            data: [],
+            success: function () {
+                setHistoryList([])
+            }
+        });
+    }
+
+
     useEffect(() => {
         fetchIndexData().then((data) => {
             setVoiceList(data.list)
@@ -337,6 +490,15 @@ function Index() {
         fetchBreathBackgroundData().then((data) => {
             setBreathBackgroundList(data.list)
         })
+
+        fetchHistoryData()
+
+        // 在组件卸载时释放音频实例 这个后续看看在哪里释放合理
+        // TODO
+        return () => {
+            innerAudioContextRef.current.destroy();
+            sleepBackgroundAudioContextRef.current.destroy();
+        }
     }, []);
 
     useEffect(() => {
@@ -374,8 +536,32 @@ function Index() {
 
         })
 
-        console.log('filterData',filterData)
+        console.log('filterData用于正常翻页',filterData)
     }, [filterData]);
+
+    //搜索页专用的渲染
+    useEffect(() => {
+        fetchSearchVoiceData().then((data) =>{
+            if(data.list.length > 0){
+                if(searchFilterData.page > 1){
+                    setSearchVoiceList([...searchVoiceList,...data.list])
+                }else{
+                    setSearchVoiceList(data.list)
+                }
+            }else{
+                if(searchFilterData.page === 1){
+                    setSearchVoiceList(data.list)
+                    console.log("搜索结果为空")
+                }
+
+            }
+        })
+
+
+        console.log('searchFilterData用于搜索页',searchFilterData)
+    }, [searchFilterData]);
+
+
 
     useEffect(() => {
         fetchSleepData().then((data)=>{
@@ -420,6 +606,9 @@ function Index() {
                     nutuiTabsTitlesPadding:'0 0 0 0',
                     nutuiTabsTitlesItemColor:'#666666',
                     nutuiRangeActiveColor:'#65C565',
+                    nutuiPopupAnimationDuration:'1s',
+                    nutuiTagPadding:'5px 13px',
+                    nutuiTagFontSize:'15px',
                 }}
             >
                 <View className={"outer-box"}>
@@ -429,7 +618,7 @@ function Index() {
 
                             <View className={"header-top"}>Hi，此时此刻</View>
                             <View className={'header-mid'}>有时候，什么也不做是非常重要的</View>
-                            <view className={'header-bottom'}>- 此时此刻</view>
+                            <View className={'header-bottom'}>- 此时此刻</View>
                         </View>
                     )}
 
@@ -492,7 +681,8 @@ function Index() {
                         <img src={drawIcon} className={"call-draw-img"}/>
                     </View>
 
-                    <Popup title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
+                    <Popup duration={1000} title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
+                           overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowVoiceSet(false)
                     }}>
@@ -529,7 +719,8 @@ function Index() {
                     </Popup>
 
 
-                    <Popup title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
+                    <Popup duration={1000} title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
+                           overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepSet(false)
                     }}>
@@ -546,7 +737,9 @@ function Index() {
                                 />
                             </View>
                             <View className={"box-item"}>
-                                <View className={"item-left"}>背景声音</View>
+                                <View className={"item-left"}>
+                                    背景声音
+                                </View>
                             </View>
                             <View className={"box-item"}>
                                 <Range
@@ -566,7 +759,8 @@ function Index() {
                         </View>
                     </Popup>
 
-                    <Popup closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐</View>} visible={showSleepBackgroundVoice} style={{height: '85%', border: "0px solid black"}}
+                    <Popup duration={1000} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐</View>} visible={showSleepBackgroundVoice} style={{height: '85%', border: "0px solid black"}}
+                           overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepBackgroundVoice(false)
                     }}>
@@ -603,7 +797,8 @@ function Index() {
 
 
                     {/*呼吸背景音乐*/}
-                    <Popup zIndex={2001} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐2</View>} visible={showBreathBackgroundVoice} style={{height: '88%', border: "0px solid black"}}
+                    <Popup duration={1000} zIndex={2001} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐2</View>} visible={showBreathBackgroundVoice} style={{height: '88%', border: "0px solid black"}}
+                           overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowBreathBackgroundVoice(false)
                     }}>
@@ -639,7 +834,7 @@ function Index() {
                     </Popup>
 
                     {/*//呼吸模式PopUp*/}
-                    <Popup zIndex={2001} title={<View style={{color:'#666666'}}>呼吸模式</View>} visible={showBreathTypeSet} style={{height: '28%', border: "0px solid black"}}
+                    <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸模式</View>} visible={showBreathTypeSet} style={{height: '28%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
                         setShowBreathTypeSet(false)
                     }}>
@@ -665,7 +860,7 @@ function Index() {
                     </Popup>
 
                     {/*//呼吸引导PopUp*/}
-                    <Popup zIndex={2001} title={<View style={{color:'#666666'}}>呼吸引导</View>} visible={showBreathVoiceSet} style={{height: '20%', border: "0px solid black"}}
+                    <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸引导</View>} visible={showBreathVoiceSet} style={{height: '20%', border: "0px solid black"}}
                            position={"bottom"} round onClose={() => {
                         setShowBreathVoiceSet(false)
                     }}>
@@ -686,27 +881,40 @@ function Index() {
                     </Popup>
 
                     {/*//主页面Popup*/}
-                    <Popup overlay={false} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
-                           position={"bottom"} round onClose={() => {
-                        setShowBottomRound(false)
-                    }}>
+                    <Popup duration={1000} overlay={true} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
+                           overlayStyle={{'background':'unset'}}
+                           position={"bottom"} round onClose={() => {setShowBottomRound(false)}}>
                         <View className={"index-popup-inner-box"}>
                             <View className={"pull-icon"} onClick={() => {
                                 setShowBottomRound(false)
                             }}>
                                 <Image width={"40rpx"} height={"30rpx"} src={drawIcon}/>
                             </View>
+
                             <View className={"search-box"}>
-                                <SearchBar placeholder="搜索声音"
-                                           onSearch={(value) => handleVoiceSearch(value)}
-                                           onClear={() => handleVoiceClear()}
-                                />
+                                {searchMode ===1 ? (
+                                    <SearchBar placeholder="搜索声音"
+                                               onSearch={(value) => handleVoiceSearch(value)}
+                                               onClear={() => handleVoiceClear()}
+                                               onFocus={() => handleShowSearchPage()}
+                                               value={searchFilterData.voice_name}
+                                               right={<View onClick={()=>{setSearchMode(0)}}>取消</View>}
+                                    />
+                                ):(
+                                    <SearchBar placeholder="搜索声音"
+                                    onSearch={(value) => handleVoiceSearch(value)}
+                                    onClear={() => handleVoiceClear()}
+                                    onFocus={() => handleShowSearchPage()}
+                                    value={searchFilterData.voice_name}
+                                    />
+                                )}
+
 
                             </View>
-                            {/*<View className={"tabs-up-box"}>*/}
-                            {/*    222用于放count数*/}
-                            {/*</View>*/}
 
+
+                            {searchMode === 0 && (
+                                <View className={"under-search-box"}>
                             <View className={"tabs-box"}>
                                 <View className={`tabs-item ${activeTab === 0 ? 'active' : ''}`}
                                       onClick={() => handleTabClick(0)}>声音</View>
@@ -752,15 +960,15 @@ function Index() {
                                 >
                                     <View className={"bottom-single-page-voice"}>
                                         {voiceList.length >0 && voiceList.map((item) => {
-                                                return (
-                                                    <VoiceItem
-                                                        onClick={() => handleVoiceItemClick(item)}
-                                                        title={item.voice_name}
-                                                        img={item.background_img}
-                                                        like={item.voice_listen_num}
-                                                    />
-                                                )
-                                            })
+                                            return (
+                                                <VoiceItem
+                                                    onClick={() => handleVoiceItemClick(item)}
+                                                    title={item.voice_name}
+                                                    img={item.background_img}
+                                                    like={item.voice_listen_num}
+                                                />
+                                            )
+                                        })
                                         }
                                         {voiceList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
                                     </View>
@@ -798,7 +1006,21 @@ function Index() {
                             </View>)}
                             {activeTab === 2 && (<View className={"tabs-item-bottom"}>
                                 <View className={"bottom-single-page"}>
-                                    <View className={"select-breath-duration"}>滑动选择 duration</View>
+                                    <View className={"select-breath-duration"}>
+                                        <Picker
+                                            visible={showBreathTimeSet}
+                                            options={listData1}
+                                            onConfirm={(list, values) => confirmPicker(list, values)}
+                                            onClose={() => setShowBreathTimeSet(false)}
+                                            onChange={changePicker}
+                                            popupProps={{
+                                                position: 'center', // 设置 Popup 居中显示
+                                                round: true, // 设置 Popup 圆角
+                                                animation: 'slide-up' // 使用向上滑动动画
+                                            }}
+                                        />
+
+                                    </View>
                                     <View className={"mid-breath-action-box"}>
                                         <View className={"action-item"} onClick={() => setShowBreathTypeSet(true)}>
                                             <View className={"item-up"}>
@@ -829,11 +1051,69 @@ function Index() {
                                     </View>
                                 </View>
                             </View>)}
+                        </View>
+
+                            )}
+
+                            {searchMode === 1 && searchFilterData.voice_name === "" ?
+                                (<View className={"under-search-box"}>
+                                    <View className={"search-history-box"}>
+                                        <View className={"history-top-box"}>
+                                            <View className={"history-title"}>搜索历史</View>
+                                            <View className={"history-clear"}>
+                                                <img src={closeIcon} onClick={() => delHistoryData()} className={"history-clear-img"}/>
+                                            </View>
+                                        </View>
+                                        <View className={"history-list"}>
+                                            {
+                                                historyList.map((item) =>{
+                                                    return (
+                                                        <Tag background="#F5F5F5" color="#333333" onClick={() => handleClickHistory(item)}>{item}</Tag>
+                                                    )
+                                                } )
+                                            }
+                                        </View>
+                                    </View>
+                                </View>
+                            ):(
+                                searchMode ===1 &&(
+                                <View className={"under-search-box"}>
+                                    {searchVoiceList.length > 0 ?(
+                                        <ScrollView
+                                            className={"search-voice-scroll"}
+                                            scrollY
+                                            scrollWithAnimation
+                                            scrollTop={0}
+                                            // style={{ height: '100%' }}
+                                            lowerThreshold={20}
+                                            upperThreshold={20}
+                                            onScrollToUpper={handleScrollUpSearchVoice}
+                                            onScrollToLower={handleScrollLowerSearchVoice}
+                                        >
+                                            <View className={"search-bottom-single-page-voice"}>
+                                                {
+                                                    searchVoiceList.map((item) => {
+                                                        return (
+                                                            <VoiceItem
+                                                                onClick={() => handleVoiceItemClick(item)}
+                                                                title={item.voice_name}
+                                                                img={item.background_img}
+                                                                like={item.voice_listen_num}
+                                                            />
+                                                        )
+                                                    })
+                                                }
+                                            </View>
+                                        </ScrollView>
+                                    ):(
+                                        <View className={"empty-notice-search"}>抱歉，没有找到符合条件的结果</View>
+                                    )}
+                                </View>
+                                )
+                            )}
 
 
-                            {/*<View className={"tabs-item-box"}>*/}
 
-                            {/*</View>*/}
 
 
                         </View>
