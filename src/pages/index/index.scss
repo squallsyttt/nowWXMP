@@ -533,17 +533,103 @@
     .bottom-single-page{
       width: 708rpx;
       //height: auto;
-      border: 1rpx solid red;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .select-breath-duration{
-        width: 460rpx;
+        width: 664rpx;
         height: 460rpx;
         margin: 100rpx 0 0 0;
-        border: 1rpx solid black;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .breath-type-item-box{
+          width: 308rpx;
+          height: 400rpx;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          box-shadow: 0rpx 0rpx 12rpx 12rpx rgba(0,0,0,0.05);
+          border-radius: 34rpx;
+
+          .breath-type-top{
+            width: 96rpx;
+            height: 96rpx;
+          }
+          .breath-type-mid{
+            margin: 48rpx 0 0 0;
+            width: 172rpx;
+            height: 42rpx;
+
+            font-weight: 600;
+            font-size: 30rpx;
+            color: #222222;
+            line-height: 42rpx;
+            text-align: center;
+            font-style: normal;
+          }
+          .breath-type-bottom{
+            margin: 20rpx 0 0 0;
+            width: 240rpx;
+            height: 34rpx;
+
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #929292;
+            line-height: 34rpx;
+            text-align: center;
+            font-style: normal;
+            text-transform: none;
+          }
+        }
+        .breath-type-item-box-selected{
+          width: 308rpx;
+          height: 400rpx;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border: 2rpx solid #F1B4A6;
+
+          box-shadow: 0rpx 0rpx 12rpx 12rpx rgba(0,0,0,0.05);
+          border-radius: 34rpx;
+
+          .breath-type-top{
+            width: 96rpx;
+            height: 96rpx;
+          }
+          .breath-type-mid{
+            margin: 48rpx 0 0 0;
+            width: 172rpx;
+            height: 42rpx;
+
+            font-weight: 600;
+            font-size: 30rpx;
+            color: #222222;
+            line-height: 42rpx;
+            text-align: center;
+            font-style: normal;
+          }
+          .breath-type-bottom{
+            margin: 20rpx 0 0 0;
+            width: 240rpx;
+            height: 34rpx;
+
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #929292;
+            line-height: 34rpx;
+            text-align: center;
+            font-style: normal;
+            text-transform: none;
+          }
+        }
       }
 
       .mid-breath-action-box{
@@ -826,6 +912,49 @@
     }
   }
 }
+
+.breath-time-set-box{
+  width: 750rpx;
+  height: 758rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  //border: 1px solid black;
+
+  .breath-time-item{
+    width: 740rpx;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .item-left{
+      margin-left: 42rpx;
+      width: 196rpx;
+      height: 42rpx;
+
+      font-weight: 600;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .item-right{
+      margin-right: 42rpx;
+      width: 36rpx;
+      height: 36rpx;
+
+      .right-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+  }
+}
 .breath-voice-set-box{
   width: 750rpx;
   height: 258rpx;
@@ -833,6 +962,48 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  .breath-voice-item{
+    width: 740rpx;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .item-left{
+      margin-left: 42rpx;
+      width: 196rpx;
+      height: 42rpx;
+
+      font-weight: 600;
+      font-size: 30rpx;
+      color: #222222;
+      line-height: 42rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+
+    .item-right{
+      margin-right: 42rpx;
+      width: 36rpx;
+      height: 36rpx;
+
+      .right-img{
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+  }
+}
+.breath-time-set-box{
+  width: 750rpx;
+  height: 650rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  //border: 1px solid black;
 
   .breath-voice-item{
     width: 740rpx;

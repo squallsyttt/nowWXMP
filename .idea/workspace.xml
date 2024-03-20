@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe92e5f8-9d65-4185-b835-237793f33805" name="Changes" comment="">
+    <list default="true" id="fe92e5f8-9d65-4185-b835-237793f33805" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +111,8 @@
       <workItem from="1709709925268" duration="4008000" />
       <workItem from="1709714252126" duration="31774000" />
       <workItem from="1710573526278" duration="20553000" />
+      <workItem from="1710826009042" duration="7257000" />
+      <workItem from="1710914735724" duration="4548000" />
     </task>
     <servers />
   </component>
@@ -143,7 +146,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/index/index.jsx</url>
-          <line>777</line>
+          <line>762</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
