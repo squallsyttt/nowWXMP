@@ -26,7 +26,11 @@ import BreathBackgroundVoiceItem from "../../components/breath";
 
 function Index() {
     // 音频组件相关start
-    const innerAudioContextRef = useRef(Taro.createInnerAudioContext());
+    const [timer, setTimer] = useState(null);
+    const innerAudioContextVoiceRef = Taro.getBackgroundAudioManager();
+
+
+    // const innerAudioContextSleepRef = Taro.createInnerAudioContext();
     const sleepBackgroundAudioContextRef = useRef(Taro.createInnerAudioContext());
 
     const handleInnerAudioPlay = (value) => {
@@ -65,12 +69,15 @@ function Index() {
     const [breathBackgroundList,setBreathBackgroundList] = useState([]);
 
     const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
-    const [backAudio,setBackAudio] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
-    const [backTitle,setBackTitle] = useState("")
+
+    const [backVoice,setBackVoice] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
+    const [backSleep,setBackSleep] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
+
+    const [backTitle,setBackTitle] = useState("");
     const [friendList,setFriendList] = useState([]);
 
     //1声音模式 2睡眠模式 3呼吸模式
-    const [appMode,setAppMode] = useState(2);
+    const [appMode,setAppMode] = useState(1);
 
     //默认是一直循环的
     const [voiceTime,setVoiceTime] = useState(999)
@@ -194,7 +201,7 @@ function Index() {
         setAppMode(1)
         setBackImg(host+item.background_img)
         setBackTitle(item.voice_name)
-        setBackAudio(host+item.voice)
+        setBackVoice(host+item.voice)
     }
 
     const handleSleepItemClick = (item) => {
@@ -202,8 +209,10 @@ function Index() {
         setAppMode(2);
         setBackImg(host+item.sleep_background_img)
         setBackTitle(item.sleep_name)
-        setBackAudio(host+item.sleep_voice)
+        setBackSleep(host+item.sleep_voice)
     }
+
+
 
     const handleSleepBackgroundItemClick = (item) => {
         console.log("sleepBackgroundItem",item)
@@ -495,10 +504,10 @@ function Index() {
 
         // 在组件卸载时释放音频实例 这个后续看看在哪里释放合理
         // TODO
-        return () => {
-            innerAudioContextRef.current.destroy();
-            sleepBackgroundAudioContextRef.current.destroy();
-        }
+        // return () => {
+        //     innerAudioContextRef.current.destroy();
+        //     sleepBackgroundAudioContextRef.current.destroy();
+        // }
     }, []);
 
     useEffect(() => {
@@ -591,6 +600,91 @@ function Index() {
         })
     },[sleepBackgroundFilterData])
 
+    //监听声音
+    useEffect(() => {
+        //不自动播放
+        innerAudioContextVoiceRef.autoplay = false;
+        innerAudioContextVoiceRef.loop = true;
+
+
+
+        console.log(backVoice)
+
+        if(backVoice.length > 0 && backVoice !== innerAudioContextVoiceRef.src) {
+            innerAudioContextVoiceRef.src = backVoice;
+        }
+
+        // 清除旧的定时器
+        clearTimeout(timer);
+
+        console.log('voiceRef',innerAudioContextVoiceRef)
+        innerAudioContextVoiceRef.play()
+
+
+        if(innerAudioContextVoiceRef.src){
+            const newTimer = setTimeout(() => {
+                innerAudioContextVoiceRef.pause();
+            }, voiceTime * 60 * 1000); // 分钟后执行暂停操作
+
+            setTimer(newTimer)
+            console.log("voiceTime",timer)
+
+            // 返回清理函数，用于在组件卸载或 voiceTime 改变时清除定时器
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+
+    }, [backVoice,voiceTime]);
+
+    //声音定时
+    // useEffect(() => {
+    //     // 清除旧的定时器
+    //     clearTimeout(timer);
+    //
+    //     if(innerAudioContextVoiceRef.src){
+    //         const newTimer = setTimeout(() => {
+    //             innerAudioContextVoiceRef.pause();
+    //         }, voiceTime * 60 * 1000); // 分钟后执行暂停操作
+    //
+    //         setTimer(newTimer)
+    //         console.log("voiceTime",timer)
+    //
+    //         // 返回清理函数，用于在组件卸载或 voiceTime 改变时清除定时器
+    //         return () => {
+    //             clearTimeout(timer);
+    //         };
+    //     }
+    // }, [voiceTime]);
+
+    // useEffect(() => {
+    //     innerAudioContextSleepRef.autoplay = false
+    //     innerAudioContextSleepRef.loop = true
+    //     if(backSleep.length > 0){
+    //         innerAudioContextSleepRef.src = backSleep;
+    //     }
+    //
+    // }, [backSleep]);
+
+    //睡眠背景音乐选择的触发
+    useEffect(() => {
+        //背景音乐 自动播放
+        sleepBackgroundAudioContextRef.autoplay = true;
+        //背景默认无限循环
+        sleepBackgroundAudioContextRef.loop = true;
+        sleepBackgroundAudioContextRef.src=sleepBreathBackgroundItem.breath_background_voice
+    }, [sleepBreathBackgroundItem]);
+
+    //呼吸背景音选择的触发
+    useEffect(() => {
+        //背景音乐 自动播放
+        sleepBackgroundAudioContextRef.autoplay = true;
+        //背景默认无限循环
+        sleepBackgroundAudioContextRef.loop = true;
+        sleepBackgroundAudioContextRef.src=breathBackgroundItem.breath_background_voice
+    }, [breathBackgroundItem]);
+
+
     return (
         <>
             <ConfigProvider
@@ -682,6 +776,7 @@ function Index() {
                     </View>
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
+                           lockScroll={false}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowVoiceSet(false)
@@ -720,6 +815,7 @@ function Index() {
 
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
+                           lockScroll={false}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepSet(false)
@@ -760,6 +856,7 @@ function Index() {
                     </Popup>
 
                     <Popup duration={1000} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐</View>} visible={showSleepBackgroundVoice} style={{height: '85%', border: "0px solid black"}}
+                           lockScroll={false}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepBackgroundVoice(false)
@@ -798,6 +895,7 @@ function Index() {
 
                     {/*呼吸背景音乐*/}
                     <Popup duration={1000} zIndex={2001} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐2</View>} visible={showBreathBackgroundVoice} style={{height: '88%', border: "0px solid black"}}
+                           lockScroll={false}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowBreathBackgroundVoice(false)
@@ -835,6 +933,7 @@ function Index() {
 
                     {/*//呼吸模式PopUp*/}
                     <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸模式</View>} visible={showBreathTypeSet} style={{height: '28%', border: "0px solid black"}}
+                           lockScroll={false}
                            position={"bottom"} round onClose={() => {
                         setShowBreathTypeSet(false)
                     }}>
@@ -861,6 +960,7 @@ function Index() {
 
                     {/*//呼吸引导PopUp*/}
                     <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸引导</View>} visible={showBreathVoiceSet} style={{height: '20%', border: "0px solid black"}}
+                           lockScroll={false}
                            position={"bottom"} round onClose={() => {
                         setShowBreathVoiceSet(false)
                     }}>
@@ -882,6 +982,7 @@ function Index() {
 
                     {/*//主页面Popup*/}
                     <Popup duration={1000} overlay={true} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
+                           lockScroll={false}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {setShowBottomRound(false)}}>
                         <View className={"index-popup-inner-box"}>
