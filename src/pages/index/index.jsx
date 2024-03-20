@@ -21,7 +21,7 @@ import closeIcon from '../../assets/close.png';
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
 import voice from "../../components/voice";
-import Taro from '@tarojs/taro';
+import Taro, {useSaveExitState} from '@tarojs/taro';
 import BreathBackgroundVoiceItem from "../../components/breath";
 
 function Index() {
@@ -42,8 +42,12 @@ function Index() {
     // 是否展示搜索页
     const [searchMode,setSearchMode] = useState(0);
 
-    // 这边后续改成 从本地缓存读取
+    // 从本地缓存读取start
     const [historyList,setHistoryList] = useState([]);
+    const [voiceStarList,setVoiceStarList] = useState([]);
+    const [sleepStarlist,setSleepStarList] = useState([]);
+    // 从本地缓存读取end
+
 
     const handleClickHistory = (item) =>{
         console.log("handleClickHistory",item)
@@ -75,6 +79,17 @@ function Index() {
 
     const [backTitle,setBackTitle] = useState("");
     const [friendList,setFriendList] = useState([]);
+
+    const [currentVoiceItem,setCurrentVoiceItem] = useState({
+        'type':'voice',
+        'id':0,
+    })
+
+    const [currentSleepItem,setCurrentSleepItem] = useState({
+        'type':'sleep',
+        'id':0,
+    })
+
 
     //1声音模式 2睡眠模式 3呼吸模式
     const [appMode,setAppMode] = useState(1);
@@ -203,6 +218,10 @@ function Index() {
         setBackImg(host+item.background_img)
         setBackTitle(item.voice_name)
         setBackVoice(host+item.voice)
+        setCurrentVoiceItem({
+            ...currentVoiceItem,
+            'id':item.id,
+        })
     }
 
     const handleSleepItemClick = (item) => {
@@ -211,6 +230,10 @@ function Index() {
         setBackImg(host+item.sleep_background_img)
         setBackTitle(item.sleep_name)
         setBackSleep(host+item.sleep_voice)
+        setCurrentSleepItem({
+            ...currentSleepItem,
+            'id':item.id,
+        })
     }
 
 
@@ -417,7 +440,7 @@ function Index() {
             key: 'history',
             data: [],
             success: function () {
-                console.log('addHistoryData success',historyArray)
+                console.log('initHistoryData success')
             }
         });
     }
@@ -462,6 +485,115 @@ function Index() {
     }
 
 
+    const initMyStarData = (keyName) => {
+        Taro.setStorage({
+            key: keyName,
+            data: [],
+            success: function () {
+                console.log('init StarData success',keyName)
+            }
+        });
+    }
+
+    const fetchStarData = (keyName) => {
+        Taro.getStorage({
+            key: keyName,
+            success: function (res) {
+                // 获取存储的数组
+                const List = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
+
+                if(keyName === "voice"){
+                    setVoiceStarList(List)
+                    console.log("fetchVoiceStarData",List)
+                }
+
+                if(keyName === "sleep"){
+                    setSleepStarList(List)
+                    console.log("fetchSleepStarData",List)
+                }
+            },
+            fail: function(res){
+                console.log("fetchStarData Fail",res)
+                //获取失败就对应做初始化
+                initMyStarData(keyName)
+            }
+        });
+    }
+
+    const addStarData = (keyName,value) => {
+        Taro.getStorage({
+            key: keyName,
+            success: function (res) {
+                // 获取存储的数组
+                const listArray = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
+
+
+                if(!listArray.includes(value)){
+                    // 添加新数据到数组中
+                    listArray.push(value); // 这里假设要添加的数据为 'newItem'，你可以替换为你想要添加的实际数据
+
+                    // 存储更新后的数组
+                    Taro.setStorage({
+                        key: keyName,
+                        data: listArray,
+                        success: function () {
+                            if(keyName === "voice"){
+                                setVoiceStarList(listArray)
+                                console.log('addVoiceStarData success',listArray)
+                            }
+
+                            if(keyName === "sleep"){
+                                setSleepStarList(listArray)
+                                console.log('addSleepStarData success',listArray)
+                            }
+                        }
+                    });
+                }else{
+                    console.log("重复的历史记录不再添加")
+                }
+            }
+        });
+    }
+
+    const delStarData = (keyName,value) => {
+        Taro.getStorage({
+            key: keyName,
+            success: function (res) {
+                // 获取存储的数组
+                const listArray = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
+
+
+                if(listArray.includes(value)){
+                    // 如果数组包含值，则从数组中删除
+                    const index = listArray.indexOf(value);
+                    if (index > -1) {
+                        listArray.splice(index, 1);
+
+                        // 存储更新后的数组
+                        Taro.setStorage({
+                            key: keyName,
+                            data: listArray,
+                            success: function () {
+                                if (keyName === "voice") {
+                                    setVoiceStarList(listArray);
+                                    console.log('removeVoiceStarData success', listArray);
+                                }
+
+                                if (keyName === "sleep") {
+                                    setSleepStarList(listArray);
+                                    console.log('removeSleepStarData success', listArray);
+                                }
+                            }
+                        });
+                    }
+                }else{
+                    console.log("不存在的star数据不作删除")
+                }
+            }
+        });
+    }
+
+
     useEffect(() => {
         fetchIndexData().then((data) => {
             setVoiceList(data.list)
@@ -486,6 +618,8 @@ function Index() {
         })
 
         fetchHistoryData()
+        fetchStarData("voice")
+        fetchStarData("sleep")
 
         // 在组件卸载时释放音频实例 这个后续看看在哪里释放合理
         // TODO
@@ -723,7 +857,7 @@ function Index() {
                     {/*声音模式展示这种交互*/}
                     {appMode ===1 && (
                         <View class={"voice-action-box"}>
-                            <View className={"box-side-left"}>
+                            <View className={"box-side-left"} onClick={() => (console.log("appMode1 star"))}>
                                 <img className={"voice-side-img"} src={unstarIcon}/>
                             </View>
                             <View className={"box-center"}>
@@ -739,7 +873,7 @@ function Index() {
 
                     {appMode ===2 && (
                         <View class={"sleep-action-box"}>
-                            <View className={"box-side-left"}>
+                            <View className={"box-side-left"} onClick={() => (console.log("appMode2 star"))}>
                                 <img className={"sleep-side-img"} src={unstarIcon}/>
                             </View>
                             <View className={"box-center"}>
