@@ -45,7 +45,7 @@ function Index() {
     // 从本地缓存读取start
     const [historyList,setHistoryList] = useState([]);
     const [voiceStarList,setVoiceStarList] = useState([]);
-    const [sleepStarlist,setSleepStarList] = useState([]);
+    const [sleepStarList,setSleepStarList] = useState([]);
     // 从本地缓存读取end
 
 
@@ -146,9 +146,10 @@ function Index() {
     })
 
     const [filterData,setFilterData] =useState({
-      'type_id': 1,
-      'page': 1,
-      'voice_name':'',
+        'like':[],
+        'type_id':1,
+        'page':1,
+        'voice_name':'',
     });
 
     // 专门用于搜索的筛选条件
@@ -159,6 +160,7 @@ function Index() {
 
     const [sleepFilterData,setSleepFilterData] = useState({
         'page': 1,
+        'like':[],
     })
 
     // 助眠筛选背景音乐
@@ -313,6 +315,7 @@ function Index() {
     }
 
     const fetchIndexData = ()=>{
+        console.log(9999999999);
       return request("nowvoice/index",filterData);
     }
 
@@ -505,11 +508,19 @@ function Index() {
                 if(keyName === "voice"){
                     setVoiceStarList(List)
                     console.log("fetchVoiceStarData",List)
+                    setFilterData({
+                        ...filterData,
+                        'like':List,
+                    })
                 }
 
                 if(keyName === "sleep"){
                     setSleepStarList(List)
                     console.log("fetchSleepStarData",List)
+                    setSleepFilterData({
+                        ...sleepFilterData,
+                        'like':List,
+                    })
                 }
             },
             fail: function(res){
@@ -541,11 +552,19 @@ function Index() {
                             if(keyName === "voice"){
                                 setVoiceStarList(listArray)
                                 console.log('addVoiceStarData success',listArray)
+                                setFilterData({
+                                    ...filterData,
+                                    'like':listArray,
+                                })
                             }
 
                             if(keyName === "sleep"){
                                 setSleepStarList(listArray)
                                 console.log('addSleepStarData success',listArray)
+                                setSleepFilterData({
+                                    ...sleepFilterData,
+                                    'like': listArray,
+                                })
                             }
                         }
                     });
@@ -637,14 +656,18 @@ function Index() {
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
         // console.log("sleepBackgroundList",sleepBackgroundList)
+        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         console.log("voiceStarList",voiceStarList)
-        console.log("sleepStarList",sleepStarlist)
-    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarlist]);
+        console.log("sleepStarList",sleepStarList)
+        console.log("voiceList",voiceList)
+        console.log("sleepList",sleepList)
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
         fetchIndexData().then((data)=>{
-            // console.log("voiceData on filterData Changed",data)
+            console.log("voiceData on filterData Changed",data)
             // console.log('...voiceList',...voiceList)
             // console.log('...data.list',...data.list)
             // console.log('data.list.length',data.list.length)
@@ -884,8 +907,8 @@ function Index() {
 
                     {appMode ===2 && (
                         <View class={"sleep-action-box"}>
-                            {sleepStarlist.includes(currentSleepItem.id)?(
-                                <View className={"box-side-left"} onClick={() => (addStarData("sleep",currentSleepItem.id))}>
+                            {sleepStarList.includes(currentSleepItem.id)?(
+                                <View className={"box-side-left"} onClick={() => (delStarData("sleep",currentSleepItem.id))}>
                                     <img className={"sleep-side-img"} src={starIcon}/>
                                 </View>
                             ):(
@@ -1211,6 +1234,7 @@ function Index() {
                                                     title={item.voice_name}
                                                     img={item.background_img}
                                                     like={item.voice_listen_num}
+                                                    star={voiceStarList.includes(item.id) ? 1: 0}
                                                 />
                                             )
                                         })
@@ -1241,6 +1265,7 @@ function Index() {
                                                         title={item.sleep_name}
                                                         img={item.sleep_background_img}
                                                         like={item.sleep_listen_num}
+                                                        star={sleepStarList.includes(item.id) ? 1: 0}
                                                     />
                                                 )
                                             })

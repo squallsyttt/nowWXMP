@@ -1,17 +1,19 @@
 import {View} from "@tarojs/components";
 import "./index.scss";
+import starItemIcon from '../../assets/starItem.png';
+
 
 function SleepItem(props) {
-    const {title="",like="",img="",type="voice",onClick} = props;
+    const {title="",like="",img="",type="voice",star = 0,onClick} = props;
 
     const img_host = "http://now.local.com/";
 
     return (
         <View className={"sleep-item-box"} onClick={onClick}>
             <View className={"sleep-item-top"}>
-                {/*<View className={"top-like"}>*/}
-
-                {/*</View>*/}
+                {star === 1 && (
+                    <img src={starItemIcon} className={"top-like"}/>
+                )}
                 <img className="item-img" mode="aspectFill" src={img_host+img} alt="item-img"/>
             </View>
             <View className={"sleep-item-bottom"}>

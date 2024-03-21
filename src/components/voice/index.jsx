@@ -2,18 +2,19 @@ import {View} from "@tarojs/components";
 import "./index.scss";
 import {Image} from "@nutui/nutui-react-taro";
 import listenIcon from '../../assets/listen.png';
+import starItemIcon from '../../assets/starItem.png';
 
 function VoiceItem(props) {
-    const {title="",like="",img="",type="voice",onClick} = props;
+    const {title="",like="",img="",type="voice",star = 0,onClick} = props;
 
     const img_host = "http://now.local.com/";
 
     return (
         <View className={"voice-item-box"} onClick={onClick}>
             <View className={"voice-item-top"}>
-                {/*<View className={"top-like"}>*/}
-
-                {/*</View>*/}
+                {star === 1 && (
+                    <img src={starItemIcon} className={"top-like"}/>
+                )}
                 <img className="item-img" mode="aspectFill" src={img_host+img} alt="item-img"/>
             </View>
             <View className={"voice-item-bottom"}>
