@@ -29,6 +29,8 @@ function Index() {
     const [timer, setTimer] = useState(null);
     const innerAudioContextVoiceRef = Taro.getBackgroundAudioManager();
 
+    //全局唯一
+    const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
     // const innerAudioContextSleepRef = Taro.createInnerAudioContext();
     const sleepBackgroundAudioContextRef = useRef(Taro.createInnerAudioContext());
@@ -72,10 +74,10 @@ function Index() {
     const [sleepBackgroundList,setSleepBackgroundList] = useState([]);
     const [breathBackgroundList,setBreathBackgroundList] = useState([]);
 
-    const [backImg,setBackImg] = useState("http://now.local.com/uploads/20240309/cdaab7bd3b54da36b944c218e761d0c4.jpg")
+    const [backImg,setBackImg] = useState("")
 
-    const [backVoice,setBackVoice] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
-    const [backSleep,setBackSleep] = useState("http://now.local.com/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3")
+    const [backVoice,setBackVoice] = useState("")
+    const [backSleep,setBackSleep] = useState("")
 
     const [backTitle,setBackTitle] = useState("");
     const [friendList,setFriendList] = useState([]);
@@ -398,28 +400,6 @@ function Index() {
 
 
     // 呼吸时间选择start
-    const [visible, setVisible] = useState(false)
-    const [baseDesc, setBaseDesc] = useState('')
-    const listData1 = [
-        [
-            { value: 5, text: '5',},
-            { value: 10, text: '10',},
-            { value: 15, text: '15',},
-            { value: 40, text: '30',},
-            { value: 45, text: '45',},
-            { value: 60, text: '60',},
-        ],
-    ]
-    const changePicker = (list, option, columnIndex) => {
-        console.log(columnIndex, option)
-    }
-    const confirmPicker = (options, values) => {
-        let description = ''
-        options.forEach((option) => {
-            description += option.text
-        })
-        setBaseDesc(description)
-    }
     // 呼吸时间选择end
 
     const fetchHistoryData = () => {
@@ -511,7 +491,7 @@ function Index() {
                     setFilterData({
                         ...filterData,
                         'like':List,
-                    })
+                    });
                 }
 
                 if(keyName === "sleep"){
@@ -668,9 +648,19 @@ function Index() {
     useEffect(() => {
         fetchIndexData().then((data)=>{
             console.log("voiceData on filterData Changed",data)
+
+            // console.log("filterData on changed",filterData)
             // console.log('...voiceList',...voiceList)
             // console.log('...data.list',...data.list)
             // console.log('data.list.length',data.list.length)
+
+            //特殊情况 用来初始化
+            if(data.count > 10){
+                setBackImg(host+data.list[0].background_img)
+                setBackVoice(host+data.list[0].voice)
+                setBackTitle(data.list[0].voice_name)
+            }
+
             if(data.list.length > 0){
                 if(filterData.page > 1){
                     setVoiceList([...voiceList,...data.list])
@@ -783,34 +773,6 @@ function Index() {
 
     }, [backVoice,voiceTime]);
 
-    //声音定时
-    // useEffect(() => {
-    //     // 清除旧的定时器
-    //     clearTimeout(timer);
-    //
-    //     if(innerAudioContextVoiceRef.src){
-    //         const newTimer = setTimeout(() => {
-    //             innerAudioContextVoiceRef.pause();
-    //         }, voiceTime * 60 * 1000); // 分钟后执行暂停操作
-    //
-    //         setTimer(newTimer)
-    //         console.log("voiceTime",timer)
-    //
-    //         // 返回清理函数，用于在组件卸载或 voiceTime 改变时清除定时器
-    //         return () => {
-    //             clearTimeout(timer);
-    //         };
-    //     }
-    // }, [voiceTime]);
-
-    // useEffect(() => {
-    //     innerAudioContextSleepRef.autoplay = false
-    //     innerAudioContextSleepRef.loop = true
-    //     if(backSleep.length > 0){
-    //         innerAudioContextSleepRef.src = backSleep;
-    //     }
-    //
-    // }, [backSleep]);
 
     //睡眠背景音乐选择的触发
     useEffect(() => {
@@ -829,6 +791,16 @@ function Index() {
         sleepBackgroundAudioContextRef.loop = true;
         sleepBackgroundAudioContextRef.src=breathBackgroundItem.breath_background_voice
     }, [breathBackgroundItem]);
+
+
+    useEffect(() => {
+        backgroundAudioManager.title = backTitle;
+        backgroundAudioManager.src = "https://www.csck.tech/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3";
+    },[backVoice,voiceTime])
+
+    useEffect(() => {
+        // TODO
+    }, [backSleep]);
 
 
     return (
