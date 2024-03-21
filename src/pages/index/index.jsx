@@ -520,6 +520,7 @@ function Index() {
         });
     }
 
+    //添加本地star数据  setVoice/SleepStarList
     const addStarData = (keyName,value) => {
         Taro.getStorage({
             key: keyName,
@@ -555,6 +556,7 @@ function Index() {
         });
     }
 
+    //删除本地star数据 setVoice/SleepStarList
     const delStarData = (keyName,value) => {
         Taro.getStorage({
             key: keyName,
@@ -634,8 +636,10 @@ function Index() {
         // console.log('voiceList',{voiceList})
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
-        console.log("sleepBackgroundList",sleepBackgroundList)
-    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList]);
+        // console.log("sleepBackgroundList",sleepBackgroundList)
+        console.log("voiceStarList",voiceStarList)
+        console.log("sleepStarList",sleepStarlist)
+    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarlist]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
@@ -857,9 +861,16 @@ function Index() {
                     {/*声音模式展示这种交互*/}
                     {appMode ===1 && (
                         <View class={"voice-action-box"}>
-                            <View className={"box-side-left"} onClick={() => (console.log("appMode1 star"))}>
-                                <img className={"voice-side-img"} src={unstarIcon}/>
-                            </View>
+                            {voiceStarList.includes(currentVoiceItem.id) ?(
+                                <View className={"box-side-left"} onClick={() => (delStarData("voice",currentVoiceItem.id))}>
+                                    <img className={"voice-side-img"} src={starIcon}/>
+                                </View>
+                            ):(
+                                <View className={"box-side-left"} onClick={() => (addStarData("voice",currentVoiceItem.id))}>
+                                    <img className={"voice-side-img"} src={unstarIcon}/>
+                                </View>
+                            )}
+
                             <View className={"box-center"}>
                                 <img className={"voice-center-img"} src={startIcon}/>
                             </View>
@@ -873,9 +884,16 @@ function Index() {
 
                     {appMode ===2 && (
                         <View class={"sleep-action-box"}>
-                            <View className={"box-side-left"} onClick={() => (console.log("appMode2 star"))}>
-                                <img className={"sleep-side-img"} src={unstarIcon}/>
-                            </View>
+                            {sleepStarlist.includes(currentSleepItem.id)?(
+                                <View className={"box-side-left"} onClick={() => (addStarData("sleep",currentSleepItem.id))}>
+                                    <img className={"sleep-side-img"} src={starIcon}/>
+                                </View>
+                            ):(
+                                <View className={"box-side-left"} onClick={() => (addStarData("sleep",currentSleepItem.id))}>
+                                    <img className={"sleep-side-img"} src={unstarIcon}/>
+                                </View>
+                            )}
+
                             <View className={"box-center"}>
                                 <img className={"sleep-center-img"} src={startIcon}/>
                             </View>
