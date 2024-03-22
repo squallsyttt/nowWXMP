@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="fe92e5f8-9d65-4185-b835-237793f33805" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/breath/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/breath/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sleep/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sleep/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/voice/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/voice/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +89,7 @@
       <recent name="$PROJECT_DIR$/src/assets" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev:weapp">
+  <component name="RunManager" selected="npm.build:weapp">
     <configuration name="build:weapp" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -109,8 +112,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev:weapp" />
         <item itemvalue="npm.build:weapp" />
+        <item itemvalue="npm.dev:weapp" />
       </list>
     </recent_temporary>
   </component>
@@ -127,7 +130,8 @@
       <workItem from="1710573526278" duration="20553000" />
       <workItem from="1710826009042" duration="7257000" />
       <workItem from="1710914735724" duration="11373000" />
-      <workItem from="1710926494862" duration="21023000" />
+      <workItem from="1710926494862" duration="36422000" />
+      <workItem from="1711109839907" duration="4047000" />
     </task>
     <servers />
   </component>
@@ -161,7 +165,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/index/index.jsx</url>
-          <line>909</line>
+          <line>957</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

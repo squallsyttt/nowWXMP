@@ -5,7 +5,7 @@ import listenIcon from "../../assets/playcycle.png"
 function BreathBackgroundVoiceItem(props) {
     const {title="",img="",listen=0,onClick} = props;
 
-    const img_host = "http://now.local.com/";
+    const img_host = "https://www.csck.tech/";
 
     return (
         <View className={"breath-background-item-box"} onClick={onClick}>

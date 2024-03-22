@@ -7,7 +7,7 @@ import starItemIcon from '../../assets/starItem.png';
 function VoiceItem(props) {
     const {title="",like="",img="",type="voice",star = 0,onClick} = props;
 
-    const img_host = "http://now.local.com/";
+    const img_host = "https://www.csck.tech/";
 
     return (
         <View className={"voice-item-box"} onClick={onClick}>

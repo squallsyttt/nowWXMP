@@ -6,7 +6,7 @@ import starItemIcon from '../../assets/starItem.png';
 function SleepItem(props) {
     const {title="",like="",img="",type="voice",star = 0,onClick} = props;
 
-    const img_host = "http://now.local.com/";
+    const img_host = "https://www.csck.tech/";
 
     return (
         <View className={"sleep-item-box"} onClick={onClick}>

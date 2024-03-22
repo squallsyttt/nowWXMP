@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 
 export const request = async (url,data={},method="POST") => {
-    const full_url = "http://now.local.com/api/" +url
+    const full_url = "https://www.csck.tech/api/" +url
     try {
         const res = await Taro.request({
             url: full_url,

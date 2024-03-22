@@ -27,18 +27,39 @@ import BreathBackgroundVoiceItem from "../../components/breath";
 function Index() {
     // 音频组件相关start
     const [timer, setTimer] = useState(null);
-    const innerAudioContextVoiceRef = Taro.getBackgroundAudioManager();
 
+    const demoOlSrc = "https://www.csck.tech/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3";
     //全局唯一
-    const backgroundAudioManager = Taro.getBackgroundAudioManager()
+    const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
-    // const innerAudioContextSleepRef = Taro.createInnerAudioContext();
-    const sleepBackgroundAudioContextRef = useRef(Taro.createInnerAudioContext());
+    backgroundAudioManager.onStop(() => {
+        console.log("onStop 触发");
+    });
+    backgroundAudioManager.onEnded(() => {
+        console.log("onEnded 触发")
+        console.log("onEnded backAudioManager",backgroundAudioManager)
+        console.log("onEnded backAudioManager/src",backgroundAudioManager.src)
+        console.log("onEnded backAudioManager/title",backgroundAudioManager.title)
+        console.log("backTitle",backTitle);
+        //一定要赋予标题 否则会失效
+        backgroundAudioManager.title=backTitle;
+        console.log("onEnded backAudioManager/title",backgroundAudioManager.title)
+        backgroundAudioManager.pause();
+        backgroundAudioManager.play();
+    });
 
-    const handleInnerAudioPlay = (value) => {
+    const [voiceBackPlay,setVoiceBackPlay] = useState({
+       'status':0,
+    });
 
-        console.log("handleInnerAudioPlay",value)
-    }
+    const [sleepBackPlay,setSleepBackPlay] = useState({
+        'status':0,
+    })
+
+    const [breathBackPlay,setBreathBackPlay] = useState({
+        'status':0,
+    })
+
     // 音频组件相关end
 
     // 是否展示搜索页
@@ -59,7 +80,7 @@ function Index() {
         })
     }
 
-    const host = "http://now.local.com/";
+    const host = "https://www.csck.tech/";
     const [tabValue,setTabValue] = useState(0);
     const [voiceTabValue,setVoiceTabValue] = useState(0);
     const [indexPage,setIndexPage] = useState(1);
@@ -82,11 +103,13 @@ function Index() {
     const [backTitle,setBackTitle] = useState("");
     const [friendList,setFriendList] = useState([]);
 
+    // 用于star标记
     const [currentVoiceItem,setCurrentVoiceItem] = useState({
         'type':'voice',
         'id':0,
     })
 
+    // 用于star标记
     const [currentSleepItem,setCurrentSleepItem] = useState({
         'type':'sleep',
         'id':0,
@@ -226,6 +249,8 @@ function Index() {
             ...currentVoiceItem,
             'id':item.id,
         })
+
+
     }
 
     const handleSleepItemClick = (item) => {
@@ -317,7 +342,6 @@ function Index() {
     }
 
     const fetchIndexData = ()=>{
-        console.log(9999999999);
       return request("nowvoice/index",filterData);
     }
 
@@ -374,6 +398,9 @@ function Index() {
 
     const handleVoiceTimeSet = (value)=>{
         setVoiceTime(value)
+        // 暂时测试 只设置1分钟定时
+        // console.log("只设置30s定时")
+        // setVoiceTime(0.5)
     }
 
     const handleBreathVoiceSet = (value)=>{
@@ -409,7 +436,7 @@ function Index() {
                 // 获取存储的数组
                 const historyList = res.data || []; // 如果获取到的数据为空，则初始化一个空数组
                 setHistoryList(historyList);
-                console.log("fetchHistoryData init historyList",historyList)
+                // console.log("fetchHistoryData init historyList",historyList)
             },
             fail: function(res){
                 console.log("fetchHis Fail",res)
@@ -487,7 +514,7 @@ function Index() {
 
                 if(keyName === "voice"){
                     setVoiceStarList(List)
-                    console.log("fetchVoiceStarData",List)
+                    // console.log("fetchVoiceStarData",List)
                     setFilterData({
                         ...filterData,
                         'like':List,
@@ -496,7 +523,7 @@ function Index() {
 
                 if(keyName === "sleep"){
                     setSleepStarList(List)
-                    console.log("fetchSleepStarData",List)
+                    // console.log("fetchSleepStarData",List)
                     setSleepFilterData({
                         ...sleepFilterData,
                         'like':List,
@@ -636,12 +663,12 @@ function Index() {
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
         // console.log("sleepBackgroundList",sleepBackgroundList)
-        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        console.log("voiceStarList",voiceStarList)
-        console.log("sleepStarList",sleepStarList)
-        console.log("voiceList",voiceList)
-        console.log("sleepList",sleepList)
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        // console.log("voiceStarList",voiceStarList)
+        // console.log("sleepStarList",sleepStarList)
+        // console.log("voiceList",voiceList)
+        // console.log("sleepList",sleepList)
+        // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
@@ -657,7 +684,7 @@ function Index() {
             //特殊情况 用来初始化
             if(data.count > 10){
                 setBackImg(host+data.list[0].background_img)
-                setBackVoice(host+data.list[0].voice)
+                //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
                 setBackTitle(data.list[0].voice_name)
             }
 
@@ -736,69 +763,80 @@ function Index() {
         })
     },[sleepBackgroundFilterData])
 
-    //监听声音
+    //声音在设置的定时内 循环 定时达到暂停
     useEffect(() => {
-        //不自动播放
-        innerAudioContextVoiceRef.autoplay = false;
-        innerAudioContextVoiceRef.loop = true;
+        console.log("backgroundAudioManager",backgroundAudioManager)
+        console.log("backgroundAudioManager/src",backgroundAudioManager.src)
 
-
-
-        console.log(backVoice)
-
-        if(backVoice.length > 0 && backVoice !== innerAudioContextVoiceRef.src) {
-            innerAudioContextVoiceRef.src = backVoice;
-        }
-
-        // 清除旧的定时器
-        clearTimeout(timer);
-
-        console.log('voiceRef',innerAudioContextVoiceRef)
-        innerAudioContextVoiceRef.play()
-
-
-        if(innerAudioContextVoiceRef.src){
-            const newTimer = setTimeout(() => {
-                innerAudioContextVoiceRef.pause();
-            }, voiceTime * 60 * 1000); // 分钟后执行暂停操作
-
-            setTimer(newTimer)
-            console.log("voiceTime",timer)
-
-            // 返回清理函数，用于在组件卸载或 voiceTime 改变时清除定时器
-            return () => {
-                clearTimeout(timer);
-            };
-        }
-
-    }, [backVoice,voiceTime]);
-
-
-    //睡眠背景音乐选择的触发
-    useEffect(() => {
-        //背景音乐 自动播放
-        sleepBackgroundAudioContextRef.autoplay = true;
-        //背景默认无限循环
-        sleepBackgroundAudioContextRef.loop = true;
-        sleepBackgroundAudioContextRef.src=sleepBreathBackgroundItem.breath_background_voice
-    }, [sleepBreathBackgroundItem]);
-
-    //呼吸背景音选择的触发
-    useEffect(() => {
-        //背景音乐 自动播放
-        sleepBackgroundAudioContextRef.autoplay = true;
-        //背景默认无限循环
-        sleepBackgroundAudioContextRef.loop = true;
-        sleepBackgroundAudioContextRef.src=breathBackgroundItem.breath_background_voice
-    }, [breathBackgroundItem]);
-
-
-    useEffect(() => {
+        //音乐名必填
         backgroundAudioManager.title = backTitle;
-        backgroundAudioManager.src = "https://www.csck.tech/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3";
-    },[backVoice,voiceTime])
+        //专辑名
+        backgroundAudioManager.epname ="此时此刻";
+
+
+        //backVoice 只有初始化 和 点击的时候变化
+        if(backVoice !== "" && backVoice !== undefined){
+            //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
+            console.log("只有在点击声音的时候 会触发这条！")
+            //点击就会清除定时
+
+            //把按钮改成播放状态
+            setVoiceBackPlay({
+                ...voiceBackPlay,
+                'status':1,
+            })
+
+            console.log("timer1",timer)
+            clearTimeout(timer)
+            console.log("timer2",timer)
+            backgroundAudioManager.src = backVoice;
+
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
+
+
+    },[backVoice,backTitle]);
 
     useEffect(() => {
+        console.log("创建定时器 useEffect 启动")
+        const newTimer = setTimeout(() => {
+            console.log("定时器触发成功",voiceTime)
+            backgroundAudioManager.pause();
+        },voiceTime * 1000 * 60)
+
+        setTimer(newTimer)
+    }, [voiceTime]);
+
+    useEffect(() => {
+        //点击播放
+        if(voiceBackPlay.status === 1){
+            console.log("触发播放行为")
+            // 点击播放就渲染当前的src 一般来说 首次渲染就会直接播放
+            // backgroundAudioManager.src = demoOlSrc;
+            // 再强制播放
+
+            if(backgroundAudioManager.src === undefined){
+                console.log("触发 什么都没有的时候的声音",voiceList[0].voice)
+                backgroundAudioManager.src = host+voiceList[0].voice
+            }
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
+
+        //点击暂停
+        if(voiceBackPlay.status === 0){
+            console.log("触发停止行为")
+            //如果 src存在的话
+            if(backgroundAudioManager.src !== undefined){
+                backgroundAudioManager.pause()
+            }
+        }
+    }, [voiceBackPlay]);
+
+    //助眠默认是无限循环
+    useEffect(() => {
+        console.log("useEffect backSleep")
         // TODO
     }, [backSleep]);
 
@@ -867,7 +905,17 @@ function Index() {
                             )}
 
                             <View className={"box-center"}>
-                                <img className={"voice-center-img"} src={startIcon}/>
+                                {voiceBackPlay.status === 0?(
+                                    <img className={"voice-center-img"} src={startIcon} onClick={() => setVoiceBackPlay({
+                                        ...voiceBackPlay,
+                                        'status':1,
+                                    })}/>
+                                ): (
+                                    <img className={"voice-center-img"} src={stopIcon} onClick={() => setVoiceBackPlay({
+                                        ...voiceBackPlay,
+                                        'status':0,
+                                    })}/>
+                                )}
                             </View>
                             <View className={"box-side-right"}  onClick={() => {
                                 setShowVoiceSet(true)
