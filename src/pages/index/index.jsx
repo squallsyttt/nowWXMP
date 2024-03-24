@@ -28,7 +28,6 @@ function Index() {
     // 音频组件相关start
     const [timer, setTimer] = useState(null);
 
-    const demoOlSrc = "https://www.csck.tech/uploads/20240309/c1461b2fd88d44a29922b9410eaf9747.mp3";
     //全局唯一
     const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
@@ -48,14 +47,17 @@ function Index() {
         backgroundAudioManager.play();
     });
 
+    //播放暂停按钮控制
     const [voiceBackPlay,setVoiceBackPlay] = useState({
        'status':0,
     });
 
+    //播放暂停按钮控制
     const [sleepBackPlay,setSleepBackPlay] = useState({
         'status':0,
     })
 
+    //呼吸开始结束按钮控制
     const [breathBackPlay,setBreathBackPlay] = useState({
         'status':0,
     })
@@ -90,6 +92,7 @@ function Index() {
     const [sleepList,setSleepList] = useState([]);
     const [activeTab,setActiveTab] = useState(0);
     const [countList,setCountList] = useState([]);
+    const [breathList,setBreathList] = useState([]);
     const [searchVoiceList,setSearchVoiceList] = useState([]);
 
     const [sleepBackgroundList,setSleepBackgroundList] = useState([]);
@@ -168,6 +171,9 @@ function Index() {
     const [breathVoiceItem,setBreathVoiceItem] = useState({
         'voice_name':'女声',
         'voice':2,
+    })
+
+    const [currentBreathItem,setCurrentBreathItem] = useState({
     })
 
     const [filterData,setFilterData] =useState({
@@ -305,6 +311,47 @@ function Index() {
         }
     }
 
+    const handleBreathStart = () => {
+        //breathTypeItem breathTime breathVoiceItem
+
+
+        console.log("breathTypeItem",breathTypeItem)
+        console.log("breathTime",breathTime)
+        console.log("breathVoiceItem",breathVoiceItem)
+        console.log("breathList",breathList)
+        if(breathVoiceItem.voice === 1){
+            setCurrentBreathItem({
+                ...currentBreathItem,
+                'current_voice': breathList[breathTypeItem.type].male_voice,
+                'current_breath_type':breathTypeItem.type,
+                'current_voice_type':breathVoiceItem.voice,
+                'current_time':breathTime,
+            })
+        }
+        if(breathVoiceItem.voice === 2){
+            setCurrentBreathItem({
+                ...currentBreathItem,
+                'current_voice': breathList[breathTypeItem.type].female_voice,
+                'current_breath_type':breathTypeItem.type,
+                'current_voice_type':breathVoiceItem.voice,
+                'current_time':breathTime,
+            })
+        }
+        if(breathVoiceItem.voice === 3){
+            setCurrentBreathItem({
+                ...currentBreathItem,
+                'current_voice': breathList[breathTypeItem.type].other_voice,
+                'current_breath_type':breathTypeItem.type,
+                'current_voice_type':breathVoiceItem.voice,
+                'current_time':breathTime,
+            })
+        }
+
+
+
+
+    }
+
     const handleSleepVoiceVolume = (value) => {
         console.log("sleepVoiceVolume",value)
         // TODO
@@ -367,6 +414,10 @@ function Index() {
 
     const fetchBreathBackgroundData = () =>{
         return request("nowBreath/getBackgroundList",breathBackgroundFilterData)
+    }
+
+    const fetchBreathList = () => {
+        return request("nowBreath/indexnew");
     }
 
     const handleVoiceSearch= (value) =>{
@@ -644,6 +695,9 @@ function Index() {
         fetchBreathBackgroundData().then((data) => {
             setBreathBackgroundList(data.list)
         })
+        fetchBreathList().then((data) => {
+            setBreathList(data.list)
+        })
 
         fetchHistoryData()
         fetchStarData("voice")
@@ -668,8 +722,9 @@ function Index() {
         // console.log("sleepStarList",sleepStarList)
         // console.log("voiceList",voiceList)
         // console.log("sleepList",sleepList)
+        console.log("currentBreathItem",currentBreathItem)
         // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList]);
+    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList,currentBreathItem]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
@@ -813,7 +868,6 @@ function Index() {
         if(voiceBackPlay.status === 1){
             console.log("触发播放行为")
             // 点击播放就渲染当前的src 一般来说 首次渲染就会直接播放
-            // backgroundAudioManager.src = demoOlSrc;
             // 再强制播放
 
             if(backgroundAudioManager.src === undefined){
@@ -1305,7 +1359,7 @@ function Index() {
                                             <View className={"breath-type-mid"}>4-7-8呼吸</View>
                                             <View className={"breath-type-bottom"}>神经系统的天然镇静剂</View>
                                         </View>
-                                        <View className={"breath-type-item-box"+(breathTypeItem.type === 44 ? "-selected":"")} onClick={() => setBreathTypeItem({
+                                        <View className={"breath-type-item-box"+(breathTypeItem.type === 44 ? "-selected-44":"")} onClick={() => setBreathTypeItem({
                                             'type_name':'4x4箱式呼吸',
                                             'type':44,
                                         })}>
@@ -1329,16 +1383,16 @@ function Index() {
                                             </View>
                                             <View className={"item-down"}>呼吸引导</View>
                                         </View>
-                                        <View className={"action-item"} onClick={() =>setShowBreathBackgroundVoice(true)}>
-                                            <View className={"item-up"}>
-                                                <View className={"up-left"}>{breathBackgroundItem.breath_background_name}</View>
-                                                <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>
-                                            </View>
-                                            <View className={"item-down"}>背景音乐</View>
-                                        </View>
+                                        {/*<View className={"action-item"} onClick={() =>setShowBreathBackgroundVoice(true)}>*/}
+                                        {/*    <View className={"item-up"}>*/}
+                                        {/*        <View className={"up-left"}>{breathBackgroundItem.breath_background_name}</View>*/}
+                                        {/*        <View className={"up-right"}><img className={"breath-right"} src={rightIcon}/></View>*/}
+                                        {/*    </View>*/}
+                                        {/*    <View className={"item-down"}>背景音乐</View>*/}
+                                        {/*</View>*/}
                                     </View>
                                     <View className={"breath-bottom-box"}>
-                                        <Button type="primary" fill="outline" color="#65C565" size="large">
+                                        <Button type="primary" fill="outline" color="#65C565" size="large" onClick={() => handleBreathStart()}>
                                             开始
                                         </Button>
                                     </View>
