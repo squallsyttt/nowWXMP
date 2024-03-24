@@ -52,8 +52,12 @@ function Index() {
         //一定要赋予标题 否则会失效
         backgroundAudioManager.title=backTitle;
         console.log("onEnded backAudioManager/title",backgroundAudioManager.title)
+        //用于循环的pause+play
         backgroundAudioManager.pause();
         backgroundAudioManager.play();
+
+        //每次循环调用文字渲染 效果好 呼吸的蒙层和声音 助眠也不冲突
+        handleDynamicTextChange(currentBreathItem.current_breath_type)
     });
 
     //播放暂停按钮控制
@@ -325,7 +329,7 @@ function Index() {
 
     const handleBreathStart = () => {
         //breathTypeItem breathTime breathVoiceItem
-
+        console.log("点击 呼吸开始按钮 开始渲染")
 
         console.log("breathTypeItem",breathTypeItem)
         console.log("breathTime",breathTime)
@@ -358,7 +362,15 @@ function Index() {
                 'current_time':breathTime,
             })
         }
+
+        //让呼吸蒙层可见
         setShowBreathDynamicSet(true);
+
+        //打开呼吸播放按钮 前端不存在
+        setBreathBackPlay({
+            ...breathBackPlay,
+            'status':1,
+        })
 
         handleDynamicTextChange(breathTypeItem.type);
     }
@@ -727,8 +739,16 @@ function Index() {
 
     //呼吸动态交互 点 结束
     const handleBreathClose = () => {
+        //让蒙层不可见
         setShowBreathDynamicSet(false);
 
+        //让呼吸声音停止
+        setBreathBackPlay({
+            ...breathBackPlay,
+            'status':0,
+        })
+
+        //清理定时器
         clearTimeout(timer478["4784"])
         clearTimeout(timer478["4787"])
         clearTimeout(timer44["444"])
@@ -898,19 +918,18 @@ function Index() {
             if(backVoice !== "" && backVoice !== undefined){
                 //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
                 console.log("只有在点击声音的时候 会触发这条！")
-                //点击就会清除定时
 
                 //把按钮改成播放状态
                 setVoiceBackPlay({
                     ...voiceBackPlay,
                     'status':1,
                 })
-
+                //点击就会清除定时
                 console.log("timer1",timer)
                 clearTimeout(timer)
                 console.log("timer2",timer)
                 backgroundAudioManager.src = backVoice;
-
+                //backVoice + backTitle 变化监听的pause + play
                 backgroundAudioManager.pause();
                 backgroundAudioManager.play();
             }
@@ -922,9 +941,58 @@ function Index() {
     },[backVoice,backTitle]);
 
     useEffect(() => {
+        if(backTitle === "呼吸"){
+            console.log("呼吸模式 不触发backTitle的 useEffect监控")
+        }else{
+            console.log("backgroundAudioManager",backgroundAudioManager)
+            console.log("backgroundAudioManager/src",backgroundAudioManager.src)
+
+            //音乐名必填
+            backgroundAudioManager.title = backTitle;
+            //专辑名
+            backgroundAudioManager.epname ="此时此刻";
+
+
+            //backVoice 只有初始化 和 点击的时候变化
+            if(backSleep !== "" && backSleep !== undefined){
+                //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
+                console.log("只有在点击助眠的时候 会触发这条！")
+
+                setSleepBackPlay({
+                    ...sleepBackPlay,
+                    'status':1,
+                })
+
+                backgroundAudioManager.src = backSleep;
+                //backSleep + backTitle 变化监听的pause + play
+                backgroundAudioManager.pause();
+                backgroundAudioManager.play();
+            }
+        }
+
+
+
+
+    },[backSleep,backTitle]);
+
+    useEffect(() => {
+        //音乐名必填
+        backgroundAudioManager.title = "呼吸";
+        //专辑名
+        backgroundAudioManager.epname ="此时此刻";
+        backgroundAudioManager.src = host + currentBreathItem.current_voice;
+        backgroundAudioManager.pause();
+        backgroundAudioManager.play();
+    }, [currentBreathItem]);
+
+    useEffect(() => {
         console.log("创建定时器 useEffect 启动")
         const newTimer = setTimeout(() => {
             console.log("定时器触发成功",voiceTime)
+            setVoiceBackPlay({
+                ...voiceBackPlay,
+                'status':0,
+            })
             backgroundAudioManager.pause();
         },voiceTime * 1000 * 60)
 
@@ -955,6 +1023,39 @@ function Index() {
             }
         }
     }, [voiceBackPlay]);
+
+    useEffect(() => {
+        if(sleepBackPlay.status === 1){
+            console.log("触发助眠音乐播放行为")
+
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
+
+        if(sleepBackPlay.status === 0){
+            console.log("触发助眠音乐停止行为")
+            //如果 src存在的话
+            if(backgroundAudioManager.src !== undefined){
+                backgroundAudioManager.pause()
+            }
+        }
+    },[sleepBackPlay])
+
+    useEffect(() => {
+        if(breathBackPlay.status === 1){
+            console.log("触发背景音乐播放行为")
+
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
+
+        if(breathBackPlay.status === 0){
+            console.log("触发背景音乐结束行为")
+            if(backgroundAudioManager.src !== undefined){
+                backgroundAudioManager.pause()
+            }
+        }
+    }, [breathBackPlay]);
 
     //助眠默认是无限循环
     useEffect(() => {
