@@ -1161,7 +1161,17 @@ function Index() {
                             )}
 
                             <View className={"box-center"}>
-                                <img className={"sleep-center-img"} src={startIcon}/>
+                                {sleepBackPlay.status === 0?(
+                                    <img className={"sleep-center-img"} src={startIcon} onClick={() => setSleepBackPlay({
+                                        ...sleepBackPlay,
+                                        'status':1,
+                                    })}/>
+                                ): (
+                                    <img className={"sleep-center-img"} src={stopIcon} onClick={() => setSleepBackPlay({
+                                        ...sleepBackPlay,
+                                        'status':0,
+                                    })}/>
+                                )}
                             </View>
                             <View className={"box-side-right"}  onClick={() => {
                                 setShowSleepSet(true)
