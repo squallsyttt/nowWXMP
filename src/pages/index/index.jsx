@@ -28,6 +28,15 @@ function Index() {
     // 音频组件相关start
     const [timer, setTimer] = useState(null);
 
+    const [timer44,setTimer44] = useState({
+        '444':null,
+    });
+
+    const [timer478,setTimer478] = useState({
+        '4784':null,
+        '4787':null,
+    });
+
     //全局唯一
     const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
@@ -128,6 +137,8 @@ function Index() {
     //呼吸的循环时间 默认十分钟
     const [breathTime,setBreathTime] =useState(10)
 
+    const [breathDynamicText,setBreathDynamicText] = useState("吸气")
+
     //弹框默认是开启的
     const [showBottomRound,setShowBottomRound] = useState(true)
 
@@ -140,7 +151,8 @@ function Index() {
     const [showBreathTimeSet,setShowBreathTimeSet] = useState(false)
     // 女声 男声 音效的设置
     const [showBreathVoiceSet,setShowBreathVoiceSet] = useState(false)
-
+    // 呼吸开始后的动效页面
+    const [showBreathDynamicSet,setShowBreathDynamicSet] = useState(false)
     //助眠背景音乐选择
     const [showSleepBackgroundVoice,setShowSleepBackgroundVoice] = useState(false)
 
@@ -346,10 +358,51 @@ function Index() {
                 'current_time':breathTime,
             })
         }
+        setShowBreathDynamicSet(true);
+
+        handleDynamicTextChange(breathTypeItem.type);
+    }
+
+    const handleDynamicTextChange = (type) => {
 
 
+        if(type == 478){
+            //每次调用 强制清除一下定时器 但基本也结束了
+            clearTimeout(timer478["4784"])
+            clearTimeout(timer478['4787'])
 
+            console.log("handleDynamic478")
+            setBreathDynamicText("吸气")
 
+            const newTimer4784 = setTimeout(() => {
+                setBreathDynamicText("屏气")
+            },4000)
+
+            const newTimer4787 = setTimeout(() => {
+                setBreathDynamicText("呼气")
+            },7000+4000)
+
+            setTimer478({
+                '4784':newTimer4784,
+                '4787':newTimer4787,
+            })
+        }
+
+        if(type == 44){
+            //每次调用 强制清除一下定时器 但基本也结束了
+            clearTimeout(timer44["444"])
+
+            console.log("handleDynamic44")
+            setBreathDynamicText("吸气")
+
+            const newTimer444 = setTimeout(() => {
+                setBreathDynamicText("呼气")
+            },4000)
+
+            setTimer44({
+                '444':newTimer444,
+            })
+        }
     }
 
     const handleSleepVoiceVolume = (value) => {
@@ -672,6 +725,15 @@ function Index() {
         });
     }
 
+    //呼吸动态交互 点 结束
+    const handleBreathClose = () => {
+        setShowBreathDynamicSet(false);
+
+        clearTimeout(timer478["4784"])
+        clearTimeout(timer478["4787"])
+        clearTimeout(timer44["444"])
+    }
+
 
     useEffect(() => {
         fetchIndexData().then((data) => {
@@ -820,35 +882,41 @@ function Index() {
 
     //声音在设置的定时内 循环 定时达到暂停
     useEffect(() => {
-        console.log("backgroundAudioManager",backgroundAudioManager)
-        console.log("backgroundAudioManager/src",backgroundAudioManager.src)
+        if(backTitle === "呼吸"){
+           console.log("呼吸模式 不触发backTitle的 useEffect监控")
+        }else{
+            console.log("backgroundAudioManager",backgroundAudioManager)
+            console.log("backgroundAudioManager/src",backgroundAudioManager.src)
 
-        //音乐名必填
-        backgroundAudioManager.title = backTitle;
-        //专辑名
-        backgroundAudioManager.epname ="此时此刻";
+            //音乐名必填
+            backgroundAudioManager.title = backTitle;
+            //专辑名
+            backgroundAudioManager.epname ="此时此刻";
 
 
-        //backVoice 只有初始化 和 点击的时候变化
-        if(backVoice !== "" && backVoice !== undefined){
-            //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
-            console.log("只有在点击声音的时候 会触发这条！")
-            //点击就会清除定时
+            //backVoice 只有初始化 和 点击的时候变化
+            if(backVoice !== "" && backVoice !== undefined){
+                //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
+                console.log("只有在点击声音的时候 会触发这条！")
+                //点击就会清除定时
 
-            //把按钮改成播放状态
-            setVoiceBackPlay({
-                ...voiceBackPlay,
-                'status':1,
-            })
+                //把按钮改成播放状态
+                setVoiceBackPlay({
+                    ...voiceBackPlay,
+                    'status':1,
+                })
 
-            console.log("timer1",timer)
-            clearTimeout(timer)
-            console.log("timer2",timer)
-            backgroundAudioManager.src = backVoice;
+                console.log("timer1",timer)
+                clearTimeout(timer)
+                console.log("timer2",timer)
+                backgroundAudioManager.src = backVoice;
 
-            backgroundAudioManager.pause();
-            backgroundAudioManager.play();
+                backgroundAudioManager.pause();
+                backgroundAudioManager.play();
+            }
         }
+
+
 
 
     },[backVoice,backTitle]);
@@ -1220,6 +1288,32 @@ function Index() {
                             </View>
                         </View>
                     </Popup>
+
+                    {/*//呼吸动效PopUp*/}
+                    <Popup duration={1000} zIndex={2001}  visible={showBreathDynamicSet} style={{width:"100%",height:"100%",border: "1px solid black"}}
+                           lockScroll={false}
+                           onClose={() => {
+                        setShowBreathDynamicSet(false)
+                    }}>
+                        <View className={"breath-dynamic-box"} style={{backgroundImage: `url(${backImg})`}}>
+                            <View className={"breath-mask"}>
+                                <View className={"box-dynamic"}>
+
+                                    <View className={"box-dynamic-text"}>{breathDynamicText}</View>
+                                </View>
+
+                                <View className={"info-dynamic"}>
+                                    配合数息法、肌肉放松法，助眠效果更好哦
+                                </View>
+
+                                <Button type="primary"  fill="outline" style={{background:"unset",margin:'308rpx 0 0 0'}}  color="#FFFFFF" size="large" onClick={() => handleBreathClose()}>
+                                    结束
+                                </Button>
+                            </View>
+
+                        </View>
+                    </Popup>
+
 
                     {/*//主页面Popup*/}
                     <Popup duration={1000} overlay={true} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
