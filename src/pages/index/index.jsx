@@ -37,12 +37,18 @@ function Index() {
         '4787':null,
     });
 
+    const [breathTimer,setBreathTimer] = useState(null);
+
     //全局唯一
     const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
     backgroundAudioManager.onStop(() => {
         console.log("onStop 触发");
     });
+
+    const [isAnimating478,setIsAnimating478] = useState(true)
+    const [isAnimating44,setIsAnimating44] = useState(true)
+
     backgroundAudioManager.onEnded(() => {
         console.log("onEnded 触发")
         console.log("onEnded backAudioManager",backgroundAudioManager)
@@ -56,8 +62,23 @@ function Index() {
         backgroundAudioManager.pause();
         backgroundAudioManager.play();
 
+
+        if(currentBreathItem.current_breath_type === 478){
+            //先暂停 再开启
+            setIsAnimating478(false);
+            setIsAnimating478(true);
+        }
+
+        if(currentBreathItem.current_breath_type === 44){
+            //先暂停 再开启
+            setIsAnimating44(false);
+            setIsAnimating44(true);
+        }
+
+
         //每次循环调用文字渲染 效果好 呼吸的蒙层和声音 助眠也不冲突
         handleDynamicTextChange(currentBreathItem.current_breath_type)
+
     });
 
     //播放暂停按钮控制
@@ -271,6 +292,7 @@ function Index() {
             ...currentVoiceItem,
             'id':item.id,
         })
+        addListen(item.id)
 
 
     }
@@ -362,6 +384,17 @@ function Index() {
                 'current_time':breathTime,
             })
         }
+
+        const newBreathTimer = setTimeout(() => {
+            console.log("呼吸定时器触发成功",breathTime)
+            setBreathBackPlay({
+                ...breathBackPlay,
+                'status':0,
+            })
+            backgroundAudioManager.pause();
+        },breathTime * 1000 * 60)
+        //专门的呼吸用的定时器
+        setBreathTimer(newBreathTimer)
 
         //让呼吸蒙层可见
         setShowBreathDynamicSet(true);
@@ -483,6 +516,10 @@ function Index() {
 
     const fetchBreathList = () => {
         return request("nowBreath/indexnew");
+    }
+
+    const addListen = (id) => {
+        return request("nowvoice/addListen",{'id':id});
     }
 
     const handleVoiceSearch= (value) =>{
@@ -752,6 +789,7 @@ function Index() {
         clearTimeout(timer478["4784"])
         clearTimeout(timer478["4787"])
         clearTimeout(timer44["444"])
+        clearTimeout(breathTimer)
     }
 
 
@@ -908,11 +946,8 @@ function Index() {
             console.log("backgroundAudioManager",backgroundAudioManager)
             console.log("backgroundAudioManager/src",backgroundAudioManager.src)
 
-            //音乐名必填
-            backgroundAudioManager.title = backTitle;
             //专辑名
             backgroundAudioManager.epname ="此时此刻";
-
 
             //backVoice 只有初始化 和 点击的时候变化
             if(backVoice !== "" && backVoice !== undefined){
@@ -925,11 +960,10 @@ function Index() {
                     'status':1,
                 })
                 //点击就会清除定时
-                console.log("timer1",timer)
                 clearTimeout(timer)
-                console.log("timer2",timer)
                 backgroundAudioManager.src = backVoice;
-                //backVoice + backTitle 变化监听的pause + play
+                backgroundAudioManager.webUrl = "https://www.baidu.com";
+                //backVoice 变化监听的pause + play
                 backgroundAudioManager.pause();
                 backgroundAudioManager.play();
             }
@@ -938,7 +972,12 @@ function Index() {
 
 
 
-    },[backVoice,backTitle]);
+    },[backVoice]);
+
+    useEffect(() => {
+        //音乐名必填
+        backgroundAudioManager.title = backTitle;
+    }, [backTitle]);
 
     useEffect(() => {
         if(backTitle === "呼吸"){
@@ -947,8 +986,6 @@ function Index() {
             console.log("backgroundAudioManager",backgroundAudioManager)
             console.log("backgroundAudioManager/src",backgroundAudioManager.src)
 
-            //音乐名必填
-            backgroundAudioManager.title = backTitle;
             //专辑名
             backgroundAudioManager.epname ="此时此刻";
 
@@ -964,7 +1001,8 @@ function Index() {
                 })
 
                 backgroundAudioManager.src = backSleep;
-                //backSleep + backTitle 变化监听的pause + play
+                backgroundAudioManager.webUrl = "https://www.baidu.com";
+                //backSleep 变化监听的pause + play
                 backgroundAudioManager.pause();
                 backgroundAudioManager.play();
             }
@@ -973,7 +1011,7 @@ function Index() {
 
 
 
-    },[backSleep,backTitle]);
+    },[backSleep]);
 
     useEffect(() => {
         //音乐名必填
@@ -981,6 +1019,7 @@ function Index() {
         //专辑名
         backgroundAudioManager.epname ="此时此刻";
         backgroundAudioManager.src = host + currentBreathItem.current_voice;
+        backgroundAudioManager.webUrl = "https://www.baidu.com";
         backgroundAudioManager.pause();
         backgroundAudioManager.play();
     }, [currentBreathItem]);
@@ -1009,6 +1048,7 @@ function Index() {
             if(backgroundAudioManager.src === undefined){
                 console.log("触发 什么都没有的时候的声音",voiceList[0].voice)
                 backgroundAudioManager.src = host+voiceList[0].voice
+                backgroundAudioManager.webUrl = "https://www.baidu.com";
             }
             backgroundAudioManager.pause();
             backgroundAudioManager.play();
@@ -1060,7 +1100,6 @@ function Index() {
     //助眠默认是无限循环
     useEffect(() => {
         console.log("useEffect backSleep")
-        // TODO
     }, [backSleep]);
 
 
@@ -1409,8 +1448,18 @@ function Index() {
                         <View className={"breath-dynamic-box"} style={{backgroundImage: `url(${backImg})`}}>
                             <View className={"breath-mask"}>
                                 <View className={"box-dynamic"}>
-
                                     <View className={"box-dynamic-text"}>{breathDynamicText}</View>
+
+                                    {/*不是748 就是 444*/}
+                                    {currentBreathItem.current_breath_type === 478 ? (
+                                        <View className={"dynamic-circle" + (isAnimating478?" animate478 active":" animate478 paused")}>
+                                        </View>
+                                    ):(
+                                        <View className={"dynamic-circle" +(isAnimating44?" animate44 active":" animate44 paused")}>
+                                            {/*<View className={"box-dynamic-text"}>{breathDynamicText}</View>*/}
+                                        </View>
+                                    )}
+
                                 </View>
 
                                 <View className={"info-dynamic"}>
