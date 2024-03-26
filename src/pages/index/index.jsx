@@ -82,6 +82,22 @@ function Index() {
 
     });
 
+    backgroundAudioManager.onPlay(() => {
+        console.log("每次播放的事件监听")
+    });
+
+    backgroundAudioManager.onPause(() => {
+        console.log("每次播放结束的事件监听")
+        setVoiceBackPlay({
+            ...voiceBackPlay,
+            'status':0,
+        })
+        setSleepBackPlay({
+            ...sleepBackPlay,
+            'status':0,
+        });
+    });
+
     //播放暂停按钮控制
     const [voiceBackPlay,setVoiceBackPlay] = useState({
        'status':0,
