@@ -1124,14 +1124,14 @@ function Index() {
             >
                 <View className={"outer-box"}>
                     <img src={backImg} className={"background-image"}/>
-                    {showBottomRound && (
-                        <View className={"header-box"}>
+                    {/*{showBottomRound && (*/}
+                    {/*    <View className={"header-box"}>*/}
 
-                            <View className={"header-top"}>Hi，此时此刻</View>
-                            <View className={'header-mid'}>有时候，什么也不做是非常重要的</View>
-                            <View className={'header-bottom'}>- 此时此刻</View>
-                        </View>
-                    )}
+                    {/*        <View className={"header-top"}>Hi，此时此刻</View>*/}
+                    {/*        <View className={'header-mid'}>有时候，什么也不做是非常重要的</View>*/}
+                    {/*        <View className={'header-bottom'}>- 此时此刻</View>*/}
+                    {/*    </View>*/}
+                    {/*)}*/}
 
                     {friendList.length > 0 && (
                         <View className={"content-box"}>
@@ -1220,11 +1220,12 @@ function Index() {
                     )}
 
 
-                    <View class={"outer-footer-call"} onClick={() => {
+                    <View className={"outer-footer-call"} onClick={() => {
                         setShowBottomRound(true)
                     }}>
                         <img src={drawIcon} className={"call-draw-img"}/>
                     </View>
+                    <View className={"outer-footer-block"}></View>
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
                            lockScroll={true}

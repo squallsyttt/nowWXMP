@@ -267,7 +267,7 @@
 
   .outer-footer-call{
     //margin: auto 0 102rpx 0;
-    margin-bottom: 102rpx;
+    margin-bottom: 2rpx;
     width: 92rpx;
     height: 50rpx;
     //border: 1px solid black;
@@ -285,6 +285,14 @@
       height: 22rpx;
       z-index: 1;
     }
+  }
+  .outer-footer-block{
+    width: 750rpx;
+    height: 100rpx;
+    //border: 1rpx solid black;
+    margin-bottom: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.83) 100%);
   }
 
   .nut-popup-bottom{
@@ -499,8 +507,8 @@
 
     .voice-scroll{
       margin: 6rpx 0 0 0;
-      width:708rpx;//这一步有点高手
-      height: 99vh;
+      width:708rpx;
+      height: 67vh;
       //background-color: yellow;
 
       .bottom-single-page-voice{
@@ -513,8 +521,8 @@
     }
 
     .sleep-scroll{
-      width:708rpx;//这一步有点高手
-      height: 90vh;
+      width:708rpx;
+      height: 67vh;
       //background-color: yellow;
 
       .bottom-single-page-sleep{
