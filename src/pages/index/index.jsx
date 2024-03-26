@@ -128,6 +128,7 @@ function Index() {
     const handleClickHistory = (item) =>{
         console.log("handleClickHistory",item)
         setSearchFilterData({
+            ...searchFilterData,
             'page':1,
             'voice_name':item
         })
@@ -241,6 +242,7 @@ function Index() {
     const [searchFilterData,setSearchFilterData] = useState({
         'page':1,
         'voice_name':'',
+        'type':'search',
     })
 
     const [sleepFilterData,setSleepFilterData] = useState({
@@ -553,17 +555,19 @@ function Index() {
                 duration: 2000
             });
         }else{
-            addHistoryData(value)
             setSearchFilterData({
+                ...searchFilterData,
                 'page':1,
                 'voice_name':value,
             });
+            addHistoryData(value)
         }
 
     }
 
     const handleVoiceClear = ()=>{
         setSearchFilterData({
+            ...searchFilterData,
             'voice_name':"",
             'page':1,
         })
@@ -867,9 +871,12 @@ function Index() {
         // console.log("sleepStarList",sleepStarList)
         // console.log("voiceList",voiceList)
         // console.log("sleepList",sleepList)
-        console.log("currentBreathItem",currentBreathItem)
+        // console.log("currentBreathItem",currentBreathItem)
         // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList,currentBreathItem]);
+
+        console.log("searchVoiceList",searchVoiceList);
+        console.log("searchFIlterData",searchFilterData);
+    }, [voiceList,voiceTypeList,countList,friendList,sleepBackgroundList,voiceStarList,sleepStarList,currentBreathItem,searchVoiceList,searchFilterData]);
 
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
@@ -929,8 +936,8 @@ function Index() {
             }else{
                 if(searchFilterData.page === 1){
                     setSearchVoiceList(data.list)
-                    console.log("搜索结果为空")
                 }
+                console.log("搜索结果为空")
 
             }
         })
@@ -1524,10 +1531,10 @@ function Index() {
                                     />
                                 ):(
                                     <SearchBar placeholder="搜索声音"
-                                    onSearch={(value) => handleVoiceSearch(value)}
-                                    onClear={() => handleVoiceClear()}
+                                    // onSearch={(value) => handleVoiceSearch(value)}
+                                    // onClear={() => handleVoiceClear()}
                                     onFocus={() => handleShowSearchPage()}
-                                    value={searchFilterData.voice_name}
+                                    // value={searchFilterData.voice_name}
                                     />
                                 )}
 
