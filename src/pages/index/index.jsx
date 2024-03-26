@@ -1125,7 +1125,7 @@ function Index() {
                 theme={{
                     nutuiSearchbarBackground: '#FFFFFF',
                     nutuiSearchbarInputTextAlign: 'left',
-                    nutuiSearchbarContentBackground: '#F5F5F5',
+                    nutuiSearchbarContentBackground: '#F8F8F8',
                     nutuiSearchbarPadding:'0rpx 0rpx',
                     nutuiSearchbarContentPadding:'0 28rpx',
                     nutuiSearchbarInputPadding:'0 28rpx',
