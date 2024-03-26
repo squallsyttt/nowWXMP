@@ -20,7 +20,7 @@ function VoiceItem(props) {
             <View className={"voice-item-bottom"}>
                 <View className={'bottom-title'}>{title}</View>
                 <View className={'bottom-info'}>
-                    <Image width={"24rpx"} height={"24rpx"} src={listenIcon}/>
+                    <Image className={"info-img"} width={"24rpx"} height={"24rpx"} src={listenIcon}/>
                     {like+"人在听"}
                 </View>
             </View>

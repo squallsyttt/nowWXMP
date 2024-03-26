@@ -17,6 +17,7 @@ import helpIcon from '../../assets/help.png';
 import voiceTimeCheckIcon from '../../assets/voicetimecheck.png';
 import sleepSetIcon from '../../assets/set.png';
 import closeIcon from '../../assets/close.png';
+import drawPopIcon from '../../assets/draw-pop.png';
 
 import VoiceItem from "../../components/voice";
 import SleepItem from "../../components/sleep";
@@ -1220,11 +1221,11 @@ function Index() {
                     )}
 
 
-                    <View className={"outer-footer-call"} onClick={() => {
+                    <img className={"outer-footer-call"} src={drawIcon} onClick={() => {
                         setShowBottomRound(true)
-                    }}>
-                        <img src={drawIcon} className={"call-draw-img"}/>
-                    </View>
+                    }}/>
+                        {/*<img src={drawIcon} className={"call-draw-img"}/>*/}
+                    {/*</View>*/}
                     <View className={"outer-footer-block"}></View>
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
@@ -1484,7 +1485,7 @@ function Index() {
                             <View className={"pull-icon"} onClick={() => {
                                 setShowBottomRound(false)
                             }}>
-                                <Image width={"40rpx"} height={"30rpx"} src={drawIcon}/>
+                                <Image width={"48rpx"} height={"20rpx"} src={drawPopIcon}/>
                             </View>
 
                             <View className={"search-box"}>

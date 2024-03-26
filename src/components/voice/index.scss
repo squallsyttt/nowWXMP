@@ -36,7 +36,7 @@
     width: 320rpx;
     height: 58rpx;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     //border: 1rpx solid black;
 
@@ -49,10 +49,10 @@
       line-height: 42rpx;
       overflow: hidden;
       //border: 1rpx solid blue;
+      margin: 0 0 0 4rpx;
     }
 
     .bottom-info{
-      margin-left: auto;
       width: 160rpx;
       height: 58rpx;
       //border: 1rpx solid red;
@@ -62,6 +62,9 @@
       font-size: 24rpx;
       color: #929292;
       line-height: 58rpx;
+      .info-img{
+        margin: 0 6rpx 0 0;
+      }
     }
   }
 }
