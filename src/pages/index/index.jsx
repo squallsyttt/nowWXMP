@@ -540,18 +540,26 @@ function Index() {
     }
 
     const handleVoiceSearch= (value) =>{
-        addHistoryData(value)
         if(value.length < 1){
             Taro.showToast({
                 title: '搜索不能为空',
                 icon: 'none',
                 duration: 2000
             });
+        }else if (value.indexOf(' ') !== -1) {
+            Taro.showToast({
+                title: '搜索不能包含空格',
+                icon: 'none',
+                duration: 2000
+            });
+        }else{
+            addHistoryData(value)
+            setSearchFilterData({
+                'page':1,
+                'voice_name':value,
+            });
         }
-        setSearchFilterData({
-            'page':1,
-            'voice_name':value,
-        });
+
     }
 
     const handleVoiceClear = ()=>{
@@ -1137,6 +1145,7 @@ function Index() {
                     nutuiPopupAnimationDuration:'0.3s',
                     nutuiTagPadding:'5px 13px',
                     nutuiTagFontSize:'15px',
+                    nutuiButtonPrimaryFontWeight:600,
                 }}
             >
                 <View className={"outer-box"}>
@@ -1664,7 +1673,7 @@ function Index() {
                                     </View>
                                     <View className={"breath-bottom-box"}>
                                         <Button type="primary" fill="outline" color="#65C565" size="large" onClick={() => handleBreathStart()}>
-                                            开始
+                                            开始呼吸
                                         </Button>
                                     </View>
                                 </View>
