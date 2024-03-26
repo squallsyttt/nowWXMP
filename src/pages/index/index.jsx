@@ -863,6 +863,12 @@ function Index() {
                 setBackTitle(data.list[0].voice_name)
             }
 
+            if(data.count === 10 && filterData.page === 1){
+                setBackImg(host+data.list[0].background_img)
+                //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
+                setBackTitle(data.list[0].voice_name)
+            }
+
             if(data.list.length > 0){
                 if(filterData.page > 1){
                     setVoiceList([...voiceList,...data.list])
@@ -961,6 +967,7 @@ function Index() {
                 })
                 //点击就会清除定时
                 clearTimeout(timer)
+                backgroundAudioManager.title = backTitle;
                 backgroundAudioManager.src = backVoice;
                 backgroundAudioManager.webUrl = "https://www.baidu.com";
                 //backVoice 变化监听的pause + play
@@ -980,48 +987,45 @@ function Index() {
     }, [backTitle]);
 
     useEffect(() => {
-        if(backTitle === "呼吸"){
-            console.log("呼吸模式 不触发backTitle的 useEffect监控")
-        }else{
-            console.log("backgroundAudioManager",backgroundAudioManager)
-            console.log("backgroundAudioManager/src",backgroundAudioManager.src)
+        console.log("监控到 backSleep的变化 对应的useEffect")
+        console.log("backgroundAudioManager",backgroundAudioManager)
+        console.log("backgroundAudioManager/src",backgroundAudioManager.src)
 
-            //专辑名
-            backgroundAudioManager.epname ="此时此刻";
-
-
-            //backVoice 只有初始化 和 点击的时候变化
-            if(backSleep !== "" && backSleep !== undefined){
-                //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
-                console.log("只有在点击助眠的时候 会触发这条！")
-
-                setSleepBackPlay({
-                    ...sleepBackPlay,
-                    'status':1,
-                })
-
-                backgroundAudioManager.src = backSleep;
-                backgroundAudioManager.webUrl = "https://www.baidu.com";
-                //backSleep 变化监听的pause + play
-                backgroundAudioManager.pause();
-                backgroundAudioManager.play();
-            }
-        }
-
-
-
-
-    },[backSleep]);
-
-    useEffect(() => {
-        //音乐名必填
-        backgroundAudioManager.title = "呼吸";
         //专辑名
         backgroundAudioManager.epname ="此时此刻";
-        backgroundAudioManager.src = host + currentBreathItem.current_voice;
-        backgroundAudioManager.webUrl = "https://www.baidu.com";
-        backgroundAudioManager.pause();
-        backgroundAudioManager.play();
+
+
+        //backVoice 只有初始化 和 点击的时候变化
+        if(backSleep !== "" && backSleep !== undefined){
+            //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
+            console.log("只有在点击助眠的时候 会触发这条！")
+            setSleepBackPlay({
+                ...sleepBackPlay,
+                'status':1,
+            })
+
+            backgroundAudioManager.title = backTitle;
+            backgroundAudioManager.src = backSleep;
+            backgroundAudioManager.webUrl = "https://www.baidu.com";
+            //backSleep 变化监听的pause + play
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
+    },[backSleep,currentSleepItem]);
+
+    useEffect(() => {
+        console.log("currentBreathItem 初始化的时候就被触发了！",currentBreathItem)
+
+        if(currentBreathItem.current_breath_type !== undefined){
+            //音乐名必填
+            backgroundAudioManager.title = "呼吸";
+            //专辑名
+            backgroundAudioManager.epname ="此时此刻";
+            backgroundAudioManager.src = host + currentBreathItem.current_voice;
+            backgroundAudioManager.webUrl = "https://www.baidu.com";
+            backgroundAudioManager.pause();
+            backgroundAudioManager.play();
+        }
     }, [currentBreathItem]);
 
     useEffect(() => {
@@ -1096,11 +1100,6 @@ function Index() {
             }
         }
     }, [breathBackPlay]);
-
-    //助眠默认是无限循环
-    useEffect(() => {
-        console.log("useEffect backSleep")
-    }, [backSleep]);
 
 
     return (

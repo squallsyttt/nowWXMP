@@ -2,6 +2,7 @@ import {Text, View} from "@tarojs/components";
 import NavCustomBar from "../../components/nav_bar_class";
 import qrCodeImg from "../../assets/qrcode.png";
 import './index.scss';
+import {Image} from "@nutui/nutui-react-taro";
 
 function Index() {
     return (
@@ -21,7 +22,7 @@ function Index() {
                 希望我们都能很快走出失眠，重获好梦。
             </View>
             <View className={"contact-bottom"}>
-                <img src={qrCodeImg} className={"bottom-img"}/>
+                <Image src={qrCodeImg} className={"bottom-img"} showMenuByLongpress={true}/>
             </View>
             <View className={"contact-notice"}>
                 长按识别二维码
