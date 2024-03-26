@@ -970,7 +970,7 @@ function Index() {
                 clearTimeout(timer)
                 backgroundAudioManager.title = backTitle;
                 backgroundAudioManager.src = backVoice;
-                backgroundAudioManager.webUrl = "https://www.baidu.com";
+                backgroundAudioManager.webUrl = backVoice;
                 //backVoice 变化监听的pause + play
                 backgroundAudioManager.pause();
                 backgroundAudioManager.play();
@@ -1007,7 +1007,7 @@ function Index() {
 
             backgroundAudioManager.title = backTitle;
             backgroundAudioManager.src = backSleep;
-            backgroundAudioManager.webUrl = "https://www.baidu.com";
+            backgroundAudioManager.webUrl = backVoice;
             //backSleep 变化监听的pause + play
             backgroundAudioManager.pause();
             backgroundAudioManager.play();
@@ -1023,7 +1023,7 @@ function Index() {
             //专辑名
             backgroundAudioManager.epname ="此时此刻";
             backgroundAudioManager.src = host + currentBreathItem.current_voice;
-            backgroundAudioManager.webUrl = "https://www.baidu.com";
+            backgroundAudioManager.webUrl = backVoice;
             backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
@@ -1053,7 +1053,7 @@ function Index() {
             if(backgroundAudioManager.src === undefined){
                 console.log("触发 什么都没有的时候的声音",voiceList[0].voice)
                 backgroundAudioManager.src = host+voiceList[0].voice
-                backgroundAudioManager.webUrl = "https://www.baidu.com";
+                backgroundAudioManager.webUrl = backVoice;
             }
             backgroundAudioManager.pause();
             backgroundAudioManager.play();
@@ -1213,7 +1213,7 @@ function Index() {
                                 )}
                             </View>
                             <View className={"box-side-right"}  onClick={() => {
-                                setShowSleepSet(true)
+                                console.log("助眠分享")
                             }}>
                                 <img className={"sleep-side-img"} src={sleepSetIcon}/>
                             </View>
