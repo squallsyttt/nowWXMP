@@ -863,7 +863,7 @@ function Index() {
                 setBackTitle(data.list[0].voice_name)
             }
 
-            if(data.count === 10 && filterData.page === 1){
+            if(data.count <= 10 && filterData.page === 1){
                 setBackImg(host+data.list[0].background_img)
                 //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
                 setBackTitle(data.list[0].voice_name)
@@ -1227,7 +1227,7 @@ function Index() {
                     </View>
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>定时停止</View>} visible={showVoiceSet} style={{height: '65%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowVoiceSet(false)
@@ -1266,7 +1266,7 @@ function Index() {
 
 
                     <Popup duration={1000} title={<View style={{color:'#666666'}}>播放设置</View>} visible={showSleepSet} style={{height: '35%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepSet(false)
@@ -1307,7 +1307,7 @@ function Index() {
                     </Popup>
 
                     <Popup duration={1000} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐</View>} visible={showSleepBackgroundVoice} style={{height: '85%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowSleepBackgroundVoice(false)
@@ -1346,7 +1346,7 @@ function Index() {
 
                     {/*呼吸背景音乐*/}
                     <Popup duration={1000} zIndex={2001} closeable overlay={false}  title={<View style={{color:'#666666'}}>背景音乐2</View>} visible={showBreathBackgroundVoice} style={{height: '88%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {
                         setShowBreathBackgroundVoice(false)
@@ -1384,7 +1384,7 @@ function Index() {
 
                     {/*//呼吸模式PopUp*/}
                     <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸时长</View>} visible={showBreathTimeSet} style={{height: '52%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            position={"bottom"} round onClose={() => {
                         setShowBreathTimeSet(false)
                     }}>
@@ -1418,7 +1418,7 @@ function Index() {
 
                     {/*//呼吸引导PopUp*/}
                     <Popup duration={1000} zIndex={2001} title={<View style={{color:'#666666'}}>呼吸引导</View>} visible={showBreathVoiceSet} style={{height: '20%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            position={"bottom"} round onClose={() => {
                         setShowBreathVoiceSet(false)
                     }}>
@@ -1440,7 +1440,7 @@ function Index() {
 
                     {/*//呼吸动效PopUp*/}
                     <Popup duration={1000} zIndex={2001}  visible={showBreathDynamicSet} style={{width:"100%",height:"100%",border: "1px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            onClose={() => {
                         setShowBreathDynamicSet(false)
                     }}>
@@ -1476,7 +1476,7 @@ function Index() {
 
                     {/*//主页面Popup*/}
                     <Popup duration={1000} overlay={true} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
-                           lockScroll={false}
+                           lockScroll={true}
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {setShowBottomRound(false)}}>
                         <View className={"index-popup-inner-box"}>
