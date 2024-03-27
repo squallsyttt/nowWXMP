@@ -316,9 +316,10 @@
 .index-popup-inner-box{
   //border: 3px solid black;
   width: 100%;
-  height: 100%;
+  //height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
 
   .pull-icon{
@@ -338,15 +339,17 @@
     width: 664rpx;
     height: 64rpx;
     margin: 38rpx 0 0 0;
+    //border: 1px solid black;
   }
 
   .under-search-box{
-    margin: 40rpx 0 0 0;
+    margin: 32rpx 0 0 0;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    //border: 3px solid green;
 
     .search-voice-scroll{
       margin: 6rpx 0 0 0;
@@ -375,9 +378,10 @@
     }
 
     .search-history-box{
+      //border: 2px solid yellow;
       width: 664rpx;
       height: 100%;
-      margin: 20rpx 0 0 0;
+      margin: 40rpx 0 0 0;
 
       display: flex;
       flex-direction: column;
@@ -441,7 +445,7 @@
     justify-content: flex-start;
     height: 48rpx;
     width: 664rpx;
-    margin: 22rpx 0 0 0;
+    //margin: 22rpx 0 0 0;
     //border: 1px solid blue;
 
     .tabs-item{
@@ -505,8 +509,18 @@
     justify-content: center;
     width: 664rpx;
     //height: auto;
-    //border: 1px solid blue;
+    //border: 2px solid blue;
     margin: 20rpx 0 0 0;
+
+    .item-bottom-tabs{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 664rpx;
+      height: 200rpx;
+      border: 1px solid black;
+    }
 
     .nut-tabs-titles-item {
       min-width:unset;
@@ -519,7 +533,6 @@
     }
 
     .voice-scroll{
-      margin: 6rpx 0 0 0;
       width:708rpx;
       height: 67vh;
       //background-color: yellow;
@@ -558,6 +571,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      //border: 3px solid red;
 
       .select-breath-duration{
         width: 664rpx;

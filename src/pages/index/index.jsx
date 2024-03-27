@@ -573,6 +573,15 @@ function Index() {
         })
     }
 
+    const handleSearchCancel = ()=> {
+        setSearchMode(0)
+        setSearchFilterData({
+            ...searchFilterData,
+            'voice_name':"",
+            'page':1,
+        })
+    }
+
     const handleShowSearchPage = ()=>{
         console.log("showSearchPage!!")
         setSearchMode(1);
@@ -881,7 +890,8 @@ function Index() {
     //页面上的筛选项变化后 请求借口去更新页面数据
     useEffect(() => {
         fetchIndexData().then((data)=>{
-            console.log("voiceData on filterData Changed",data)
+            // console.log("voiceData on filterData Changed",data)
+            // console.log("voiceData activateTab",tabValue)
 
             // console.log("filterData on changed",filterData)
             // console.log('...voiceList',...voiceList)
@@ -895,7 +905,7 @@ function Index() {
                 setBackTitle(data.list[0].voice_name)
             }
 
-            if(data.count <= 10 && filterData.page === 1){
+            if(data.count <= 10 && data.count > 0 && filterData.page === 1 && tabValue === 0){
                 setBackImg(host+data.list[0].background_img)
                 //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
                 setBackTitle(data.list[0].voice_name)
@@ -1527,7 +1537,8 @@ function Index() {
                                                onClear={() => handleVoiceClear()}
                                                onFocus={() => handleShowSearchPage()}
                                                value={searchFilterData.voice_name}
-                                               right={<View onClick={()=>{setSearchMode(0)}}>取消</View>}
+                                               // right={<View onClick={()=>{setSearchMode(0)}}>取消</View>}
+                                               right={<View onClick={()=>handleSearchCancel()}>取消</View>}
                                     />
                                 ):(
                                     <SearchBar placeholder="搜索声音"
@@ -1554,6 +1565,9 @@ function Index() {
                             </View>
 
                             {activeTab === 0 && (<View className={"tabs-item-bottom"}>
+                                {/*<View className={"item-bottom-tabs"}>*/}
+
+                                {/*</View>*/}
                                 <Tabs value={tabValue}
                                       align={"left"}
                                       tabStyle={{width: '664rpx', background: '#FFFFFF'}}
