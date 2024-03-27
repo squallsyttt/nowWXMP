@@ -157,6 +157,7 @@
         }
       }
       .icon-down{
+        margin: 8rpx 0 0 0;
         width: 96rpx;
         height: 34rpx;
         //border: 1px solid black;
@@ -322,14 +323,19 @@
   justify-content: flex-start;
   align-items: center;
 
-  .pull-icon{
-    margin: 42rpx 0 0 0;
+  .pull-icon-box{
+    //margin: 38rpx 0 0 0;
     width: 80rpx;
-    height: 30rpx;
+    height: 68rpx;
     //border: 2rpx solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
+    .icon-draw{
+      margin: 38rpx 0 0 0;
+      //width: 48rpx;
+      //height: 20rpx;
+    }
   }
 
   .search-box{
@@ -338,7 +344,7 @@
     align-items: center;
     width: 664rpx;
     height: 64rpx;
-    margin: 38rpx 0 0 0;
+    margin: 34rpx 0 0 0;
     //border: 1px solid black;
   }
 
@@ -483,7 +489,7 @@
     }
 
     .tabs-item.active::after{
-      background-color: #65C565;
+      background-color: #3cc65c;
     }
 
     .badge {
@@ -527,7 +533,7 @@
     }
 
     .nut-tabs-titles-button .nut-tabs-titles-item-active {
-      background-color: #65C565;
+      background-color: #3cc65c;
       color: #FFFFFF;
       border: 0px;
     }
@@ -541,6 +547,7 @@
         width: 708rpx;
         //height: auto;
         //border: 1rpx solid red;
+        margin: 10rpx 0 0 0;
         display: flex;
         flex-wrap: wrap;
       }
@@ -557,6 +564,7 @@
         //border: 1rpx solid red;
         display: flex;
         flex-wrap: wrap;
+        margin: 10rpx 0 0 0;
       }
     }
 

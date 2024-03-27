@@ -26,6 +26,26 @@ import Taro, {useSaveExitState} from '@tarojs/taro';
 import BreathBackgroundVoiceItem from "../../components/breath";
 
 function Index() {
+    const [touchStart, setTouchStart] = useState(false);
+    const [touchMove, setTouchMove] = useState(false);
+    const [touchEnd, setTouchEnd] = useState(false);
+
+    const handleTouchStart = (e) => {
+        setTouchStart(true);
+        console.log('触摸开始');
+    };
+
+    const handleTouchMove = (e) => {
+        setTouchMove(true);
+        setShowBottomRound(false)
+        console.log('正在滑动');
+    };
+
+    const handleTouchEnd = (e) => {
+        setTouchEnd(true);
+        setShowBottomRound(false)
+        console.log('触摸结束');
+    };
     // 音频组件相关start
     const [timer, setTimer] = useState(null);
 
@@ -1160,7 +1180,7 @@ function Index() {
                     nutuiSearchbarContentBorderRadius:'10rpx',
                     nutuiTabsTitlesPadding:'0 0 0 0',
                     nutuiTabsTitlesItemColor:'#666666',
-                    nutuiRangeActiveColor:'#65C565',
+                    nutuiRangeActiveColor:'#3cc65c',
                     nutuiPopupAnimationDuration:'0.3s',
                     nutuiTagPadding:'5px 13px',
                     nutuiTagFontSize:'15px',
@@ -1526,10 +1546,14 @@ function Index() {
                            overlayStyle={{'background':'unset'}}
                            position={"bottom"} round onClose={() => {setShowBottomRound(false)}}>
                         <View className={"index-popup-inner-box"}>
-                            <View className={"pull-icon"} onClick={() => {
+                            <View
+                                onTouchStart={handleTouchStart}
+                                onTouchMove={handleTouchMove}
+                                onTouchEnd={handleTouchEnd}
+                                className={"pull-icon-box"} onClick={() => {
                                 setShowBottomRound(false)
                             }}>
-                                <Image width={"48rpx"} height={"20rpx"} src={drawPopIcon}/>
+                                <Image className={"icon-draw"} width={"48rpx"} height={"20rpx"} src={drawPopIcon}/>
                             </View>
 
                             <View className={"search-box"}>
@@ -1695,7 +1719,7 @@ function Index() {
                                         {/*</View>*/}
                                     </View>
                                     <View className={"breath-bottom-box"}>
-                                        <Button type="primary" fill="outline" color="#65C565" size="large" onClick={() => handleBreathStart()}>
+                                        <Button type="primary" fill="outline" color="#3cc65c" size="large" onClick={() => handleBreathStart()}>
                                             开始呼吸
                                         </Button>
                                     </View>
