@@ -936,23 +936,25 @@ function Index() {
 
     //搜索页专用的渲染
     useEffect(() => {
-        fetchSearchVoiceData().then((data) =>{
-            if(data.list.length > 0){
-                if(searchFilterData.page > 1){
-                    setSearchVoiceList([...searchVoiceList,...data.list])
+        if(searchFilterData.voice_name === ""){
+            console.log("搜索如果搜索值为空 不渲染")
+        }else{
+            fetchSearchVoiceData().then((data) =>{
+                if(data.list.length > 0){
+                    if(searchFilterData.page > 1){
+                        setSearchVoiceList([...searchVoiceList,...data.list])
+                    }else{
+                        setSearchVoiceList(data.list)
+                    }
                 }else{
-                    setSearchVoiceList(data.list)
+                    if(searchFilterData.page === 1){
+                        setSearchVoiceList(data.list)
+                    }
+                    console.log("搜索结果为空")
+
                 }
-            }else{
-                if(searchFilterData.page === 1){
-                    setSearchVoiceList(data.list)
-                }
-                console.log("搜索结果为空")
-
-            }
-        })
-
-
+            })
+        }
         console.log('searchFilterData用于搜索页',searchFilterData)
     }, [searchFilterData]);
 
@@ -1381,7 +1383,7 @@ function Index() {
                                     )
                                 })
                                 }
-                                {sleepBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
+                                {/*{sleepBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}*/}
                             </View>
                         </ScrollView>
                         </View>
@@ -1420,7 +1422,7 @@ function Index() {
                                         )
                                     })
                                     }
-                                    {breathBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
+                                    {/*{breathBackgroundList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}*/}
                                 </View>
                             </ScrollView>
                         </View>
@@ -1614,7 +1616,7 @@ function Index() {
                                             )
                                         })
                                         }
-                                        {voiceList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}
+                                        {/*{voiceList.length === 0 && (<View className={"empty-notice"}>抱歉，没有找到符合条件结果</View>)}*/}
                                     </View>
                                 </ScrollView>
 

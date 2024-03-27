@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe92e5f8-9d65-4185-b835-237793f33805" name="Changes" comment="Changes">
+      <change afterPath="$PROJECT_DIR$/src/assets/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/splash/splash.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/splash/splash.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +89,7 @@
       <recent name="$PROJECT_DIR$/src/assets" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build:weapp">
+  <component name="RunManager" selected="npm.dev:weapp">
     <configuration name="build:weapp" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -109,8 +112,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build:weapp" />
         <item itemvalue="npm.dev:weapp" />
+        <item itemvalue="npm.build:weapp" />
       </list>
     </recent_temporary>
   </component>
@@ -134,7 +137,7 @@
       <workItem from="1711348917358" duration="10591000" />
       <workItem from="1711415546560" duration="10353000" />
       <workItem from="1711458811001" duration="12000" />
-      <workItem from="1711458847054" duration="11029000" />
+      <workItem from="1711458847054" duration="16087000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,26 @@
+.splash-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fff;
+
+  .logo {
+    width: 268rpx; /* 调整 logo 大小 */
+    height: 282rpx;
+  }
+  .text {
+    margin: 56rpx 0 0 0;
+    width: 700rpx;
+    height: 48rpx;
+
+    font-weight: 300;
+    font-size: 34rpx;
+    color: #666666;
+    line-height: 48rpx;
+    text-align: center;
+    font-style: normal;
+    text-transform: none;
+  }
+}

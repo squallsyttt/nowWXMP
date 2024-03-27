@@ -1,5 +1,6 @@
 export default defineAppConfig({
   pages: [
+    'components/splash/splash',
     'pages/index/index',
     'pages/contact/index',
   ],
