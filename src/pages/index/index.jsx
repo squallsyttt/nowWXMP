@@ -30,6 +30,8 @@ function Index() {
     const [touchMove, setTouchMove] = useState(false);
     const [touchEnd, setTouchEnd] = useState(false);
 
+    const [pureStatus,setPureStatus] = useState(0);
+
     const handleTouchStart = (e) => {
         setTouchStart(true);
         console.log('触摸开始');
@@ -323,6 +325,7 @@ function Index() {
 
     const handleVoiceItemClick = (item) => {
         console.log("voiceItem",item)
+        setPureStatus(1);
         setAppMode(1)
         setBackImg(host+item.background_img)
         setBackTitle(item.voice_name)
@@ -338,6 +341,7 @@ function Index() {
 
     const handleSleepItemClick = (item) => {
         console.log("sleepItem",item)
+        setPureStatus(1);
         setAppMode(2);
         setBackImg(host+item.sleep_background_img)
         setBackTitle(item.sleep_name)
@@ -925,7 +929,7 @@ function Index() {
                 setBackTitle(data.list[0].voice_name)
             }
 
-            if(data.count <= 10 && data.count > 0 && filterData.page === 1 && tabValue === 0){
+            if(data.count <= 10 && data.count > 0 && filterData.page === 1 && tabValue === 0 && pureStatus === 0){
                 setBackImg(host+data.list[0].background_img)
                 //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
                 setBackTitle(data.list[0].voice_name)
@@ -1543,7 +1547,8 @@ function Index() {
                     {/*//主页面Popup*/}
                     <Popup duration={300} overlay={true} visible={showBottomRound} style={{height: '88%', border: "0px solid black"}}
                            lockScroll={true}
-                           overlayStyle={{'background':'unset'}}
+                           // overlayStyle={{'background':"rgba(0, 0, 0, 0.1)"}}
+
                            position={"bottom"} round onClose={() => {setShowBottomRound(false)}}>
                         <View className={"index-popup-inner-box"}>
                             <View
