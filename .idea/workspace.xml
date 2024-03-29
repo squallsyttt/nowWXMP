@@ -86,7 +86,7 @@
       <recent name="$PROJECT_DIR$/src/assets" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build:weapp">
+  <component name="RunManager" selected="npm.dev:weapp">
     <configuration name="build:weapp" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -109,8 +109,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build:weapp" />
         <item itemvalue="npm.dev:weapp" />
+        <item itemvalue="npm.build:weapp" />
       </list>
     </recent_temporary>
   </component>
@@ -137,7 +137,7 @@
       <workItem from="1711458847054" duration="16087000" />
       <workItem from="1711520965888" duration="7746000" />
       <workItem from="1711630337778" duration="4916000" />
-      <workItem from="1711678597298" duration="1224000" />
+      <workItem from="1711678597298" duration="7525000" />
     </task>
     <servers />
   </component>

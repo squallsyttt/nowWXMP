@@ -205,7 +205,7 @@ function Index() {
     const [breathDynamicText,setBreathDynamicText] = useState("吸气")
 
     //弹框默认是开启的
-    const [showBottomRound,setShowBottomRound] = useState(true)
+    const [showBottomRound,setShowBottomRound] = useState(false)
 
     //声音的设置popUp
     const [showVoiceSet,setShowVoiceSet] = useState(false)
@@ -903,7 +903,8 @@ function Index() {
 
     useEffect(() => {
         // console.log('voiceTypeList',{voiceTypeList})
-        // console.log('voiceList',{voiceList})
+        console.log('voiceListfilterData',filterData)
+        console.log('voiceList',voiceList)
         // console.log('countList',{countList})
         // console.log('friendList',friendList);
         // console.log("sleepBackgroundList",sleepBackgroundList)
