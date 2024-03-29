@@ -1,7 +1,7 @@
 .sleep-item-box{
-  margin:0 0 34rpx 24rpx;
+  margin:0 0 34rpx 22rpx;
   width: 320rpx;
-  height: 382rpx;
+  height: 390rpx;
   //border: 2rpx solid black;
   display: flex;
   flex-direction: column;
@@ -12,8 +12,8 @@
     position: relative;
     width: 320rpx;
     height: 320rpx;
-    border-radius: 20rpx;
     //border: 1rpx solid black;
+    border-radius: 20rpx;
 
     .top-like{
       position: absolute;
@@ -34,10 +34,10 @@
 
   .sleep-item-bottom{
     width: 320rpx;
-    height: 58rpx;
+    height: 70rpx;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-end;
     //border: 1rpx solid black;
 
     .bottom-title{
@@ -48,14 +48,13 @@
       color: #222222;
       line-height: 42rpx;
       overflow: hidden;
-      //border: 1rpx solid red;
+      //border: 1rpx solid blue;
       margin: 0 0 0 4rpx;
     }
 
     .bottom-info{
-      margin-left: auto;
       width: 160rpx;
-      height: 58rpx;
+      height: 42rpx;
       //border: 1rpx solid red;
       display: flex;
       justify-content: flex-end;
@@ -63,6 +62,9 @@
       font-size: 24rpx;
       color: #929292;
       line-height: 58rpx;
+      .info-img{
+        margin: 0 6rpx 0 0;
+      }
     }
   }
 }

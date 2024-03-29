@@ -820,11 +820,19 @@ function Index() {
                                 if (keyName === "voice") {
                                     setVoiceStarList(listArray);
                                     console.log('removeVoiceStarData success', listArray);
+                                    setFilterData({
+                                        ...filterData,
+                                        'like':listArray,
+                                    })
                                 }
 
                                 if (keyName === "sleep") {
                                     setSleepStarList(listArray);
                                     console.log('removeSleepStarData success', listArray);
+                                    setSleepFilterData({
+                                        ...sleepFilterData,
+                                        'like': listArray,
+                                    })
                                 }
                             }
                         });
@@ -922,6 +930,9 @@ function Index() {
             // console.log('...data.list',...data.list)
             // console.log('data.list.length',data.list.length)
 
+            // console.log('voiceFilter',filterData)
+            // console.log('voiceStarList',voiceStarList)
+
             //特殊情况 用来初始化
             if(data.count > 10){
                 setBackImg(host+data.list[0].background_img)
@@ -985,6 +996,9 @@ function Index() {
 
 
     useEffect(() => {
+        // console.log('sleepFilter',sleepFilterData)
+        // console.log('sleepStarList',sleepStarList)
+
         fetchSleepData().then((data)=>{
             if(data.list.length > 0){
                 if(sleepFilterData.page > 1){
