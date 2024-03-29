@@ -1216,18 +1216,18 @@ function Index() {
                     {/*    </View>*/}
                     {/*)}*/}
 
-                    {friendList.length > 0 && (
                         <View className={"content-box"}>
+                            {friendList.length > 0 && (
                             <View className={"content-text"}>
                                 <View className={"text-up"}>{friendList[0].content}</View>
                                 <View className={"text-down"}>-{friendList[0].author}</View>
                             </View>
+                            )}
                             <View className={"content-icon"} onClick={() => jumpContact()}>
                                 <View className={"icon-up"}><img className={"content-icon-img"} src={helpIcon}/></View>
                                 <View className={"icon-down"}>同行互助</View>
                             </View>
                         </View>
-                    )}
 
                     {backTitle.length>0 && (
                         <View className={"background-title-box"}>
