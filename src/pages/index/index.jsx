@@ -67,6 +67,34 @@ function Index() {
 
     backgroundAudioManager.onStop(() => {
         console.log("onStop 触发");
+
+        // console.log("managerTitle",backgroundAudioManager.title)
+        // console.log("managerSrc",backgroundAudioManager.src)
+
+        backgroundAudioManager.title = "";
+        backgroundAudioManager.src = "";
+
+        if(appMode === 1){
+            setVoiceBackPlay({
+                ...voiceBackPlay,
+                'status':0,
+            })
+        }
+
+        if(appMode === 2){
+            setSleepBackPlay({
+                ...sleepBackPlay,
+                'status':0,
+            })
+        }
+        setVoiceBackPlay({
+            ...voiceBackPlay,
+            'status':0,
+        })
+        setSleepBackPlay({
+            ...sleepBackPlay,
+            'status':0,
+        })
     });
 
     const [isAnimating478,setIsAnimating478] = useState(true)
@@ -82,7 +110,7 @@ function Index() {
         backgroundAudioManager.title=backTitle;
         console.log("onEnded backAudioManager/title",backgroundAudioManager.title)
         //用于循环的pause+play
-        backgroundAudioManager.pause();
+        // backgroundAudioManager.pause();
         backgroundAudioManager.play();
 
 
@@ -105,19 +133,25 @@ function Index() {
     });
 
     backgroundAudioManager.onPlay(() => {
-        console.log("每次播放的事件监听")
+        console.log("每次播放的事件监听 backgroundAudioManager.onPlay")
     });
 
     backgroundAudioManager.onPause(() => {
-        console.log("每次播放结束的事件监听")
-        setVoiceBackPlay({
-            ...voiceBackPlay,
-            'status':0,
-        })
-        setSleepBackPlay({
-            ...sleepBackPlay,
-            'status':0,
-        });
+        console.log("每次播放暂停的事件监听 backgroundAudioManager.onPause")
+        if(appMode === 1){
+            setVoiceBackPlay({
+                ...voiceBackPlay,
+                'status':0,
+            })
+        }
+
+        if(appMode === 2){
+            setSleepBackPlay({
+                ...sleepBackPlay,
+                'status':0,
+            });
+        }
+
     });
 
     //播放暂停按钮控制
@@ -324,35 +358,35 @@ function Index() {
     }
 
     const handleVoiceItemClick = (item) => {
-        console.log("voiceItem",item)
-        setPureStatus(1);
-        setAppMode(1)
-        setBackImg(host+item.background_img)
-        setBackTitle(item.voice_name)
-        setBackVoice(host+item.voice)
-        setCurrentVoiceItem({
-            ...currentVoiceItem,
-            'id':item.id,
-        })
-        addListen(item.id)
+            console.log("voiceItem handleVoiceItemClick",item)
+            setPureStatus(1);
+            setAppMode(1)
+            setBackImg(host+item.background_img)
+            setBackTitle(item.voice_name)
+            setBackVoice(host+item.voice)
 
-
+            //用于标记star
+            setCurrentVoiceItem({
+                ...currentVoiceItem,
+                'id':item.id,
+            })
+            addListen(item.id)
     }
 
     const handleSleepItemClick = (item) => {
-        console.log("sleepItem",item)
-        setPureStatus(1);
-        setAppMode(2);
-        setBackImg(host+item.sleep_background_img)
-        setBackTitle(item.sleep_name)
-        setBackSleep(host+item.sleep_voice)
-        setCurrentSleepItem({
-            ...currentSleepItem,
-            'id':item.id,
-        })
+            console.log("sleepItem handleSleepItemClick",item)
+            setPureStatus(1);
+            setAppMode(2);
+            setBackImg(host+item.sleep_background_img)
+            setBackTitle(item.sleep_name)
+            setBackSleep(host+item.sleep_voice)
+
+            //用于标记star
+            setCurrentSleepItem({
+                ...currentSleepItem,
+                'id':item.id,
+            })
     }
-
-
 
     const handleSleepBackgroundItemClick = (item) => {
         console.log("sleepBackgroundItem",item)
@@ -945,6 +979,10 @@ function Index() {
                 setBackImg(host+data.list[0].background_img)
                 //这边直接不渲染了 setBackVoice(host+data.list[0].voice)
                 setBackTitle(data.list[0].voice_name)
+                setCurrentVoiceItem({
+                    ...currentVoiceItem,
+                    'id':data.list[0].id,
+                })
             }
 
             if(data.list.length > 0){
@@ -1029,44 +1067,36 @@ function Index() {
 
     //声音在设置的定时内 循环 定时达到暂停
     useEffect(() => {
-        if(backTitle === "呼吸"){
-           console.log("呼吸模式 不触发backTitle的 useEffect监控")
-        }else{
-            console.log("backgroundAudioManager",backgroundAudioManager)
-            console.log("backgroundAudioManager/src",backgroundAudioManager.src)
-
-            //专辑名
-            backgroundAudioManager.epname ="此时此刻";
-
-            //backVoice 只有初始化 和 点击的时候变化
-            if(backVoice !== "" && backVoice !== undefined){
-                //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
-                console.log("只有在点击声音的时候 会触发这条！")
-
-                //把按钮改成播放状态
-                setVoiceBackPlay({
-                    ...voiceBackPlay,
-                    'status':1,
-                })
-                //点击就会清除定时
-                clearTimeout(timer)
-                backgroundAudioManager.title = backTitle;
-                backgroundAudioManager.src = backVoice;
-                backgroundAudioManager.webUrl = backVoice;
-                //backVoice 变化监听的pause + play
-                backgroundAudioManager.pause();
-                backgroundAudioManager.play();
-            }
+        console.log("backgroundAudioManager",backgroundAudioManager)
+        console.log("backgroundAudioManager/src",backgroundAudioManager.src)
+        //专辑名
+        backgroundAudioManager.epname ="此时此刻";
+        //backVoice 只有初始化 和 点击的时候变化
+        if(backVoice !== "" && backVoice !== undefined){
+            //初始化的时候 我已经把默认的音频 setBackVoice给关掉了 现在只有点击item  handleVoiceItemClick中 触发setBackVoice
+            console.log("只有在点击声音的时候 会触发这条！")
+            //把按钮改成播放状态
+            setVoiceBackPlay({
+                ...voiceBackPlay,
+                'status':1,
+            })
+            //点击就会清除定时
+            clearTimeout(timer)
+            backgroundAudioManager.title = backTitle;
+            backgroundAudioManager.src = backVoice;
+            backgroundAudioManager.webUrl = backVoice;
+            //backVoice 变化监听的pause + play
+            // backgroundAudioManager.pause();
+            backgroundAudioManager.play();
         }
 
-
-
-
-    },[backVoice]);
+    },[backVoice,currentVoiceItem]);
 
     useEffect(() => {
         //音乐名必填
-        backgroundAudioManager.title = backTitle;
+        if(backgroundAudioManager.title != backTitle){
+            backgroundAudioManager.title = backTitle;
+        }
     }, [backTitle]);
 
     useEffect(() => {
@@ -1091,7 +1121,7 @@ function Index() {
             backgroundAudioManager.src = backSleep;
             backgroundAudioManager.webUrl = backVoice;
             //backSleep 变化监听的pause + play
-            backgroundAudioManager.pause();
+            // backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
     },[backSleep,currentSleepItem]);
@@ -1106,7 +1136,7 @@ function Index() {
             backgroundAudioManager.epname ="此时此刻";
             backgroundAudioManager.src = host + currentBreathItem.current_voice;
             backgroundAudioManager.webUrl = backVoice;
-            backgroundAudioManager.pause();
+            // backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
     }, [currentBreathItem]);
@@ -1119,7 +1149,7 @@ function Index() {
                 ...voiceBackPlay,
                 'status':0,
             })
-            backgroundAudioManager.pause();
+            // backgroundAudioManager.pause();
         },voiceTime * 1000 * 60)
 
         setTimer(newTimer)
@@ -1128,22 +1158,22 @@ function Index() {
     useEffect(() => {
         //点击播放
         if(voiceBackPlay.status === 1){
-            console.log("触发播放行为")
+            console.log("触发播放行为 voiceBackPlay/Effect")
             // 点击播放就渲染当前的src 一般来说 首次渲染就会直接播放
             // 再强制播放
 
-            if(backgroundAudioManager.src === undefined){
-                console.log("触发 什么都没有的时候的声音",voiceList[0].voice)
+            if(backgroundAudioManager.src === undefined && pureStatus === 0){
+                console.log("触发 什么都没有的时候的声音 voiceBackPlay/Effect",voiceList[0].voice)
                 backgroundAudioManager.src = host+voiceList[0].voice
                 backgroundAudioManager.webUrl = backVoice;
             }
-            backgroundAudioManager.pause();
+            // backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
 
         //点击暂停
         if(voiceBackPlay.status === 0){
-            console.log("触发停止行为")
+            console.log("触发停止行为 voiceBackPlay/Effect")
             //如果 src存在的话
             if(backgroundAudioManager.src !== undefined){
                 backgroundAudioManager.pause()
@@ -1153,14 +1183,14 @@ function Index() {
 
     useEffect(() => {
         if(sleepBackPlay.status === 1){
-            console.log("触发助眠音乐播放行为")
+            console.log("触发助眠音乐播放行为 sleepBackPlay/Effect")
 
-            backgroundAudioManager.pause();
+            // backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
 
         if(sleepBackPlay.status === 0){
-            console.log("触发助眠音乐停止行为")
+            console.log("触发助眠音乐停止行为 sleepBackPlay/Effect")
             //如果 src存在的话
             if(backgroundAudioManager.src !== undefined){
                 backgroundAudioManager.pause()
@@ -1170,14 +1200,13 @@ function Index() {
 
     useEffect(() => {
         if(breathBackPlay.status === 1){
-            console.log("触发背景音乐播放行为")
-
+            console.log("触发呼吸音乐播放行为 breathBackPlay/Effect")
             backgroundAudioManager.pause();
             backgroundAudioManager.play();
         }
 
         if(breathBackPlay.status === 0){
-            console.log("触发背景音乐结束行为")
+            console.log("触发呼吸音乐结束行为 breathBackPlay/Effect")
             if(backgroundAudioManager.src !== undefined){
                 backgroundAudioManager.pause()
             }
