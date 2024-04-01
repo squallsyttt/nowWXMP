@@ -1,4 +1,4 @@
-import {Text, View} from "@tarojs/components";
+import {View} from "@tarojs/components";
 import NavCustomBar from "../../components/nav_bar_class";
 import qrCodeImg from "../../assets/qrcode.png";
 import './index.scss';
