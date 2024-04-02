@@ -534,10 +534,16 @@
       min-width:unset;
     }
 
-    .nut-tabs-titles-button .nut-tabs-titles-item-active {
+    .nut-tabs-titles-button  {
       background-color: #3cc65c;
       color: #FFFFFF;
-      border: 0px;
+      border: unset;
+    }
+
+    .nut-tabs-titles-item-active {
+      background-color: #3cc65c;
+      color: #FFFFFF;
+      border: unset;
     }
 
     .voice-scroll{
